@@ -28,6 +28,8 @@ const setI18nLanguages = (lang, msgs) => {
   } else {
     import(`vant/lib/locale/lang/${lang}`).then(msgs => {
       Locale.use(lang, msgs.default)
+    }).catch(err => {
+      console.log(err)
     })
   }
   return lang
@@ -44,6 +46,8 @@ export const loadLanguageAsync = (lang) => {
         i18n.setLocaleMessage(lang, msgs[0].default)
         loadedLanguages.push(lang)
         return setI18nLanguages(lang, msgs[1].default)
+      }).catch(err => {
+        console.log(err)
       })
     }
     return Promise.resolve(setI18nLanguages(lang))

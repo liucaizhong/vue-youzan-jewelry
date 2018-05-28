@@ -35,7 +35,6 @@ app.all('*', (req, res, next) => {
   next()
 })
 
-app.use('/api-auth/client', require('./index.js')())
-app.use('/api-auth/common', require('./index.js')())
+app.use('/api-auth', require('./index.js')())
 
 module.exports = app

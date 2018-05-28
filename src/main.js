@@ -23,29 +23,29 @@ const lang = navigator.language
 loadLanguageAsync(lang)
 
 // set root font-size and make rem effective immediately
-const setRootFontSize = (doc, win) => {
-  const docEl = doc.documentElement
-  const resizeEvt = 'orientationchange' in window
-    ? 'orientationchange'
-    : 'resize'
-  const recalc = () => {
-    const clientWidth = docEl.clientWidth
-    if (!clientWidth) {
-      return
-    }
+// const setRootFontSize = (doc, win) => {
+//   const docEl = doc.documentElement
+//   const resizeEvt = 'orientationchange' in window
+//     ? 'orientationchange'
+//     : 'resize'
+//   const recalc = () => {
+//     const clientWidth = docEl.clientWidth
+//     if (!clientWidth) {
+//       return
+//     }
 
-    docEl.style.fontSize = 100 * (clientWidth / 640) + 'px'
-  }
+//     docEl.style.fontSize = 100 * (clientWidth / 640) + 'px'
+//   }
 
-  if (!doc.addEventListener) {
-    return
-  }
+//   if (!doc.addEventListener) {
+//     return
+//   }
 
-  win.addEventListener(resizeEvt, recalc, false)
-  doc.addEventListener('DOMContentLoaded', recalc, false)
-}
+//   win.addEventListener(resizeEvt, recalc, false)
+//   doc.addEventListener('DOMContentLoaded', recalc, false)
+// }
 
-setRootFontSize(document, window)
+// setRootFontSize(document, window)
 
 // 设置路由拦截
 router.beforeEach((to, from, next) => {

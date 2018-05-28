@@ -6,7 +6,7 @@ const axios = require('axios')
 
 // const multipartMiddleware = multipart()
 const router = express.Router()
-const baseUrl = 'http://hq8gn6.natappfree.cc/api-auth/admin'
+const baseUrl = 'http://qak9d3.natappfree.cc/api-auth'
 
 function mapUrl (rawUrl) {
   return baseUrl + rawUrl
@@ -73,7 +73,7 @@ function request ({ url, method = 'get', headers = {}, ...args }, req, res) {
 }
 
 module.exports = () => {
-  router.post('/UserLogin/', (req, res) => {
+  router.post('/client/UserLogin/', (req, res) => {
     request({
       url: mapUrl(req.url),
       method: 'post',
@@ -81,7 +81,7 @@ module.exports = () => {
     }, req, res)
   })
 
-  router.get('/GetVerifyCode/', (req, res) => {
+  router.get('/client/GetVerifyCode/', (req, res) => {
     request({
       url: mapUrl(req.url),
     }, req, res)

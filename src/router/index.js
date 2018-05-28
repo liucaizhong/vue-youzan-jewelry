@@ -4,6 +4,7 @@ import Router from 'vue-router'
 Vue.use(Router)
 
 const Index = () => import('@/components/Index')
+const Login = () => import('@/components/Login')
 
 export default new Router({
   mode: 'history',
@@ -13,8 +14,15 @@ export default new Router({
     //   component: NotFound,
     // },
     {
+      path: '/login',
+      component: Login,
+    },
+    {
       path: '/',
       component: Index,
+      meta: {
+        requiresAuth: true,
+      },
     },
   ]
 })
