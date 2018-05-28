@@ -74,7 +74,21 @@ module.exports = {
           limit: 10000,
           name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
         }
-      }
+      },
+      {
+        test: /\.less$/,
+        use: [
+          require.resolve('style-loader'),
+          require.resolve('css-loader'),
+          {
+            loader: require.resolve('postcss-loader'),
+            options: {
+              ident: 'postcss',
+            },
+          },
+          require.resolve('less-loader')
+        ],
+      },
     ]
   },
   node: {

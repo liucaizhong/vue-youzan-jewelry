@@ -1,5 +1,4 @@
 import axios from 'axios'
-import { DEVURL, PRODURL } from './constant'
 
 export default {
   install (Vue, options) {
@@ -25,9 +24,9 @@ export default {
     Vue.prototype.$setCookie = function (name, value, expiredays) {
       const exdate = new Date()
       exdate.setDate(exdate.getDate() + expiredays)
-      document.cookie = name + '=' + encodeURIComponent(value) + ((expiredays === null) ?
-        '' :
-        ';expires=' + exdate.toGMTString())
+      document.cookie = name + '=' + encodeURIComponent(value) + ((expiredays === null)
+        ? ''
+        : ';expires=' + exdate.toGMTString())
     }
 
     Vue.prototype.$getLocalStorage = function (key) {
@@ -47,10 +46,8 @@ export default {
     }
 
     Vue.prototype.$fetch = function (url, config = {}) {
-      const baseUrl = process.env.NODE_ENV === 'production' ?
-        PRODURL :
-        DEVURL
-      const realUrl = baseUrl + url
+      this.$store.commit('updateGlobalLoading', true)
+      const realUrl = url
       const mergeConfig = (!config.method || config.method === 'get')
         ? Object.assign({
           url: realUrl,
@@ -59,10 +56,12 @@ export default {
             limit: 10,
             offset: 0,
           },
+          withCredentials: true,
         }, config)
         : Object.assign({
           url: realUrl,
           // method: 'post',
+          withCredentials: true,
         }, config)
 
       return new Promise((resolve, reject) => {
@@ -75,6 +74,7 @@ export default {
             console.error(err)
             reject(err)
           }
+          this.$store.commit('updateGlobalLoading', false)
         }
 
         request()

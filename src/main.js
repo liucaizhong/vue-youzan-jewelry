@@ -6,24 +6,61 @@ import axios from 'axios'
 import router from './router'
 import store from './store'
 import util from './util'
-import VueI18n from 'vue-i18n'
-import Vant from 'vant'
-import 'vant/lib/vant-css/index.css'
+import { i18n, loadLanguageAsync } from './i18n.config'
+// import VueI18n from 'vue-i18n'
+import vantConfig from './vant.config'
+// import Vant from 'vant'
+// import 'vant/lib/vant-css/index.css'
 
 Vue.config.productionTip = false
 Vue.use(util)
-Vue.use(Vant)
-Vue.use(VueI18n)
+// Vue.use(Vant)
+// Vue.use(VueI18n)
+vantConfig.init(Vue)
+
+// get lang
+const lang = navigator.language
+loadLanguageAsync(lang)
+
+// set root font-size and make rem effective immediately
+const setRootFontSize = (doc, win) => {
+  const docEl = doc.documentElement
+  const resizeEvt = 'orientationchange' in window
+    ? 'orientationchange'
+    : 'resize'
+  const recalc = () => {
+    const clientWidth = docEl.clientWidth
+    if (!clientWidth) {
+      return
+    }
+
+    docEl.style.fontSize = 100 * (clientWidth / 640) + 'px'
+  }
+
+  if (!doc.addEventListener) {
+    return
+  }
+
+  win.addEventListener(resizeEvt, recalc, false)
+  doc.addEventListener('DOMContentLoaded', recalc, false)
+}
+
+setRootFontSize(document, window)
 
 // 设置路由拦截
 router.beforeEach((to, from, next) => {
+  store.commit('updateGlobalLoading', true)
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (this.$getCookie('sessionid')) {
+    if (Vue.prototype.$getCookie('logged') === '0') {
+      console.log('logged in')
       next()
     } else {
+      console.log('redirect login')
       next({
         path: '/login',
-        query: { redirect: to.fullPath }
+        query: {
+          redirect: to.fullPath
+        }
       })
     }
   } else {
@@ -32,7 +69,7 @@ router.beforeEach((to, from, next) => {
 })
 
 router.afterEach(route => {
-
+  store.commit('updateGlobalLoading', false)
 })
 
 // 设置axios interceptor
@@ -48,7 +85,9 @@ axios.interceptors.response.use(
           // 返回401,跳转到登录页面
           router.replace({
             path: '/login',
-            query: { redirect: router.currentRoute.fullPath }
+            query: {
+              redirect: router.currentRoute.fullPath
+            }
           })
       }
     }
@@ -60,6 +99,7 @@ new Vue({
   el: '#app',
   router,
   store,
+  i18n,
   components: { App },
   template: '<App/>'
 })
