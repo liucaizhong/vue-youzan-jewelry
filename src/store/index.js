@@ -8,6 +8,7 @@ export default new Vuex.Store({
   state: {
     loading: false,
     login: {},
+    message: {},
   },
   mutations,
 })

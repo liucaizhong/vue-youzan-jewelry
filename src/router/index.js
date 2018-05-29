@@ -19,6 +19,10 @@ export default new Router({
     },
     {
       path: '/',
+      redirect: '/index',
+    },
+    {
+      path: '/index',
       component: Index,
       meta: {
         requiresAuth: true,

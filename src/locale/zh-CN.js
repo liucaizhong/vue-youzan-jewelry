@@ -7,4 +7,13 @@ export default {
   getVerifyCode: '获取验证码',
   loginTerm: '登录视为同意THEIA<a href="{path}">《服务条款》</a>，登录自动注册',
   loginBtn: '即刻登录',
+  wechatLogin: '微信登录',
+  loginSuccess: '登录成功',
+  loginFail: '登录失败',
+  verifyCodeSuccess: '验证码已发送',
+  verifyCodeFail: '验证码发送失败',
+  tabBarText0: '首页',
+  tabBarText1: '产品',
+  tabBarText2: '我的',
+  search: '搜索',
 }

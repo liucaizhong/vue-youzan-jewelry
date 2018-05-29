@@ -45,9 +45,10 @@ export default {
       return true
     }
 
-    Vue.prototype.$fetch = function (url, config = {}) {
-      this.$store.commit('updateGlobalLoading', true)
-      const realUrl = url
+    Vue.prototype.$fetch = function (url, config = {}, loading) {
+      loading && this.$store.commit('updateGlobalLoading', true)
+      const baseUrl = '/api-auth'
+      const realUrl = baseUrl + url
       const mergeConfig = (!config.method || config.method === 'get')
         ? Object.assign({
           url: realUrl,
@@ -74,11 +75,21 @@ export default {
             console.error(err)
             reject(err)
           }
-          this.$store.commit('updateGlobalLoading', false)
+          loading && this.$store.commit('updateGlobalLoading', false)
         }
 
         request()
       })
+    }
+
+    Vue.prototype.$message = function ({ duration = 1500, ...args }) {
+      this.$store.commit('showMessage', {
+        ...args,
+      })
+
+      setTimeout(() => {
+        this.$store.commit('hideMessage')
+      }, duration)
     }
   },
 }

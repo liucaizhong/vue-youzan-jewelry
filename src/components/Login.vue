@@ -2,76 +2,84 @@
   <div id="login">
     <h3>{{ $t('loginByPhone') }}</h3>
     <div class="login-container">
-      <van-field
+      <phone-input
         v-model="userName"
-        type="tel"
-        :placeholder="$t('phoneNo')"
-        :error="!!userNameErr"
-        :error-message="userNameErrMsg"
-        @blur="validUserName"
+        @handleError="userNameErr = $event"
+        :error="+userNameErr"
       />
-      <van-field
+      <verify-code
         v-model="verifyCode"
-        :placeholder="$t('verifyCode')"
-        :error="!!verifyCodeErr"
-        :error-message="verifyCodeErrMsg"
-        @blur="validVerifyCode"
-      >
-        <van-button
-          slot="button"
-          size="small"
-          type="default"
-        >
-          {{ $t('getVerifyCode') }}
-        </van-button>
-      </van-field>
+        @handleError="verifyCodeErr = $event"
+        :error="+verifyCodeErr"
+        :baseInfo="{
+          phone: userName,
+          phoneInvalid: userNameErr,
+        }"
+      />
       <p v-html="$t('loginTerm', { path: '/terms' })"></p>
     </div>
-    <van-button type="default" bottom-action>{{ $t('loginBtn') }}</van-button>
+    <van-button
+      class="custom-button"
+      type="default"
+      bottom-action
+      @click="login"
+      :loading="loginLoading"
+    >{{ $t('loginBtn') }}</van-button>
+    <a href="#" class="wechat-login">
+      <img src="../assets/wechat.png" />
+      <span>{{ $t('wechatLogin') }}</span>
+    </a>
   </div>
 </template>
 
 <script>
+import PhoneInput from './PhoneInput'
+import VerifyCode from './VerifyCode'
+
 export default {
+  components: {
+    PhoneInput,
+    VerifyCode,
+  },
   data () {
     return {
       userName: '',
       verifyCode: '',
-      userNameErr: 0,
-      verifyCodeErr: 0,
+      userNameErr: false,
+      verifyCodeErr: false,
+      loginLoading: false,
     }
-  },
-  watch: {
-    userName: function (val, oldVal) {
-      this.validUserName(val)
-    }
-  },
-  computed: {
-    userNameErrMsg: function () {
-      const code = this.userNameErr
-      return code ? this.$t('invalidPhoneNo') : ''
-    },
-    verifyCodeErrMsg: function () {
-      const code = this.verifyCodeErr
-      return code ? this.$t('invalidVerifyCode') : ''
-    },
   },
   methods: {
-    validUserName () {
-      const pattern = /^1[3|5|7|8]\d{9}$/gi
-      if (!pattern.test(this.userName)) {
-        this.userNameErr = 1
+    login () {
+      if (this.userNameErr || this.verifyCodeErr ||
+          !this.userName || !this.verifyCode) {
+        this.userNameErr = this.userNameErr || !this.userName
+        this.verifyCodeErr = this.verifyCodeErr || !this.verifyCode
       } else {
-        this.userNameErr = 0
+        this.loginLoading = true
+        const url = '/client/UserLogin/'
+        this.$fetch(url, {
+          data: {
+            username: this.userName,
+            verifycode: this.verifyCode,
+          },
+          method: 'post',
+        }).then(resp => {
+          console.log(resp)
+          this.loginLoading = false
+          this.$message({
+            content: this.$t('loginSuccess'),
+          })
+        }).catch(err => {
+          console.log(err)
+          this.loginLoading = false
+          this.$message.info({
+            content: this.$t('loginFail'),
+          })
+        })
       }
-    },
-    validVerifyCode () {
-      if (this.verifyCode) {
-        this.verifyCodeErr = 0
-      } else {
-        this.verifyCodeErr = 1
-      }
-    },
+    }
   },
 }
 </script>
@@ -81,7 +89,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 75px 0 100px;
+  padding: 142px 0 0;
   height: 100vh;
 
   h3 {
@@ -108,7 +116,25 @@ export default {
 
       a {
         color: #AFAFAF;
+        text-decoration: underline;
       }
+    }
+  }
+
+  .wechat-login {
+    font-size: 14px;
+    color: #545454;
+    text-align: center;
+    line-height: 14px;
+    position: fixed;
+    bottom: 70px;
+    display: inline-flex;
+    height: 19px;
+    align-items: center;
+
+    img {
+      width: 23px;
+      margin-right: 7px;
     }
   }
 }
