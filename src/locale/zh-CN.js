@@ -16,4 +16,8 @@ export default {
   tabBarText1: '产品',
   tabBarText2: '我的',
   search: '搜索',
+  book: '预约',
+  bookDesc: '即刻预约到店',
+  package: '套餐',
+  packageDesc: '畅想随心租',
 }

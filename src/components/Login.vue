@@ -74,7 +74,7 @@ export default {
         }).catch(err => {
           console.log(err)
           this.loginLoading = false
-          this.$message.info({
+          this.$message({
             content: this.$t('loginFail'),
           })
         })
