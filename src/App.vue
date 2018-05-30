@@ -45,6 +45,29 @@ export default {
   font-family: PingFangSC-Regular;
   width: 100vw;
   height: 100vh;
+  background: #F5F5F5;
+
+  .rhombus {
+    position: relative;
+    width: 0;
+    height: 0;
+    border-left: 3px solid transparent;
+    border-right: 3px solid transparent;
+    border-bottom: 4px solid #000;
+
+    &::before {
+      content: '';
+      box-sizing: border-box;
+      position: absolute;
+      left: -3px;
+      top: 4px;
+      width: 0;
+      height: 0;
+      border-left: 3px solid transparent;
+      border-right: 3px solid transparent;
+      border-top: 4px solid #000;
+    }
+  }
 
   .loading-container {
     width: 100%;

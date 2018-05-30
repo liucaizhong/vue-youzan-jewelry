@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="58px" height="58px" viewBox="0 0 58 58" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 50 (54983) - http://www.bohemiancoding.com/sketch -->
+    <title>pd3</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="首页" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Artboard-2" transform="translate(-178.000000, -46.000000)">
+            <g id="Group-11" transform="translate(178.000000, 46.000000)">
+                <path d="M7,29 C11,50 32.5333333,50 41.2,40 C49.8666667,30 43.8,12 29.0666667,12 C14.3333333,12 8.26666667,30 16.9333333,40 C25.6,50 47,50 51,29" id="Path-4" stroke="#333333" stroke-width="1.30000007" stroke-linecap="round"></path>
+                <circle id="Oval-3" fill="#333333" cx="19" cy="15" r="2"></circle>
+                <circle id="Oval-3" fill="#333333" cx="39" cy="15" r="2"></circle>
+                <circle id="Oval-3" fill="#333333" cx="29" cy="12" r="2"></circle>
+            </g>
+        </g>
+    </g>
+</svg>

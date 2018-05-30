@@ -22,6 +22,7 @@ export default {
     }
     if (this.render) {
       this.render().then(el => {
+        console.dir(el.default)
         this.template = `
         <svg viewBox="${el.default.viewBox}">
           <use xlink:href="#${el.default.id}" />
@@ -40,6 +41,11 @@ export default {
   svg {
     width: 100%;
     height: 100%;
+
+    path, g[stroke] {
+      fill: inherit;
+      stroke: inherit;
+    }
   }
 }
 </style>

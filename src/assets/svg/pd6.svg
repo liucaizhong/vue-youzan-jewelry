@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="58px" height="58px" viewBox="0 0 58 58" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 50 (54983) - http://www.bohemiancoding.com/sketch -->
+    <title>pd6</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="首页" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Artboard-2" transform="translate(-178.000000, -114.000000)">
+            <g id="Group-15" transform="translate(178.000000, 114.000000)">
+                <g id="Group-26" transform="translate(10.000000, 15.000000)">
+                    <path d="M31.7307612,0.650000036 L6.26923883,0.650000036 L0.877545323,6.04169354 L19,27.9794018 L37.1224547,6.04169354 L31.7307612,0.650000036 Z" id="Rectangle-6" stroke="#333333" stroke-width="1.30000007"></path>
+                    <polyline id="Path-6" stroke="#333333" stroke-width="1.30000007" points="32 0.5 19 26.5 6 0.5"></polyline>
+                    <polygon id="Path-9" fill="#333333" points="9 6 6 1 1 6"></polygon>
+                    <polygon id="Path-9" fill="#333333" transform="translate(33.000000, 3.500000) scale(-1, 1) translate(-33.000000, -3.500000) " points="37 6 34 1 29 6"></polygon>
+                    <path d="M1,6 L37,6" id="Path-7" stroke="#333333" stroke-width="1.30000007"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

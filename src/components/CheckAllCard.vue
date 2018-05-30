@@ -7,7 +7,7 @@
         <div class="rhombus" />
       </div>
       <div class="checkall-card__header-btn">
-        <router-link :to="url">{{ $t('checkAllDesc') }}</router-link>
+        <router-link :to="url">{{ $t('checkAll') }}</router-link>
       </div>
     </div>
     <div class="checkall-card__content">
@@ -30,6 +30,8 @@ export default {
 
 <style lang="less">
 .checkall-card {
+  background: #fff;
+
   .checkall-card__header {
     display: flex;
     justify-content: space-between;
@@ -46,28 +48,6 @@ export default {
         text-align: center;
         line-height: 16px;
         padding: 0 5px;
-      }
-
-      .rhombus {
-        position: relative;
-        width: 0;
-        height: 0;
-        border-left: 3px solid transparent;
-        border-right: 3px solid transparent;
-        border-bottom: 4px solid #000;
-
-        &::before {
-          content: '';
-          box-sizing: border-box;
-          position: absolute;
-          left: -3px;
-          top: 4px;
-          width: 0;
-          height: 0;
-          border-left: 3px solid transparent;
-          border-right: 3px solid transparent;
-          border-top: 4px solid #000;
-        }
       }
     }
 

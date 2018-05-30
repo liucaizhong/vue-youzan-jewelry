@@ -31,6 +31,18 @@
         :title="$t('productCategory')"
       />
       <div class="van-hairline--top" />
+      <checkall-card
+        :title="$t('productNew')"
+      />
+      <div class="van-hairline--top" />
+      <checkall-card
+        :title="$t('productRecommend')"
+      />
+      <div class="van-hairline--top" />
+      <home-strategy />
+      <footer class="home-footer">
+        <load-complete />
+      </footer>
     </van-pull-refresh>
   </div>
 </template>
@@ -38,11 +50,15 @@
 <script>
 import MySearch from './MySearch'
 import CheckallCard from './CheckAllCard'
+import LoadComplete from './LoadComplete'
+import HomeStrategy from './HomeStrategy'
 
 export default {
   components: {
     MySearch,
     CheckallCard,
+    LoadComplete,
+    HomeStrategy,
   },
   data () {
     return {
@@ -69,10 +85,12 @@ export default {
   height: 100vh;
 
   .van-pull-refresh {
-    height: 100%;
+    // height: 100%;
+    margin-bottom: 50px;
+    background: #F5F5F5;
 
     .van-pull-refresh__track {
-      height: 100%;
+      // height: 100%;
 
       .show-section {
         width: 100%;
@@ -81,7 +99,7 @@ export default {
         display: flex;
         flex-direction: column;
         align-items: center;
-        background: #F5F5F5;
+        background: transparent;
 
         .show-section__swiper {
           width: 100%;
@@ -153,6 +171,14 @@ export default {
             }
           }
         }
+      }
+
+      .home-footer {
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+        background: transparent;
+        padding: 22px 0;
       }
     }
   }

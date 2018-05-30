@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 50 (54983) - http://www.bohemiancoding.com/sketch -->
+    <title>my1</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <rect id="path-1" x="0" y="0" width="28" height="28"></rect>
+    </defs>
+    <g id="首页" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Artboard-2" transform="translate(-43.000000, -313.000000)">
+            <g id="Rectangle-3" transform="translate(43.000000, 313.000000)">
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <g id="Mask"></g>
+                <rect stroke="#000000" stroke-width="1.30000007" mask="url(#mask-2)" x="2.65000004" y="4.65000004" width="22.6999999" height="18.6999999" rx="1"></rect>
+                <path d="M19,10.65 C18.2544156,10.65 17.65,11.2544156 17.65,12 L17.65,16 C17.65,16.7455844 18.2544156,17.35 19,17.35 L26,17.35 C26.1932996,17.35 26.35,17.1932996 26.35,17 L26.35,11 C26.35,10.8067004 26.1932996,10.65 26,10.65 L19,10.65 Z" id="Rectangle-5" stroke="#000000" stroke-width="1.30000007" fill="#FFFFFF" mask="url(#mask-2)"></path>
+                <circle id="Oval" fill="#000000" mask="url(#mask-2)" cx="20" cy="14" r="1"></circle>
+            </g>
+        </g>
+    </g>
+</svg>

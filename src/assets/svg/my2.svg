@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 50 (54983) - http://www.bohemiancoding.com/sketch -->
+    <title>my2</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <rect id="path-1" x="0" y="0" width="28" height="28"></rect>
+    </defs>
+    <g id="首页" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Artboard-2" transform="translate(-81.000000, -313.000000)">
+            <g id="Rectangle-3" transform="translate(81.000000, 313.000000)">
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <g id="Mask"></g>
+                <path d="M6.48062485,4.65000004 C6.37430056,4.65000004 6.27374105,4.69833143 6.20732079,4.78135676 L2.94582714,8.85822383 C2.75432905,9.09759644 2.65000004,9.39501561 2.65000004,9.70156212 L2.65000004,23 C2.65000004,23.1932996 2.80670036,23.35 3,23.35 L25,23.35 C25.1932996,23.35 25.35,23.1932996 25.35,23 L25.35,9.70156212 C25.35,9.39501561 25.245671,9.09759644 25.0541729,8.85822383 L21.7926792,4.78135676 C21.7262589,4.69833143 21.6256994,4.65000004 21.5193752,4.65000004 L6.48062485,4.65000004 Z" stroke="#000000" stroke-width="1.30000007" mask="url(#mask-2)"></path>
+                <path d="M3,9.5 L25,9.5" id="Path-2" stroke="#000000" stroke-width="1.30000007" mask="url(#mask-2)"></path>
+                <path d="M12.3502136,4.5 L10.5,9.58808749 L10.5,13.5 L17.5,13.5 L17.5,9.58808749 L15.6497864,4.5 L12.3502136,4.5 Z" id="Path-3" stroke="#000000" mask="url(#mask-2)"></path>
+            </g>
+        </g>
+    </g>
+</svg>

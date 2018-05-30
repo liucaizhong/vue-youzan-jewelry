@@ -66,7 +66,16 @@ export default {
 
 <style lang="less">
 #index {
-  width: 100%;
+  width: 100vw;
   height: 100vh;
+
+  .van-tabbar-item--active {
+    color: #CCB8A3;
+
+    svg, g[stroke] {
+      fill: #CCB8A3;
+      stroke: #CCB8A3;
+    }
+  }
 }
 </style>

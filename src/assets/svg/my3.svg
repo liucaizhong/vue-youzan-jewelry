@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 50 (54983) - http://www.bohemiancoding.com/sketch -->
+    <title>my3</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <rect id="path-1" x="0" y="0" width="28" height="28"></rect>
+    </defs>
+    <g id="首页" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Artboard-2" transform="translate(-119.000000, -313.000000)">
+            <g id="Oval-2" transform="translate(119.000000, 313.000000)">
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <g id="Mask"></g>
+                <circle stroke="#000000" stroke-width="1.30000007" mask="url(#mask-2)" cx="14" cy="14" r="10.35"></circle>
+                <rect id="Rectangle-2" fill="#000000" mask="url(#mask-2)" transform="translate(12.288047, 13.288047) rotate(-45.000000) translate(-12.288047, -13.288047) " x="11.6380465" y="9.28804652" width="1.29999995" height="8" rx="0.649999976"></rect>
+                <rect id="Rectangle-2" fill="#000000" mask="url(#mask-2)" transform="translate(16.348707, 12.348707) rotate(-315.000000) translate(-16.348707, -12.348707) " x="15.6987067" y="6.84870669" width="1.29999995" height="11" rx="0.649999976"></rect>
+            </g>
+        </g>
+    </g>
+</svg>
