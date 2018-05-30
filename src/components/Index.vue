@@ -11,11 +11,9 @@
         v-for="tab in indexTabs"
         :key="tab.name"
       >
-        <!-- <template slot="icon" slot-scope="props">
-          <svg viewBox="${props.icon.viewBox}">
-            <use xlink:href="#${props.icon.id}" />
-          </svg>
-        </template> -->
+        <template slot="icon">
+          <my-svg :render="tab.icon" />
+        </template>
         {{ $t(tab.name) }}
       </van-tabbar-item>
     </van-tabbar>
@@ -23,9 +21,13 @@
 </template>
 
 <script>
+import MySvg from '@/components/MySvg'
 import { INDEXTABS } from '@/constant'
 
 export default {
+  components: {
+    MySvg,
+  },
   data () {
     return {
       indexTabs: INDEXTABS,

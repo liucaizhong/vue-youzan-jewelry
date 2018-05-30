@@ -20,4 +20,6 @@ export default {
   bookDesc: '即刻预约到店',
   package: '套餐',
   packageDesc: '畅想随心租',
+  checkAllDesc: '查看全部',
+  productCategory: '产品分类',
 }

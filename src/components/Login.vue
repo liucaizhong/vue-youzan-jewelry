@@ -19,14 +19,14 @@
       <p v-html="$t('loginTerm', { path: '/terms' })"></p>
     </div>
     <van-button
-      class="custom-button"
+      class="my-button"
       type="default"
       bottom-action
       @click="login"
       :loading="loginLoading"
     >{{ $t('loginBtn') }}</van-button>
     <a href="#" class="wechat-login">
-      <img src="../assets/wechat.png" />
+      <img src="../assets/img/wechat.png" />
       <span>{{ $t('wechatLogin') }}</span>
     </a>
   </div>
@@ -89,7 +89,8 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 142px 0 0;
+  padding: 142px 24px 0;
+  width: 100vw;
   height: 100vh;
 
   h3 {
@@ -104,9 +105,11 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
 
     p {
-      width: 327px;
+      // width: 327px;
+      width: 100%;
       font-size: 12px;
       color: #AFAFAF;
       text-align: left;

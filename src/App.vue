@@ -43,7 +43,7 @@ export default {
   // -webkit-font-smoothing: antialiased;
   // -moz-osx-font-smoothing: grayscale;
   font-family: PingFangSC-Regular;
-  width: 100%;
+  width: 100vw;
   height: 100vh;
 
   .loading-container {
@@ -80,14 +80,15 @@ export default {
 
     .van-popup {
       background: rgba(0, 0, 0, .7);
-      height: 36px;
+      min-height: 36px;
     }
   }
 
-  .custom-field {
+  .my-field {
     &.van-field {
-      width: 327px;
-      height: 44px;
+      // width: 327px;
+      width: 100%;
+      min-height: 44px;
       border: 1px solid #000000;
       margin-bottom: 24px;
 
@@ -137,10 +138,11 @@ export default {
     }
   }
 
-  .custom-button {
+  .my-button {
     &.van-button--bottom-action {
-      width: 327px;
-      height: 44px;
+      // width: 327px;
+      width: 100%;
+      min-height: 44px;
       background-color: #000000;
       line-height: 44px;
 
@@ -149,6 +151,73 @@ export default {
         color: #CCB8A3;
         text-align: center;
       }
+    }
+  }
+
+  .my-search {
+    width: 100%;
+    height: auto;
+
+    .van-search {
+      // width: 339px;
+      width: 100%;
+      min-height: 36px;
+      background: transparent !important;
+      padding: 12px 18px;
+      // margin: 12px 0;
+
+      .van-icon-search {
+        color: #979797;
+        font-size: 14px;
+        left: calc(50% - 32px);
+        // top: 15px;
+      }
+
+      .van-field {
+        padding: 8px 10px;
+        height: 100%;
+        border-radius: 8px;
+
+        .van-field__control {
+          font-size: 14px;
+          // color: #999999;
+          color: #000000;
+          text-align: center;
+          padding: 0 20px;
+          height: 20px;
+        }
+      }
+    }
+
+    &.focus {
+      .van-search {
+        background: #fff !important;
+        z-index: 1000;
+
+        // .van-icon-search {
+        //   left: 28px;
+        // }
+
+        .van-field {
+          background: #F2F2F2;
+
+          .van-field__control {
+            // text-align: left;
+            // color: #000000;
+            background: #F2F2F2;
+          }
+        }
+      }
+    }
+
+    .mask {
+      position: fixed;
+      width: 100vw;
+      height: 100vh;
+      top: 0;
+      left: 0;
+      background: rgba(0,0,0,0.50);
+      z-index: 999;
     }
   }
 }

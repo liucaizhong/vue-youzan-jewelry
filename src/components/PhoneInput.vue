@@ -1,6 +1,6 @@
 <template>
   <van-field
-    class="custom-field"
+    class="my-field"
     :value="value"
     @input="handleInput($event)"
     type="tel"
