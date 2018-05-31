@@ -32,4 +32,8 @@ export default {
   productCategory4: '耳饰',
   productCategory5: '其他',
   month: '月',
+  day: '天',
+  filter: '筛选',
+  latestProduct: '最新单品',
+  price: '价格',
 }

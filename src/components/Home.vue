@@ -4,11 +4,13 @@
       <section class="show-section">
         <my-search
           v-model="searchValue"
+          @on-focus="onFocus"
         />
+        <div class="mask" :style="{ display: focused ? 'block' : 'none'}" />
         <div class="show-section__swiper">
           <van-swipe :autoplay="3000">
             <van-swipe-item v-for="(img, i) in swiperImgs" :key="i">
-              <img v-lazy="img" :alt="`img${i}`" />
+              <img v-lazy="img" />
             </van-swipe-item>
           </van-swipe>
         </div>
@@ -87,10 +89,12 @@ export default {
   data () {
     return {
       searchValue: '',
-      swiperImgs: [],
+      swiperImgs: ['https://www.baidu.com/img/bd_logo1.png',
+        'https://www.baidu.com/img/bd_logo1.png1'],
       refreshing: false,
       searchFocused: false,
       productCategory: PRODUCTCATEGORY,
+      focused: false,
     }
   },
   methods: {
@@ -100,6 +104,10 @@ export default {
         this.refreshing = false
       }, 1000)
     },
+    onFocus (f) {
+      // console.log(args)
+      this.focused = f
+    },
   },
 }
 </script>
@@ -108,6 +116,17 @@ export default {
 #home {
   width: 100vw;
   height: 100vh;
+
+  .mask {
+    position: fixed;
+    display: none;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    background: rgba(0,0,0,0.50);
+    z-index: 999;
+  }
 
   .van-pull-refresh {
     // height: 100%;
@@ -135,11 +154,24 @@ export default {
             height: 0;
             padding-top: 100%;
             position: relative;
+            background: #fff;
 
-            img {
+            .van-swipe__indicators {
+              display: none;
+            }
+
+            .van-swipe__track {
               position: absolute;
               top: 0;
               left: 0;
+              // width: 100%;
+              height: 100%;
+            }
+
+            img {
+              // position: absolute;
+              // top: 0;
+              // left: 0;
               width: 100%;
               height: 100%;
             }
@@ -219,14 +251,9 @@ export default {
           left: 0;
           width: 200%;
           height: 200%;
-          -webkit-transform: scale(.5);
-          -ms-transform: scale(.5);
           transform: scale(.5);
-          -webkit-transform-origin: 0 0;
-          -ms-transform-origin: 0 0;
           transform-origin: 0 0;
           pointer-events: none;
-          -webkit-box-sizing: border-box;
           box-sizing: border-box;
           border-top: 1px solid #e5e5e5;
         }

@@ -13,7 +13,7 @@
         <p v-if="img.name" class="name van-ellipsis">{{ img.name }}</p>
         <p v-if="img.price" class="price">{{ '￥' + img.price }}</p>
         <p v-if="img.rent" class="rent">
-          {{ '￥' + img.rent + '/' + $t('month') }}
+          {{ '￥' + img.rent + '/' + $t('day') }}
         </p>
       </div>
     </div>

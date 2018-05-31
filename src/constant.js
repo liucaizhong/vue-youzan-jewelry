@@ -18,7 +18,7 @@ module.exports = {
   }],
   LAZYLOADOPTIONS: {
     // loading: './assets/img/load_err.png',
-    error: 'static/img/load_err.35071ab.png',
+    error: 'static/load_err.png',
     attempt: 1,
     lazyComponent: true,
   },

@@ -5,9 +5,8 @@
       @input="handleInput($event)"
       :placeholder="placeholder || $t('search')"
       @focus="handleFocus"
-      @blur="focused = false"
+      @blur="handleBlur"
     />
-    <div class="mask" :style="{ display: focused ? 'block' : 'none'}" />
   </div>
 </template>
 
@@ -26,6 +25,11 @@ export default {
     handleFocus () {
       this.focused = true
       this.toggleIcon(this.value)
+      this.$emit('on-focus', true)
+    },
+    handleBlur () {
+      this.focused = false
+      this.$emit('on-focus', false)
     },
     handleInput (val) {
       this.$emit('input', val)
