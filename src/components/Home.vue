@@ -29,17 +29,36 @@
       </section>
       <checkall-card
         :title="$t('productCategory')"
-      />
+        url="/index#products"
+      >
+        <div
+          class="product-category"
+          slot="content"
+        >
+          <category-tab
+            v-for="item in productCategory"
+            :key="item.name"
+            :url="`/index?category=${item.key}#products`"
+            :name="item.name"
+            :icon="item.icon"
+          />
+        </div>
+      </checkall-card>
       <div class="van-hairline--top" />
       <checkall-card
         :title="$t('productNew')"
-      />
+        url="/index#products"
+      >
+        <home-img-scroller slot="content" />
+      </checkall-card>
       <div class="van-hairline--top" />
       <checkall-card
         :title="$t('productRecommend')"
-      />
-      <div class="van-hairline--top" />
-      <home-strategy />
+        url="/index#products"
+      >
+        <home-img-scroller slot="content" />
+      </checkall-card>
+      <home-news />
       <footer class="home-footer">
         <load-complete />
       </footer>
@@ -51,14 +70,19 @@
 import MySearch from './MySearch'
 import CheckallCard from './CheckAllCard'
 import LoadComplete from './LoadComplete'
-import HomeStrategy from './HomeStrategy'
+import HomeNews from './HomeNews'
+import CategoryTab from './CategoryTab'
+import HomeImgScroller from './HomeImgScroller'
+import { PRODUCTCATEGORY } from '@/constant'
 
 export default {
   components: {
     MySearch,
     CheckallCard,
     LoadComplete,
-    HomeStrategy,
+    HomeNews,
+    CategoryTab,
+    HomeImgScroller,
   },
   data () {
     return {
@@ -66,6 +90,7 @@ export default {
       swiperImgs: [],
       refreshing: false,
       searchFocused: false,
+      productCategory: PRODUCTCATEGORY,
     }
   },
   methods: {
@@ -170,6 +195,40 @@ export default {
               }
             }
           }
+        }
+      }
+
+      .product-category {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        padding: 20px 0 40px;
+        align-content: space-between;
+        min-height: 60vw;
+
+        #category-tab {
+          flex: 1 0 33%;
+        }
+      }
+
+      #home-news {
+        &::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 200%;
+          height: 200%;
+          -webkit-transform: scale(.5);
+          -ms-transform: scale(.5);
+          transform: scale(.5);
+          -webkit-transform-origin: 0 0;
+          -ms-transform-origin: 0 0;
+          transform-origin: 0 0;
+          pointer-events: none;
+          -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+          border-top: 1px solid #e5e5e5;
         }
       }
 

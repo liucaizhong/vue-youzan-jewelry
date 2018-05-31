@@ -37,11 +37,13 @@ export default {
   beforeRouteEnter (to, from, next) {
     next(vm => {
       vm.active = vm.hashChange(to.hash)
+      console.log('to', to)
       console.log('beforeRouteEnter active', vm.active)
     })
   },
   beforeRouteUpdate (to, from, next) {
     this.active = this.hashChange(to.hash)
+    console.log('to', to)
     console.log('beforeRouteUpdate active', this.active)
     next()
   },
@@ -72,9 +74,9 @@ export default {
   .van-tabbar-item--active {
     color: #CCB8A3;
 
-    svg, g[stroke] {
-      fill: #CCB8A3;
+    svg {
       stroke: #CCB8A3;
+      fill: #CCB8A3;
     }
   }
 }

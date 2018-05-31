@@ -25,4 +25,11 @@ export default {
   productNew: '新品上市',
   productRecommend: '推荐产品',
   loadComplete: '美丽的都在上面',
+  productCategory0: '项链',
+  productCategory1: '手镯',
+  productCategory2: '手链',
+  productCategory3: '戒指',
+  productCategory4: '耳饰',
+  productCategory5: '其他',
+  month: '月',
 }

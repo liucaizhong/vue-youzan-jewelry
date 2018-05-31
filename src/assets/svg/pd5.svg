@@ -1,19 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="58px" height="58px" viewBox="0 0 58 58" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <!-- Generator: Sketch 50 (54983) - http://www.bohemiancoding.com/sketch -->
-    <title>pd5</title>
-    <desc>Created with Sketch.</desc>
-    <defs></defs>
-    <g id="首页" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Artboard-2" transform="translate(-110.000000, -114.000000)">
-            <g id="Group-14" transform="translate(110.000000, 114.000000)">
-                <g id="Group-24" transform="translate(14.000000, 13.000000)">
-                    <path d="M3,0 L3,25.0051015" id="Path-5" stroke="#333333" stroke-width="1.30000007" stroke-linecap="round" stroke-linejoin="round"></path>
-                    <path d="M25,0 L25,25.0051015" id="Path-5" stroke="#333333" stroke-width="1.30000007" stroke-linecap="round" stroke-linejoin="round"></path>
-                    <polygon id="Rectangle-6" fill="#333333" points="25 23 29 30 25 34 21 30"></polygon>
-                    <circle id="Oval-3" fill="#333333" cx="3" cy="28" r="3"></circle>
-                </g>
-            </g>
-        </g>
-    </g>
+  <g id="Group-24" transform="translate(14.000000, 12.000000)">
+      <path d="M3.64681019,26.0699043 C4.99276492,26.3656736 6,27.5652106 6,29 C6,30.6568542 4.65685425,32 3,32 C1.34314575,32 0,30.6568542 0,29 C0,27.5652106 1.00723508,26.3656736 2.35318981,26.0699043 C2.35108006,26.0485893 2.34999996,26.0269715 2.34999996,26.0051015 L2.34999996,1 C2.34999996,0.641014893 2.64101489,0.349999964 3,0.349999964 C3.35898511,0.349999964 3.65000004,0.641014893 3.65000004,1 L3.65000004,26.0051015 C3.65000004,26.0269715 3.64891994,26.0485893 3.64681019,26.0699043 Z M25.65,25.1375001 L29,31 L25,35 L21,31 L24.35,25.1375001 L24.35,1 C24.35,0.641014893 24.6410149,0.349999964 25,0.349999964 C25.3589851,0.349999964 25.65,0.641014893 25.65,1 L25.65,25.1375001 Z" id="Combined-Shape"></path>
+  </g>
 </svg>
