@@ -1,10 +1,17 @@
 <template>
   <div id="products">
     <div class="mask" :style="{ display: expand ? 'block' : 'none'}" />
-    <van-collapse class="collapse" v-model="toggleFilter">
+    <van-collapse
+      :class="['collapse', { 'after-search': searchCond.keyword }]"
+      v-model="toggleFilter"
+    >
       <van-collapse-item name="1">
         <div class="title" slot="title">
-          <div :class="['left', { expand: expand }]">{{ $t('filter') }}</div>
+          <div
+            :class="['left', { expand: expand }]"
+          >
+            {{ filterTitle }}
+          </div>
           <div class="right">
             <a
               :class="['filter-btn0', { selected: searchCond.newSelected}]"
@@ -29,27 +36,51 @@
             </a>
           </div>
         </div>
-        提供多样店铺模板，快速搭建网上商城
+        <keep-alive>
+          <filter-panel
+            @on-reset="resetSearchCond"
+            @on-confirm="getProductList"
+          />
+        </keep-alive>
       </van-collapse-item>
     </van-collapse>
   </div>
 </template>
 
 <script>
+import FilterPanel from './FilterPanel'
+
 export default {
+  components: {
+    FilterPanel,
+  },
   data () {
     return {
       toggleFilter: [],
+      keywordCount: 0,
       searchCond: {
         newSelected: false,
         orderOfPrice: 0, // up: 1, down: -1, 0:not selected
+        keyword: '',
+        category: [],
+        goldType: [],
       },
     }
+  },
+  created () {
+    console.log('products', this.$route.query)
+    const { keyword = '' } = this.$route.query
+    this.searchCond.keyword = keyword
   },
   computed: {
     expand: function () {
       return this.toggleFilter.length
-    }
+    },
+    filterTitle: function () {
+      return this.searchCond.keyword
+        ? this.$t('searchProductResult', [this.keywordCount])
+        : this.$t('filter')
+    },
   },
   methods: {
     selectNew () {
@@ -62,6 +93,17 @@ export default {
       this.searchCond.newSelected && (this.searchCond.newSelected = false)
       this.searchCond.orderOfPrice = -this.searchCond.orderOfPrice
       this.searchCond.orderOfPrice || (this.searchCond.orderOfPrice = 1)
+    },
+    getProductList (cond = {}) {
+      console.log('cond', cond)
+      this.searchCond = Object.assign({}, this.searchCond, cond)
+    },
+    resetSearchCond (cond = {}) {
+      console.log('cond', cond)
+      this.searchCond = Object.assign({}, this.searchCond, cond)
+    },
+    requestProductList () {
+      // todo: axios
     },
   },
 }
@@ -94,6 +136,16 @@ export default {
       color: #999999;
     }
 
+    &.after-search {
+      .van-icon-arrow {
+        display: none;
+      }
+    }
+
+    .van-cell:not(:last-child)::after {
+      left: 0;
+    }
+
     .title {
       display: flex;
       flex-direction: row;
@@ -121,6 +173,7 @@ export default {
 
           &.filter-btn0 {
             margin-right: 30px;
+            display: none; // temporarily unused
 
             &.selected {
               color: #B99F85;
@@ -178,6 +231,10 @@ export default {
           }
         }
       }
+    }
+
+    .van-collapse-item__content {
+      padding: 0;
     }
   }
 }

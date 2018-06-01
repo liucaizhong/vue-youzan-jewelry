@@ -70,6 +70,7 @@ export default {
 #index {
   width: 100vw;
   height: 100vh;
+  overflow: hidden;
 
   .van-tabbar-item--active {
     color: #CCB8A3;

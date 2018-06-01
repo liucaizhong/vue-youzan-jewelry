@@ -1,12 +1,13 @@
 <template>
   <div id="home">
+    <my-search
+      v-model="searchValue"
+      @on-focus="onFocus"
+      @on-enter="onSearch"
+    />
+    <div class="mask" :style="{ display: focused ? 'block' : 'none'}" />
     <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
       <section class="show-section">
-        <my-search
-          v-model="searchValue"
-          @on-focus="onFocus"
-        />
-        <div class="mask" :style="{ display: focused ? 'block' : 'none'}" />
         <div class="show-section__swiper">
           <van-swipe :autoplay="3000">
             <van-swipe-item v-for="(img, i) in swiperImgs" :key="i">
@@ -108,6 +109,10 @@ export default {
       // console.log(args)
       this.focused = f
     },
+    onSearch (val) {
+      console.log('Search value', val)
+      val && this.$router.push(`/index?keyword=${val}#products`)
+    },
   },
 }
 </script>
@@ -116,6 +121,8 @@ export default {
 #home {
   width: 100vw;
   height: 100vh;
+  background: #F5F5F5;
+  overflow: auto;
 
   .mask {
     position: fixed;
@@ -131,7 +138,6 @@ export default {
   .van-pull-refresh {
     // height: 100%;
     margin-bottom: 50px;
-    background: #F5F5F5;
 
     .van-pull-refresh__track {
       // height: 100%;

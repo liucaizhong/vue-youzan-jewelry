@@ -6,6 +6,7 @@
       :placeholder="placeholder || $t('search')"
       @focus="handleFocus"
       @blur="handleBlur"
+      @keyup.enter="handleEnter"
     />
   </div>
 </template>
@@ -22,6 +23,9 @@ export default {
     }
   },
   methods: {
+    handleEnter (e) {
+      this.$emit('on-enter', e.target.value)
+    },
     handleFocus () {
       this.focused = true
       this.toggleIcon(this.value)

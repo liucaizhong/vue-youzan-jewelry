@@ -47,42 +47,17 @@ module.exports = {
     name: 'productCategory5',
     icon: () => import('@/assets/svg/pd6.svg'),
   }],
-  CATEGORYOFGOOD: [{
-    key: '0',
-    value: '项链',
-  }, {
-    key: '1',
-    value: '戒指',
-  }, {
-    key: '2',
-    value: '手镯',
-  }, {
-    key: '3',
-    value: '耳饰',
-  }, {
-    key: '4',
-    value: '手链',
-  }, {
-    key: '5',
-    value: '脚饰',
-  }, {
-    key: '6',
-    value: '胸针&领针',
-  }, {
-    key: '7',
-    value: '摆件',
-  }],
   GOLDTYPE: [{
-    value: '白金',
+    name: 'productGoldType0',
     key: 'W',
   }, {
-    value: '黄金',
+    name: 'productGoldType1',
     key: 'Y',
   }, {
-    value: '玫瑰金',
+    name: 'productGoldType2',
     key: 'R',
   }, {
-    value: '铂金',
+    name: 'productGoldType3',
     key: 'pt',
   }],
 }
