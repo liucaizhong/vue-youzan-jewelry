@@ -1,5 +1,5 @@
 <template>
-  <div id="loadComplete">
+  <div id="load-complete">
     <div class="rhombus" />
     <span>{{ $t('loadComplete') }}</span>
     <div class="rhombus" />
@@ -7,7 +7,7 @@
 </template>
 
 <style lang="less">
-#loadComplete {
+#load-complete {
   display: inline-flex;
   align-items: center;
 

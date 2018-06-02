@@ -1,7 +1,7 @@
 import { LAZYLOADOPTIONS } from '@/constant'
 import { Loading, DatetimePicker, Field, Button, Search, Swipe, SwipeItem,
   Popup, Tabbar, TabbarItem, PullRefresh, Toast, Lazyload, Collapse,
-  CollapseItem } from 'vant'
+  CollapseItem, List } from 'vant'
 
 export default {
   init (Vue) {
@@ -18,5 +18,6 @@ export default {
     Vue.prototype.$toast = Toast
     Vue.use(Lazyload, LAZYLOADOPTIONS)
     Vue.use(Collapse).use(CollapseItem)
+    Vue.use(List)
   }
 }

@@ -272,6 +272,10 @@ export default {
         background: transparent;
         padding: 22px 0;
       }
+
+      .van-list__loading {
+        width: 100%;
+      }
     }
   }
 }

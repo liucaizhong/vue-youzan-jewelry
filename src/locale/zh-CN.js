@@ -27,6 +27,7 @@ export default {
   productNew: '新品上市',
   productRecommend: '推荐产品',
   loadComplete: '美丽的都在上面',
+  loadMore: '美丽加载中...',
   productCategory0: '项链',
   productCategory1: '手镯',
   productCategory2: '手链',
@@ -45,4 +46,5 @@ export default {
   searchProductResult: '共搜到{0}件产品',
   resetSelection: '重置选择',
   confirm: '确认',
+  checkAllProducts: '查看全部产品>>',
 }

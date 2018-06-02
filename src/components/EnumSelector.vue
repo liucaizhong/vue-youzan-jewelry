@@ -8,7 +8,7 @@
     >
       <input
         type="checkbox"
-        :checked="selectedItem[i]"
+        :checked="selected[i]"
         @change="changeSelected($event.target.checked, i)"
       >
       {{ $t(item.name) }}
@@ -36,26 +36,15 @@ export default {
       default: true,
     }
   },
-  data () {
-    return {
-      selectedItem: [...this.selected],
-    }
-  },
-  watch: {
-    selected: {
-      deep: true,
-      handler: function (val, oldVal) {
-        this.selectedItem = [...val]
-      },
-    }
-  },
   methods: {
     changeSelected (b, i) {
+      console.log('selected', b, i)
       if (this.single) {
         this.selected.fill(false)
       }
       this.selected[i] = b
       this.$forceUpdate()
+      this.$emit('on-change')
     },
   },
 }

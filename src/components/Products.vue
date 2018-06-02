@@ -1,6 +1,10 @@
 <template>
   <div id="products">
-    <div class="mask" :style="{ display: expand ? 'block' : 'none'}" />
+    <div
+      class="mask"
+      :style="{ display: expand ? 'block' : 'none'}"
+      @click="onClickMask"
+    />
     <van-collapse
       :class="['collapse', { 'after-search': searchCond.keyword }]"
       v-model="toggleFilter"
@@ -22,8 +26,8 @@
             </a>
             <a
               :class="['filter-btn1', {
-                up: searchCond.orderOfPrice === -1,
-                down: searchCond.orderOfPrice === 1,
+                up: searchCond.orderByPrice === 1,
+                down: searchCond.orderByPrice === -1,
               }]"
               href="javascript:void(0)"
               @click.stop.prevent="orderByPrice"
@@ -36,41 +40,85 @@
             </a>
           </div>
         </div>
-        <keep-alive>
-          <filter-panel
-            @on-reset="resetSearchCond"
-            @on-confirm="getProductList"
-          />
-        </keep-alive>
+        <!-- <keep-alive> -->
+        <filter-panel
+          @on-reset="resetSearchCond"
+          @on-confirm="getProductList"
+        />
+        <!-- </keep-alive> -->
       </van-collapse-item>
     </van-collapse>
+    <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
+      <van-list
+        class="product-list"
+        v-model="loading"
+        :finished="finished"
+        @load="onLoadmore"
+        :loading-text="$t('loadMore')"
+        :immediate-check="false"
+      >
+        <product-item
+          v-for="(item, i) in imgList"
+          :key="i"
+          :img="item"
+        />
+
+        <footer class="products-footer">
+          <load-complete v-if="finished" />
+          <a v-else-if="searchCond.keyword" class="check-all" href="javascript:void(0)" @click="onCheckAll">
+            {{ $t('checkAllProducts') }}
+          </a>
+        </footer>
+      </van-list>
+    </van-pull-refresh>
   </div>
 </template>
 
 <script>
 import FilterPanel from './FilterPanel'
+import ProductItem from './ProductItem'
+import LoadComplete from './LoadComplete'
 
 export default {
   components: {
     FilterPanel,
+    ProductItem,
+    LoadComplete,
+  },
+  props: {
+    keyword: String,
   },
   data () {
     return {
       toggleFilter: [],
       keywordCount: 0,
+      refreshing: false,
+      loading: false,
+      finished: false,
+      imgList: [],
       searchCond: {
         newSelected: false,
-        orderOfPrice: 0, // up: 1, down: -1, 0:not selected
+        orderByPrice: 0, // up: 1, down: -1, 0:not selected
         keyword: '',
         category: [],
         goldType: [],
+        limit: 50,
+        offset: 0,
       },
     }
   },
   created () {
-    console.log('products', this.$route.query)
+    // console.log('value', this.value)
+    // console.log('products', this.$route.query)
     const { keyword = '' } = this.$route.query
     this.searchCond.keyword = keyword
+    this.requestProductList(true)
+  },
+  watch: {
+    keyword: function (val, oldVal) {
+      this.searchCond.keyword = val
+      this.requestProductList(true)
+    },
   },
   computed: {
     expand: function () {
@@ -83,27 +131,84 @@ export default {
     },
   },
   methods: {
+    onClickMask () {
+      console.log('onClickMask')
+      this.toggleFilter = []
+    },
     selectNew () {
       console.log('new selected')
       this.searchCond.newSelected = true
-      this.searchCond.orderOfPrice = 0
+      this.searchCond.orderByPrice = 0
     },
     orderByPrice () {
       console.log('order by price')
       this.searchCond.newSelected && (this.searchCond.newSelected = false)
-      this.searchCond.orderOfPrice = -this.searchCond.orderOfPrice
-      this.searchCond.orderOfPrice || (this.searchCond.orderOfPrice = 1)
+      this.searchCond.orderByPrice = -this.searchCond.orderByPrice
+      this.searchCond.orderByPrice || (this.searchCond.orderByPrice = 1)
+      this.requestProductList(true)
     },
     getProductList (cond = {}) {
       console.log('cond', cond)
       this.searchCond = Object.assign({}, this.searchCond, cond)
+      this.toggleFilter = []
+      this.requestProductList(true)
     },
     resetSearchCond (cond = {}) {
       console.log('cond', cond)
       this.searchCond = Object.assign({}, this.searchCond, cond)
+      this.toggleFilter = []
+      this.requestProductList(true)
     },
-    requestProductList () {
+    formSearchParams (cond = {}) {
+      return Object.keys(cond).reduce((cum, key) => {
+        if (cond[key]) {
+          if (Array.isArray(cond[key])) {
+            cond[key].length && (cum[key] = cond[key])
+          } else {
+            cum[key] = cond[key]
+          }
+        }
+        return cum
+      }, {})
+    },
+    requestProductList (loading) {
       // todo: axios
+      this.$nextTick(function () {
+        const url = '/client/product/'
+        const condParams = this.formSearchParams(this.searchCond)
+        console.log('condParams', condParams)
+        this.$fetch(url, {
+          params: {
+            offset: 0,
+            limit: 50,
+            ...condParams,
+          },
+        }, loading).then(resp => {
+          console.log('resp', resp)
+          const results = resp.data.results
+          this.imgList = results
+          this.loading = false
+          this.refreshing = false
+          if (results.length < this.searchCond.limit) {
+            this.finished = true
+          }
+        }).catch(err => {
+          console.log(err)
+          this.loading = false
+          this.refreshing = false
+        })
+      })
+    },
+    onRefresh () {
+      this.searchCond.offset = 0
+      this.requestProductList()
+    },
+    onLoadmore () {
+      this.searchCond.offset++
+      this.requestProductList()
+    },
+    onCheckAll () {
+      this.$router.push('/index#products')
     },
   },
 }
@@ -235,6 +340,57 @@ export default {
 
     .van-collapse-item__content {
       padding: 0;
+    }
+  }
+
+  .product-list {
+    overflow: auto;
+    height: calc(100vh - 44px);
+    padding: 32px 18px 50px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-content: flex-start;
+
+    .products-footer {
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
+
+      #load-complete {
+        background: transparent;
+        padding: 22px 0;
+        max-height: 50px;
+      }
+
+      .check-all {
+        display: block;
+        font-size: 14px;
+        color: #000000;
+        text-align: center;
+        text-decoration: underline;
+      }
+    }
+
+    .van-list__loading {
+      width: 100%;
+      max-height: 50px;
+    }
+
+    .product-item {
+      width: 163px;
+
+      a {
+        .thumb {
+          width: 163px;
+          height: 163px;
+          border: none;
+        }
+      }
+
+      .desc {
+        width: 163px;
+      }
     }
   }
 }

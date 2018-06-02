@@ -1,8 +1,11 @@
 <template>
   <div id="index">
-    <component
-      :is="curTabComponent"
-    />
+    <keep-alive>
+      <component
+        :is="curTabComponent"
+        :keyword="keyword"
+      />
+    </keep-alive>
     <van-tabbar
       v-model="active"
       @change="changeTab"
@@ -32,24 +35,27 @@ export default {
     return {
       indexTabs: INDEXTABS,
       active: 0,
+      keyword: '',
     }
   },
   beforeRouteEnter (to, from, next) {
     next(vm => {
       vm.active = vm.hashChange(to.hash)
-      console.log('to', to)
-      console.log('beforeRouteEnter active', vm.active)
     })
   },
   beforeRouteUpdate (to, from, next) {
     this.active = this.hashChange(to.hash)
-    console.log('to', to)
-    console.log('beforeRouteUpdate active', this.active)
     next()
   },
   computed: {
     curTabComponent: function () {
       return this.indexTabs[this.active].component
+    },
+  },
+  watch: {
+    '$route': function (val, oldVal) {
+      const { keyword = '' } = val.query
+      this.keyword = keyword
     },
   },
   methods: {
@@ -60,7 +66,10 @@ export default {
       }) : 0
     },
     changeTab (active) {
-      this.$router.push(`/index${this.indexTabs[active].hash}`)
+      const fromActive = this.hashChange(this.$route.hash)
+      if (active !== fromActive) {
+        this.$router.push(`/index${this.indexTabs[active].hash}`)
+      }
     },
   },
 }

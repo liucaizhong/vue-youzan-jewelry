@@ -6,7 +6,8 @@
         <enum-selector
           :items="productCategory"
           :single="false"
-          :selected="categorySelected"
+          :selected.sync="categorySelected"
+          @on-change="changeSelection"
         />
       </div>
       <div class="content-item">
@@ -14,7 +15,8 @@
         <enum-selector
           :items="goldType"
           :single="false"
-          :selected="goldTypeSelected"
+          :selected.sync="goldTypeSelected"
+          @on-change="changeSelection"
         />
       </div>
     </div>
@@ -60,6 +62,7 @@ export default {
       })
     },
     onConfirm () {
+      console.log('onconfirm')
       this.$emit('on-confirm', {
         category: this.categorySelected.reduce((cum, b, i) => {
           b && (cum = cum.concat(this.productCategory[i].key))
@@ -70,6 +73,11 @@ export default {
           return cum
         }, []),
       })
+    },
+    changeSelection () {
+      // console.log('changeSelection', this.categorySelected)
+      // console.log('changeSelection', this.goldTypeSelected)
+      this.onConfirm()
     },
   },
 }
