@@ -70,6 +70,8 @@ export default {
           try {
             const rsp = await axios(mergeConfig)
             resolve(rsp)
+            // dispatch action to synchronus mine tab
+            // todo
           } catch (err) {
             // todo: error handle
             console.error(err)

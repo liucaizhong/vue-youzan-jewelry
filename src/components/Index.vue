@@ -4,6 +4,7 @@
       <component
         :is="curTabComponent"
         :params="params"
+        :logged="logged"
       />
     </keep-alive>
     <van-tabbar
@@ -36,14 +37,20 @@ export default {
       indexTabs: INDEXTABS,
       active: 0,
       params: null,
+      logged: false,
     }
   },
   beforeRouteEnter (to, from, next) {
     next(vm => {
+      vm.params = to.query
+      vm.logged = vm.$getCookie('logged') === '0'
       vm.active = vm.hashChange(to.hash)
     })
   },
   beforeRouteUpdate (to, from, next) {
+    console.log('to', to)
+    this.params = to.query
+    this.logged = this.$getCookie('logged') === '0'
     this.active = this.hashChange(to.hash)
     next()
   },
@@ -52,11 +59,12 @@ export default {
       return this.indexTabs[this.active].component
     },
   },
-  watch: {
-    '$route': function (val, oldVal) {
-      this.params = val.query
-    },
-  },
+  // watch: {
+  //   '$route': function (val, oldVal) {
+  //     console.log('index route', val)
+  //     this.params = val.query
+  //   },
+  // },
   methods: {
     hashChange (hash) {
       console.log('hash', hash)
