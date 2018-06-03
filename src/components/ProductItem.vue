@@ -33,6 +33,8 @@ export default {
 </script>
 
 <style lang="less">
+@imgSize: 120px;
+
 .product-item {
   width: 100%;
   // height: 180px;
@@ -44,13 +46,13 @@ export default {
   }
 
   .thumb {
-    width: 120px;
-    height: 120px;
+    width: @imgSize;
+    height: @imgSize;
     border: 2px solid #CCB8A3;
   }
 
   .desc {
-    width: 120px;
+    width: @imgSize;
     padding: 5px 2px;
 
     p {

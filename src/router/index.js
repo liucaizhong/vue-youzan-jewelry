@@ -5,6 +5,9 @@ Vue.use(Router)
 
 const Index = () => import('@/components/Index')
 const Login = () => import('@/components/Login')
+const ProductDetail = () => import('@/components/ProductDetail')
+const PaymentDetail = () => import('@/components/PaymentDetail')
+const RentDetail = () => import('@/components/RentDetail')
 
 export default new Router({
   mode: 'history',
@@ -24,6 +27,28 @@ export default new Router({
     {
       path: '/index',
       component: Index,
+    },
+    {
+      path: '/product/:id',
+      component: ProductDetail,
+    },
+    {
+      path: '/payment-rent/:serviceno',
+      component: PaymentDetail,
+      // meta: {
+      //   requiresAuth: true,
+      // },
+    },
+    {
+      path: '/payment-buy/:productid',
+      component: PaymentDetail,
+      // meta: {
+      //   requiresAuth: true,
+      // },
+    },
+    {
+      path: '/rent/:id',
+      component: RentDetail,
       // meta: {
       //   requiresAuth: true,
       // },

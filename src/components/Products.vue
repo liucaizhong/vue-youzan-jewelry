@@ -44,6 +44,7 @@
         <filter-panel
           @on-reset="resetSearchCond"
           @on-confirm="getProductList"
+          :category="categoryFromRoute"
         />
         <!-- </keep-alive> -->
       </van-collapse-item>
@@ -86,7 +87,7 @@ export default {
     LoadComplete,
   },
   props: {
-    keyword: String,
+    params: Object,
   },
   data () {
     return {
@@ -96,6 +97,7 @@ export default {
       loading: false,
       finished: false,
       imgList: [],
+      categoryFromRoute: '',
       searchCond: {
         newSelected: false,
         orderByPrice: 0, // up: 1, down: -1, 0:not selected
@@ -108,15 +110,19 @@ export default {
     }
   },
   created () {
-    // console.log('value', this.value)
-    // console.log('products', this.$route.query)
-    const { keyword = '' } = this.$route.query
+    const { keyword = '', category } = this.$route.query
     this.searchCond.keyword = keyword
+    this.searchCond.category = (category && category.split`,`) || []
+    this.categoryFromRoute = category
     this.requestProductList(true)
   },
   watch: {
-    keyword: function (val, oldVal) {
-      this.searchCond.keyword = val
+    params: function (val, oldVal) {
+      console.log('params', val)
+      const { keyword = '', category } = val
+      this.searchCond.keyword = keyword
+      this.searchCond.category = (category && category.split`,`) || []
+      this.categoryFromRoute = category
       this.requestProductList(true)
     },
   },
@@ -147,16 +153,16 @@ export default {
       this.searchCond.orderByPrice || (this.searchCond.orderByPrice = 1)
       this.requestProductList(true)
     },
-    getProductList (cond = {}) {
+    getProductList (cond = {}, toggle = true) {
       console.log('cond', cond)
       this.searchCond = Object.assign({}, this.searchCond, cond)
-      this.toggleFilter = []
+      toggle && (this.toggleFilter = [])
       this.requestProductList(true)
     },
-    resetSearchCond (cond = {}) {
+    resetSearchCond (cond = {}, toggle = true) {
       console.log('cond', cond)
       this.searchCond = Object.assign({}, this.searchCond, cond)
-      this.toggleFilter = []
+      toggle && (this.toggleFilter = [])
       this.requestProductList(true)
     },
     formSearchParams (cond = {}) {
@@ -215,6 +221,8 @@ export default {
 </script>
 
 <style lang="less">
+@imgSize: 160px;
+
 #products {
   width: 100vw;
   height: 100vh;
@@ -232,6 +240,10 @@ export default {
 
   .collapse {
     z-index: 1000;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
 
     .van-icon-arrow {
       position: absolute;
@@ -343,53 +355,57 @@ export default {
     }
   }
 
-  .product-list {
-    overflow: auto;
-    height: calc(100vh - 44px);
-    padding: 32px 18px 50px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-content: flex-start;
+  .van-pull-refresh {
+    margin-top: 44px;
 
-    .products-footer {
-      width: 100%;
+    .product-list {
+      overflow: auto;
+      height: calc(100vh - 44px);
+      padding: 32px 18px 50px;
       display: flex;
-      justify-content: space-around;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-content: flex-start;
 
-      #load-complete {
-        background: transparent;
-        padding: 22px 0;
-        max-height: 50px;
-      }
+      .products-footer {
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
 
-      .check-all {
-        display: block;
-        font-size: 14px;
-        color: #000000;
-        text-align: center;
-        text-decoration: underline;
-      }
-    }
+        #load-complete {
+          background: transparent;
+          padding: 22px 0;
+          max-height: 50px;
+        }
 
-    .van-list__loading {
-      width: 100%;
-      max-height: 50px;
-    }
-
-    .product-item {
-      width: 163px;
-
-      a {
-        .thumb {
-          width: 163px;
-          height: 163px;
-          border: none;
+        .check-all {
+          display: block;
+          font-size: 14px;
+          color: #000000;
+          text-align: center;
+          text-decoration: underline;
         }
       }
 
-      .desc {
-        width: 163px;
+      .van-list__loading {
+        width: 100%;
+        max-height: 50px;
+      }
+
+      .product-item {
+        width: @imgSize;
+
+        a {
+          .thumb {
+            width: @imgSize;
+            height: @imgSize;
+            border: none;
+          }
+        }
+
+        .desc {
+          width: @imgSize;
+        }
       }
     }
   }

@@ -44,12 +44,43 @@ export default {
   components: {
     EnumSelector,
   },
+  props: {
+    category: {
+      type: String,
+    },
+  },
   data () {
     return {
       productCategory: PRODUCTCATEGORY,
       goldType: GOLDTYPE,
       categorySelected: [],
       goldTypeSelected: [],
+    }
+  },
+  created () {
+    this.categorySelected = []
+    const idx = this.productCategory.findIndex(cur => {
+      return cur.key.join`,` === this.category
+    })
+    console.log('idx', idx)
+    if (idx !== -1) {
+      this.categorySelected[idx] = true
+    }
+    this.$forceUpdate()
+  },
+  watch: {
+    category: {
+      deep: true,
+      handler: function (val, oldVal) {
+        this.categorySelected = []
+        const idx = this.productCategory.findIndex(cur => {
+          return cur.key.join`,` === val
+        })
+        if (idx !== -1) {
+          this.categorySelected[idx] = true
+        }
+        this.$forceUpdate()
+      },
     }
   },
   methods: {
@@ -61,7 +92,7 @@ export default {
         goldType: [],
       })
     },
-    onConfirm () {
+    onConfirm (toggle) {
       console.log('onconfirm')
       this.$emit('on-confirm', {
         category: this.categorySelected.reduce((cum, b, i) => {
@@ -72,12 +103,12 @@ export default {
           b && (cum = cum.concat(this.goldType[i].key))
           return cum
         }, []),
-      })
+      }, toggle)
     },
     changeSelection () {
       // console.log('changeSelection', this.categorySelected)
       // console.log('changeSelection', this.goldTypeSelected)
-      this.onConfirm()
+      this.onConfirm(false)
     },
   },
 }

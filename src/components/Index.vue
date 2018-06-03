@@ -3,7 +3,7 @@
     <keep-alive>
       <component
         :is="curTabComponent"
-        :keyword="keyword"
+        :params="params"
       />
     </keep-alive>
     <van-tabbar
@@ -35,7 +35,7 @@ export default {
     return {
       indexTabs: INDEXTABS,
       active: 0,
-      keyword: '',
+      params: null,
     }
   },
   beforeRouteEnter (to, from, next) {
@@ -54,8 +54,7 @@ export default {
   },
   watch: {
     '$route': function (val, oldVal) {
-      const { keyword = '' } = val.query
-      this.keyword = keyword
+      this.params = val.query
     },
   },
   methods: {

@@ -47,4 +47,10 @@ export default {
   resetSelection: '重置选择',
   confirm: '确认',
   checkAllProducts: '查看全部产品>>',
+  rentProduct: '¥{0}租这件',
+  buyImmediately: '即刻购买',
+  confirmPay: '确认支付',
+  totalPayAmount: '合计支付金额¥{0}',
+  payment: '结算',
+  totalRent: '{0}个月 共¥{1}（含押金）'
 }
