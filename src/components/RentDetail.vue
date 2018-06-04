@@ -14,7 +14,39 @@
         </router-link>
       </header>
       <section class="rent-selection__tabs">
-
+        <div
+          :class="['rent-selection__tabs-block', { active: serviceType === 0 }]"
+          @click="changeServiceType(0)"
+        >
+          <p class="title">{{ $t('rentAProduct') }}</p>
+          <p class="desc">{{ $t('moneyPerDay', [rentDetail.rent]) }}</p>
+        </div>
+        <div
+          :class="['rent-selection__tabs-block', { active: serviceType === 1 }]"
+          @click="changeServiceType(1)"
+        >
+          <p class="title">{{ $t('rentByPackage') }}</p>
+          <p class="desc">{{ $t('changeInPackageFreely') }}</p>
+        </div>
+      </section>
+      <section class="rent-selection__tabs-content">
+        <keep-alive>
+          <div v-if="serviceType" class="rent-package">
+            package service
+          </div>
+          <div v-else class="rent-single">
+            <my-picker
+              :confirmBtnText="$t('complete')"
+              :cancelBtnText="$t('close')"
+              :placeholder="$t('chooseRentPeriod')"
+              :columns="rentAmountColumns"
+              showToolbar
+              @confirm="confirmRentPeriod"
+              @change="changeRentPeriod"
+            />
+          </div>
+        </keep-alive>
+        <p class="deposit">{{ $t('deposit', [rentDetail.deposit]) }}</p>
       </section>
     </section>
     <footer class="rent-detail__footer">
@@ -32,31 +64,77 @@
 </template>
 
 <script>
+import MyPicker from './MyPicker'
+
 export default {
+  components: {
+    MyPicker,
+  },
   data () {
     return {
-      serviceNo: '',
+      productid: '',
       serviceType: 0, // 0: rental, 1: package
-      rent: {
-        rentPeriod: '10',
-        totalAmount: '4999',
+      rentDetail: {
+        rent: '10',
+        rentPeriod: '0',
+        totalAmount: '0',
+        deposit: '2000',
+        rentcycle: '10',
       },
+      rentAmountColumns: [],
+      countPerTurn: 100,
     }
   },
   created () {
     console.log('$route', this.$route)
-    this.serviceNo = this.$route.params.id
+    this.productid = this.$route.params.id
+    this.rentAmountColumns = this.rentAmountColumns.concat(this.mockrentAmountColumns())
   },
   computed: {
     showTotalText: function () {
       return this.serviceType
-        ? this.$t('totalPackage', [this.rent.totalAmount])
-        : this.$t('totalRent', [this.rent.rentPeriod, this.rent.totalAmount])
+        ? this.$t('totalPackage', [this.rentDetail.totalAmount])
+        : this.$t('totalRent', [this.rentDetail.rentPeriod, this.rentDetail.totalAmount])
     },
   },
   methods: {
     onPayment () {
       console.log('onPayment')
+    },
+    changeServiceType (type) {
+      this.serviceType = type
+    },
+    mockrentAmountColumns () {
+      const count = this.rentAmountColumns.length
+      const firstValue = (count &&
+        +this.getPeriodRentFromPicker(this.rentAmountColumns[count - 1])[0]) ||
+        +this.rentDetail.rentPeriod
+      const resArr = []
+      for (let i = 0; i < this.countPerTurn;) {
+        ++i
+        resArr.push(this.$t('rentPickerValue', [
+          firstValue + i,
+          (firstValue + i) * this.rentDetail.rent,
+        ]))
+      }
+      return resArr
+    },
+    getPeriodRentFromPicker (val) {
+      const match = val.match(/(\d+)/g)
+      console.log('match', match)
+      return match
+    },
+    confirmRentPeriod (val, idx) {
+      console.log('confirmRentPeriod', val)
+      const match = this.getPeriodRentFromPicker(val)
+      this.rentDetail.rentPeriod = match[0]
+      this.rentDetail.totalAmount = `${+this.rentDetail.deposit + +match[1]}`
+    },
+    changeRentPeriod (val, idx) {
+      const count = this.rentAmountColumns.length
+      if (idx === count - 1) {
+        this.rentAmountColumns = this.rentAmountColumns.concat(this.mockrentAmountColumns())
+      }
     },
   },
 }
@@ -78,10 +156,12 @@ export default {
     margin-top: 12px;
     width: 100%;
     background: #fff;
+    padding: 24px 18px 50px;
 
     header {
       width: 100%;
-      padding: 24px 18px;
+      // padding: 24px 18px;
+      margin-bottom: 24px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -102,8 +182,51 @@ export default {
 
     .rent-selection__tabs {
       width: 100%;
-      padding: 0 18px;
+      // padding: 0 18px;
+      margin-bottom: 25px;
+      display: flex;
+      justify-content: space-between;
 
+      .rent-selection__tabs-block {
+        width: 160px;
+        height: 80px;
+        border: 1px solid #D6D6D6;
+
+        .title {
+          font-size: 16px;
+          color: #000000;
+          line-height: 14px;
+          text-align: center;
+        }
+
+        .desc {
+          font-size: 12px;
+          text-align: center;
+          line-height: 14px;
+          color: #000000;
+        }
+
+        &.active {
+          border-color: #B99F85;
+
+          .title {
+            color: #B99F85;
+          }
+
+          .desc {
+            color: #B99F85;
+          }
+        }
+      }
+    }
+
+    .rent-selection__tabs-content {
+      .deposit {
+        margin-top: 15px;
+        font-size: 12px;
+        color: #999999;
+        line-height: 14px;
+      }
     }
   }
 
