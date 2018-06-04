@@ -67,8 +67,8 @@ export default {
           method: 'post',
         }).then(resp => {
           console.log(resp)
-          const loginInfo = Object.assign({}, resp.data)
-          this.$store.commit('userLogin', loginInfo)
+          // const loginInfo = Object.assign({}, resp.data)
+          // this.$store.commit('userLogin', loginInfo)
           this.loginLoading = false
           this.$message({
             content: this.$t('loginSuccess'),

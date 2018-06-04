@@ -3,8 +3,6 @@
     <keep-alive>
       <component
         :is="curTabComponent"
-        :params="params"
-        :logged="logged"
       />
     </keep-alive>
     <van-tabbar
@@ -36,21 +34,21 @@ export default {
     return {
       indexTabs: INDEXTABS,
       active: 0,
-      params: null,
-      logged: false,
+      // params: null,
+      // logged: false,
     }
   },
   beforeRouteEnter (to, from, next) {
     next(vm => {
-      vm.params = to.query
-      vm.logged = vm.$getCookie('logged') === '0'
+      // vm.params = to.query
+      // vm.logged = vm.$getCookie('logged') === '0'
       vm.active = vm.hashChange(to.hash)
     })
   },
   beforeRouteUpdate (to, from, next) {
     console.log('to', to)
-    this.params = to.query
-    this.logged = this.$getCookie('logged') === '0'
+    // this.params = to.query
+    // this.logged = this.$getCookie('logged') === '0'
     this.active = this.hashChange(to.hash)
     next()
   },
@@ -87,6 +85,18 @@ export default {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
+
+  .van-tabbar-item {
+    position: relative;
+
+    &:not(:last-of-type)::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      border-right: 1px solid #E0E0E0;
+      height: 14px;
+    }
+  }
 
   .van-tabbar-item--active {
     color: #CCB8A3;

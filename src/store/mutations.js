@@ -1,8 +1,9 @@
 export default {
   userLogin (state, loginInfo) {
-    state.login = {
-      ...loginInfo,
-    }
+    // state.login = {
+    //   ...loginInfo,
+    // }
+    state.login = Object.assign({}, state.login, loginInfo)
   },
   updateGlobalLoading (state, loading) {
     state.loading = loading

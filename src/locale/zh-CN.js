@@ -52,5 +52,8 @@ export default {
   confirmPay: '确认支付',
   totalPayAmount: '合计支付金额¥{0}',
   payment: '结算',
-  totalRent: '{0}个月 共¥{1}（含押金）'
+  totalRent: '{0}个月 共¥{1}（含押金）',
+  notLoggedIn: '未登录',
+  loggedIn: '已登录',
+  detail: '详情',
 }

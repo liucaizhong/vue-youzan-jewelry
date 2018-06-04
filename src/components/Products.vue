@@ -86,9 +86,9 @@ export default {
     ProductItem,
     LoadComplete,
   },
-  props: {
-    params: Object,
-  },
+  // props: {
+  //   params: Object,
+  // },
   data () {
     return {
       toggleFilter: [],
@@ -109,23 +109,31 @@ export default {
       },
     }
   },
-  created () {
+  // created () {
+  //   const { keyword = '', category } = this.$route.query
+  //   this.searchCond.keyword = keyword
+  //   this.searchCond.category = (category && category.split`,`) || []
+  //   this.categoryFromRoute = category
+  //   this.requestProductList(true)
+  // },
+  activated () {
+    console.log('activated', this.$route)
     const { keyword = '', category } = this.$route.query
     this.searchCond.keyword = keyword
     this.searchCond.category = (category && category.split`,`) || []
     this.categoryFromRoute = category
     this.requestProductList(true)
   },
-  watch: {
-    params: function (val, oldVal) {
-      console.log('params', val)
-      const { keyword = '', category } = val
-      this.searchCond.keyword = keyword
-      this.searchCond.category = (category && category.split`,`) || []
-      this.categoryFromRoute = category
-      this.requestProductList(true)
-    },
-  },
+  // watch: {
+  //   params: function (val, oldVal) {
+  //     console.log('params', val)
+  //     const { keyword = '', category } = val
+  //     this.searchCond.keyword = keyword
+  //     this.searchCond.category = (category && category.split`,`) || []
+  //     this.categoryFromRoute = category
+  //     this.requestProductList(true)
+  //   },
+  // },
   computed: {
     expand: function () {
       return this.toggleFilter.length
