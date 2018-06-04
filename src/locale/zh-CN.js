@@ -53,7 +53,10 @@ export default {
   totalPayAmount: '合计支付金额¥{0}',
   payment: '结算',
   totalRent: '{0}个月 共¥{1}（含押金）',
+  totalPackage: '套餐价 共¥{0}（含押金）',
   notLoggedIn: '未登录',
   loggedIn: '已登录',
   detail: '详情',
+  chooseRentType: '选择租赁方式',
+  howToRent: '如何租赁？',
 }
