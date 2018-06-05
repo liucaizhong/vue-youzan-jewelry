@@ -1,28 +1,32 @@
 <template>
   <div class="rent-package-detail">
-    <van-radio-group
-      v-model="packageType"
-    >
-      <van-radio
-        name="0"
-        :class="['my-radio-square', { checked: packageType === '0' }]"
+    <keep-alive>
+      <van-radio-group
+        v-model="packageType"
       >
-        {{ $t('useCurrentPackage') }}
-        <div class="radio0-content" v-show="packageType === '0'">
-        </div>
-      </van-radio>
-      <van-radio
-        name="1"
-        :class="['my-radio-square', { checked: packageType === '1' }]"
-      >
-        {{ $t('buyNewPackage') }}
-        <div class="radio1-content" v-show="packageType === '1'">
-          <p class="deposit">
-            {{ $t('package') + $t('deposit', [productDetail.deposit]) }}
-          </p>
-        </div>
-      </van-radio>
-    </van-radio-group>
+        <my-radio
+          :radioType="packageType"
+          :radioName="'0'"
+        >
+          <template slot="title">{{ $t('useCurrentPackage') }}</template>
+          <div v-show="packageType === '0'" slot="content" class="radio0-content">
+            content0
+          </div>
+        </my-radio>
+        <my-radio
+          :radioType="packageType"
+          :radioName="'1'"
+        >
+          <template slot="title">{{ $t('buyNewPackage') }}</template>
+          <div v-show="packageType === '1'" slot="content" class="radio1-content">
+            content1
+            <p class="deposit">
+              {{ $t('package') + $t('deposit', [productDetail.deposit]) }}
+            </p>
+          </div>
+        </my-radio>
+      </van-radio-group>
+    </keep-alive>
     <footer class="rent-detail__footer">
       <div class="show-total van-ellipsis">
         {{ showTotalText }}
@@ -38,7 +42,12 @@
 </template>
 
 <script>
+import MyRadio from './MyRadio'
+
 export default {
+  components: {
+    MyRadio,
+  },
   props: {
     productDetail: Object,
   },

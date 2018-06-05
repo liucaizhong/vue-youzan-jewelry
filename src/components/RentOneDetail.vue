@@ -72,14 +72,14 @@ export default {
         const url = '/client/RentalService/'
         this.$fetch(url, {
           data: {
-            productid: this.productDetail.productid,
+            reservedProductid: this.productDetail.productid,
             rentPeriod: this.rentDetail.rentPeriod,
           },
           method: 'post',
         }).then(resp => {
           console.log(resp)
           this.paymentLoading = false
-          this.$router.push(`/payment-rent/${'serviceNo'}`)
+          this.$router.replace(`/payment-rent/${resp.data.serviceNo}`)
         }).catch(err => {
           console.log(err)
           this.paymentLoading = false
@@ -130,10 +130,6 @@ export default {
 
 <style lang="less">
 .rent-one-service {
-  .error {
-
-  }
-
   .deposit {
     margin-top: 15px;
     font-size: 12px;
