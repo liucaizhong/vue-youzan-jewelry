@@ -8,12 +8,10 @@
     </div>
     <van-popup v-model="show" position="bottom" :close-on-click-overlay="false">
       <van-picker
+        ref="myPicker"
         :show-toolbar="showToolbar"
         :title="title"
-        :columns="[{
-          values: columns,
-          defaultIndex: defaultIndex,
-        }]"
+        :columns="columns"
         @cancel="onCancel"
         @confirm="onConfirm"
         @change="onChange"
@@ -47,13 +45,16 @@ export default {
     defaultIndex: {
       type: Number,
       default: 0,
-    }
+    },
   },
   data () {
     return {
       show: false,
       value: '',
     }
+  },
+  updated () {
+    this.$refs.myPicker.setIndexes([this.defaultIndex])
   },
   computed: {
     valueText: function () {
@@ -65,17 +66,18 @@ export default {
       this.show = !this.show
     },
     onChange (picker, val, idx) {
-      console.log('change val', val, idx)
-      // this.value = val
-      this.$emit('change', val, idx)
+      // console.log('change val', val, idx)
+      // this.value = val[0]
+      this.$emit('change', picker, val, idx)
     },
     onConfirm (val, idx) {
       this.show = false
-      this.value = val[0]
+      this.value = val
       this.$emit('confirm', val, idx)
     },
     onCancel (val, idx) {
       this.show = false
+      this.$refs.myPicker.setIndexes([this.defaultIndex])
       this.$emit('cancel', val, idx)
     },
   }

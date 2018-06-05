@@ -69,4 +69,6 @@ export default {
   complete: '完成',
   chooseRentPeriod: '请选择租赁时长',
   rentPickerValue: '{0}天（¥{1}）',
+  useCurrentPackage: '使用当前套餐',
+  buyNewPackage: '购买新套餐',
 }

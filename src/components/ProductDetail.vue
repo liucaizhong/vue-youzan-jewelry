@@ -34,9 +34,11 @@ export default {
   methods: {
     onConfirmRent () {
       console.log('onConfirmRent')
+      this.$router.push(`/rent/${this.product.productid}`)
     },
     onConfirmBuy () {
       console.log('onConfirmBuy')
+      this.$router.push(`/payment-buy/${this.product.productid}`)
     },
   },
 }

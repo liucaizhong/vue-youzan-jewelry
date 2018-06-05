@@ -19,7 +19,7 @@
           @click="changeServiceType(0)"
         >
           <p class="title">{{ $t('rentAProduct') }}</p>
-          <p class="desc">{{ $t('moneyPerDay', [rentDetail.rent]) }}</p>
+          <p class="desc">{{ $t('moneyPerDay', [productDetail.rent]) }}</p>
         </div>
         <div
           :class="['rent-selection__tabs-block', { active: serviceType === 1 }]"
@@ -31,114 +31,49 @@
       </section>
       <section class="rent-selection__tabs-content">
         <keep-alive>
-          <div v-if="serviceType" class="rent-package">
-            package service
-          </div>
-          <div v-else class="rent-single">
-            <my-picker
-              :confirmBtnText="$t('complete')"
-              :cancelBtnText="$t('close')"
-              :placeholder="$t('chooseRentPeriod')"
-              :columns="rentAmountColumns"
-              :defaultIndex="curPickerIndex"
-              showToolbar
-              @confirm="confirmRentPeriod"
-              @change="changeRentPeriod"
-            />
-          </div>
+          <rent-package-detail
+            v-if="serviceType"
+            :productDetail="productDetail"
+          />
+          <rent-one-detail
+            v-else
+            :productDetail="productDetail"
+          />
         </keep-alive>
-        <p class="deposit">{{ $t('deposit', [rentDetail.deposit]) }}</p>
       </section>
     </section>
-    <footer class="rent-detail__footer">
-      <div class="show-total van-ellipsis">
-        {{ showTotalText }}
-      </div>
-      <van-button
-        class="my-button pay-btn"
-        type="default"
-        bottom-action
-        @click="onPayment"
-      >{{ $t('payment') }}</van-button>
-    </footer>
   </div>
 </template>
 
 <script>
-import MyPicker from './MyPicker'
+import RentOneDetail from './RentOneDetail'
+import RentPackageDetail from './RentPackageDetail'
 
 export default {
   components: {
-    MyPicker,
+    RentOneDetail,
+    RentPackageDetail,
   },
   data () {
     return {
       productid: '',
       serviceType: 0, // 0: rental, 1: package
-      rentDetail: {
+      productDetail: {
         rent: '10',
-        rentPeriod: '0',
-        totalAmount: '0',
         deposit: '2000',
         rentcycle: '10',
       },
-      rentAmountColumns: [],
-      curPickerIndex: 0,
-      countPerTurn: 100,
     }
   },
   created () {
     console.log('$route', this.$route)
     this.productid = this.$route.params.id
-    this.rentAmountColumns = this.rentAmountColumns.concat(this.mockrentAmountColumns())
-  },
-  computed: {
-    showTotalText: function () {
-      return this.serviceType
-        ? this.$t('totalPackage', [this.rentDetail.totalAmount])
-        : this.$t('totalRent', [this.rentDetail.rentPeriod, this.rentDetail.totalAmount])
-    },
+    // get product detail
+    // todo...
   },
   methods: {
-    onPayment () {
-      console.log('onPayment')
-    },
     changeServiceType (type) {
       this.serviceType = type
-    },
-    mockrentAmountColumns () {
-      const count = this.rentAmountColumns.length
-      const firstValue = (count &&
-        +this.getPeriodRentFromPicker(this.rentAmountColumns[count - 1])[0]) ||
-        +this.rentDetail.rentPeriod
-      const resArr = []
-      for (let i = 0; i < this.countPerTurn;) {
-        ++i
-        resArr.push(this.$t('rentPickerValue', [
-          firstValue + i,
-          (firstValue + i) * this.rentDetail.rent,
-        ]))
-      }
-      return resArr
-    },
-    getPeriodRentFromPicker (val) {
-      const match = val.match(/(\d+)/g)
-      console.log('match', match)
-      return match
-    },
-    confirmRentPeriod (val, idx) {
-      console.log('confirmRentPeriod', val, idx)
-      const match = this.getPeriodRentFromPicker(val[0])
-      this.rentDetail.rentPeriod = match[0]
-      this.rentDetail.totalAmount = `${+this.rentDetail.deposit + +match[1]}`
-      this.curPickerIndex = idx[0]
-    },
-    changeRentPeriod (val, idx) {
-      const count = this.rentAmountColumns.length
-      if (idx === count - 1) {
-        this.rentAmountColumns = this.rentAmountColumns.concat(this.mockrentAmountColumns())
-        this.curPickerIndex = idx[0]
-      }
     },
   },
 }
@@ -222,39 +157,6 @@ export default {
           }
         }
       }
-    }
-
-    .rent-selection__tabs-content {
-      .deposit {
-        margin-top: 15px;
-        font-size: 12px;
-        color: #999999;
-        line-height: 14px;
-      }
-    }
-  }
-
-  .rent-detail__footer {
-    width: 100%;
-    height: 50px;
-    display: flex;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-
-    .show-total {
-      flex: 1;
-      background: #FFFFFF;
-      font-size: 16px;
-      color: #B99F85;
-      border-top: .5px solid #e5e5e5;
-      text-align: left;
-      line-height: 50px;
-      padding-left: 18px;
-    }
-
-    .pay-btn {
-      max-width: 120px;
     }
   }
 }

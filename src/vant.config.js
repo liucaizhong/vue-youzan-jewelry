@@ -1,7 +1,7 @@
 import { LAZYLOADOPTIONS } from '@/constant'
 import { Loading, DatetimePicker, Field, Button, Search, Swipe, SwipeItem,
   Popup, Tabbar, TabbarItem, PullRefresh, Toast, Lazyload, Collapse,
-  CollapseItem, List, Picker } from 'vant'
+  CollapseItem, List, Picker, RadioGroup, Radio } from 'vant'
 
 export default {
   init (Vue) {
@@ -20,5 +20,6 @@ export default {
     Vue.use(Collapse).use(CollapseItem)
     Vue.use(List)
     Vue.use(Picker)
+    Vue.use(RadioGroup).use(Radio)
   }
 }
