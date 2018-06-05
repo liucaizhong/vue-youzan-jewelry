@@ -20,6 +20,7 @@
         type="default"
         bottom-action
         @click="onPayment"
+        :loading="paymentLoading"
       >{{ $t('payment') }}</van-button>
     </footer>
   </div>
@@ -44,6 +45,8 @@ export default {
       rentAmountColumns: [],
       countPerTurn: 100,
       defaultIndex: 0,
+      paymentLoading: false,
+      error: false,
     }
   },
   computed: {
@@ -60,8 +63,31 @@ export default {
   },
   methods: {
     onPayment () {
-      console.log('onPayment')
-      this.$router.push(`/payment-rent/${'serviceNo'}`)
+      if (this.rentDetail.rentPeriod === '0') {
+        this.$message({
+          content: this.$t('rentPeriodInvalid'),
+        })
+      } else {
+        this.paymentLoading = true
+        const url = '/client/RentalService/'
+        this.$fetch(url, {
+          data: {
+            productid: this.productDetail.productid,
+            rentPeriod: this.rentDetail.rentPeriod,
+          },
+          method: 'post',
+        }).then(resp => {
+          console.log(resp)
+          this.paymentLoading = false
+          this.$router.push(`/payment-rent/${'serviceNo'}`)
+        }).catch(err => {
+          console.log(err)
+          this.paymentLoading = false
+          this.$message({
+            content: this.$t('paymentFail'),
+          })
+        })
+      }
     },
     mockrentAmountColumns () {
       const count = this.rentAmountColumns.length
@@ -104,6 +130,10 @@ export default {
 
 <style lang="less">
 .rent-one-service {
+  .error {
+
+  }
+
   .deposit {
     margin-top: 15px;
     font-size: 12px;

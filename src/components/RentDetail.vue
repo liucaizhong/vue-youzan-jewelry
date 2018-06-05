@@ -56,18 +56,18 @@ export default {
   },
   data () {
     return {
-      productid: '',
       serviceType: 0, // 0: rental, 1: package
       productDetail: {
         rent: '10',
         deposit: '2000',
         rentcycle: '10',
+        productid: '',
       },
     }
   },
   created () {
     console.log('$route', this.$route)
-    this.productid = this.$route.params.id
+    this.productDetail.productid = this.$route.params.id
     // get product detail
     // todo...
   },

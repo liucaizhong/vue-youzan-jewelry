@@ -6,7 +6,7 @@ const axios = require('axios')
 
 // const multipartMiddleware = multipart()
 const router = express.Router()
-const baseUrl = 'http://tpj2dy.natappfree.cc/api-auth'
+const baseUrl = 'http://xnjykj.natappfree.cc/api-auth'
 
 function mapUrl (rawUrl) {
   return baseUrl + rawUrl
@@ -93,41 +93,13 @@ module.exports = () => {
     }, req, res)
   })
 
-  // router.get('/product/', (req, res) => {
-  //   request({
-  //     url: mapUrl(req.url),
-  //   }, req, res)
-  // })
-
-  // router.get('/RentalService/', (req, res) => {
-  //   request({
-  //     url: mapUrl(req.url),
-  //   }, req, res)
-  // })
-
-  // router.post('/member/', (req, res) => {
-  //   request({
-  //     url: mapUrl(req.url),
-  //     method: 'post',
-  //     data: req.body
-  //   }, req, res)
-  // })
-
-  // router.post('/UserLogout/', (req, res) => {
-  //   request({
-  //     url: mapUrl(req.url),
-  //     method: 'post',
-  //     data: req.body,
-  //   }, req, res)
-  // })
-
-  // router.post('/ChangePasswd/', (req, res) => {
-  //   request({
-  //     url: mapUrl(req.url),
-  //     method: 'post',
-  //     data: req.body,
-  //   }, req, res)
-  // })
+  router.post('/client/RentalService/', (req, res) => {
+    request({
+      url: mapUrl(req.url),
+      method: 'post',
+      data: req.body,
+    }, req, res)
+  })
 
   // router.post('/productupdate/', multipartMiddleware, (req, res) => {
   //   let form = formData(null, req.body)

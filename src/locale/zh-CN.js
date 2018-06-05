@@ -71,4 +71,6 @@ export default {
   rentPickerValue: '{0}天（¥{1}）',
   useCurrentPackage: '使用当前套餐',
   buyNewPackage: '购买新套餐',
+  paymentFail: '结算失败',
+  rentPeriodInvalid: '租赁时长不能为空',
 }
