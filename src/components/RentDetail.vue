@@ -40,6 +40,7 @@
               :cancelBtnText="$t('close')"
               :placeholder="$t('chooseRentPeriod')"
               :columns="rentAmountColumns"
+              :defaultIndex="curPickerIndex"
               showToolbar
               @confirm="confirmRentPeriod"
               @change="changeRentPeriod"
@@ -82,6 +83,7 @@ export default {
         rentcycle: '10',
       },
       rentAmountColumns: [],
+      curPickerIndex: 0,
       countPerTurn: 100,
     }
   },
@@ -125,15 +127,17 @@ export default {
       return match
     },
     confirmRentPeriod (val, idx) {
-      console.log('confirmRentPeriod', val)
-      const match = this.getPeriodRentFromPicker(val)
+      console.log('confirmRentPeriod', val, idx)
+      const match = this.getPeriodRentFromPicker(val[0])
       this.rentDetail.rentPeriod = match[0]
       this.rentDetail.totalAmount = `${+this.rentDetail.deposit + +match[1]}`
+      this.curPickerIndex = idx[0]
     },
     changeRentPeriod (val, idx) {
       const count = this.rentAmountColumns.length
       if (idx === count - 1) {
         this.rentAmountColumns = this.rentAmountColumns.concat(this.mockrentAmountColumns())
+        this.curPickerIndex = idx[0]
       }
     },
   },

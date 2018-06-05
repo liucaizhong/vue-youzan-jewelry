@@ -10,7 +10,10 @@
       <van-picker
         :show-toolbar="showToolbar"
         :title="title"
-        :columns="columns"
+        :columns="[{
+          values: columns,
+          defaultIndex: defaultIndex,
+        }]"
         @cancel="onCancel"
         @confirm="onConfirm"
         @change="onChange"
@@ -41,6 +44,10 @@ export default {
       type: Number,
       default: 8,
     },
+    defaultIndex: {
+      type: Number,
+      default: 0,
+    }
   },
   data () {
     return {
@@ -64,7 +71,7 @@ export default {
     },
     onConfirm (val, idx) {
       this.show = false
-      this.value = val
+      this.value = val[0]
       this.$emit('confirm', val, idx)
     },
     onCancel (val, idx) {
