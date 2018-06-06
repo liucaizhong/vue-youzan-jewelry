@@ -1,5 +1,5 @@
 <template>
-  <div class="my-picker">
+  <div class="my-area-picker">
     <div
       class="picker-btn"
       @click="togglePopup"
@@ -7,58 +7,36 @@
       {{ valueText }}
     </div>
     <van-popup v-model="show" position="bottom" :close-on-click-overlay="false">
-      <van-picker
-        ref="myPicker"
-        :show-toolbar="showToolbar"
-        :title="title"
-        :columns="columns"
+      <van-area
+        :area-list="areaList"
+        :value="defaultValue"
         @cancel="onCancel"
         @confirm="onConfirm"
         @change="onChange"
-        :confirm-button-text="confirmBtnText"
-        :cancel-button-text="cancelBtnText"
-        :visible-item-count="visibleItemCount"
       />
     </van-popup>
   </div>
 </template>
 
 <script>
+import AreaList from '@/area'
+
 export default {
   props: {
-    showToolbar: {
-      type: Boolean,
-      default: false,
-    },
-    placeholder: String,
-    title: String,
-    columns: {
-      type: Array,
-      required: true,
-    },
-    confirmBtnText: String,
-    cancelBtnText: String,
-    visibleItemCount: {
-      type: Number,
-      default: 8,
-    },
-    defaultIndex: {
-      type: Number,
-      default: 0,
-    },
+    defaultValue: String,
   },
   data () {
     return {
       show: false,
-      value: '',
+      value: [],
+      areaList: AreaList,
     }
-  },
-  updated () {
-    this.$refs.myPicker.setIndexes([this.defaultIndex])
   },
   computed: {
     valueText: function () {
-      return this.value || this.placeholder
+      return this.value.reduce((cum, cur) => {
+        return cum + (cur.code !== '-1' ? cur.name + ' ' : '')
+      }, '')
     },
   },
   methods: {
@@ -66,37 +44,35 @@ export default {
       this.show = !this.show
     },
     onChange (picker, val, idx) {
-      // console.log('change val', val, idx)
-      // this.value = val[0]
       this.$emit('change', picker, val, idx)
     },
-    onConfirm (val, idx) {
+    onConfirm (val) {
       this.show = false
       this.value = val
-      this.$emit('confirm', val, idx)
+      this.$emit('confirm', val)
     },
-    onCancel (val, idx) {
+    onCancel () {
       this.show = false
-      this.$refs.myPicker.setIndexes([this.defaultIndex])
-      this.$emit('cancel', val, idx)
+      this.$emit('cancel')
     },
-  }
+  },
 }
 </script>
 
 <style lang="less">
-.my-picker {
+.my-area-picker {
   .van-picker-column {
     font-size: 14px;
   }
 
   .picker-btn {
-    border: 1px solid #D6D6D6;
+    // border: 1px solid #D6D6D6;
     font-size: 14px;
     color: #919191;
     letter-spacing: 0.58px;
     line-height: 14px;
     padding: 15px 12px;
+    height: 100%;
     position: relative;
 
     &::after {

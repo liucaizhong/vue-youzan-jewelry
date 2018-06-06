@@ -233,5 +233,84 @@ export default {
       }
     }
   }
+
+  .my-card {
+    background: #fff;
+    padding: 20px 18px 20px 116px;
+    width: 100%;
+    height: 120px;
+
+    .van-card__thumb {
+      top: 20px;
+      left: 18px;
+      width: 80px;
+      height: 80px;
+    }
+
+    .van-card__content {
+      .van-card__row {
+        margin-bottom: 12px;
+
+        .van-card__title {
+          font-size: 14px;
+          color: #000000;
+          line-height: 14px;
+        }
+
+        .van-card__desc {
+          font-size: 12px;
+          color: #999999;
+          line-height: 14px;
+        }
+
+        .van-card__price {
+          font-size: 14px;
+          color: #6C6C6C;
+          text-align: right;
+          line-height: 14px;
+        }
+
+        .van-card__num {
+          font-size: 14px;
+          color: #6C6C6C;
+          text-align: right;
+          line-height: 18px;
+        }
+      }
+    }
+  }
+
+  .my-cell {
+    width: 100%;
+    height: 60px;
+
+    .van-cell__title {
+      span {
+        font-size: 14px;
+        color: #000000;
+        text-align: left;
+        line-height: 16px;
+      }
+
+      .subtitle {
+        margin-left: 10px;
+        font-size: 12px;
+        color: #999999;
+        line-height: 14px;
+      }
+    }
+  }
+
+  .my-switch {
+    width: 52px;
+    font-size: 28px !important;
+
+    &.van-switch--on {
+      background-color: #B99F85;
+      .van-switch__node {
+        transform: translateX(24px);
+      }
+    }
+  }
 }
 </style>

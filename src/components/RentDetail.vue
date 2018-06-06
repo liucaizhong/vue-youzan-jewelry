@@ -81,9 +81,11 @@ export default {
 
 <style lang="less">
 #rent-detail {
-  margin-bottom: 50px;
+  padding-bottom: 50px;
   overflow: auto;
   background: #F5F5F5;
+  width: 100vw;
+  height: 100vh;
 
   .product-info {
     width: 100%;
@@ -94,6 +96,7 @@ export default {
   .rent-selection {
     margin-top: 12px;
     width: 100%;
+    height: calc(100% - 140px);
     background: #fff;
     padding: 24px 18px 50px;
 

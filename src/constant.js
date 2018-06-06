@@ -18,7 +18,7 @@ module.exports = {
   }],
   LAZYLOADOPTIONS: {
     // loading: './assets/img/load_err.png',
-    error: 'static/load_err.png',
+    error: '/static/load_err.png',
     attempt: 1,
     lazyComponent: true,
   },
@@ -59,6 +59,13 @@ module.exports = {
   }, {
     name: 'productGoldType3',
     key: 'pt',
+  }],
+  DELIVERYMODE: [{
+    key: '0',
+    name: 'deliveryMode0',
+  }, {
+    key: '1',
+    name: 'deliveryMode1',
   }],
 }
 // IsAuthenticated: 1 未完善， 0 已完善

@@ -79,7 +79,7 @@ export default {
         }).then(resp => {
           console.log(resp)
           this.paymentLoading = false
-          this.$router.replace(`/payment-rent/${resp.data.serviceNo}`)
+          this.$router.replace(`/payment/${resp.data.serviceNo}?query=0`)
         }).catch(err => {
           console.log(err)
           this.paymentLoading = false
@@ -143,6 +143,7 @@ export default {
     position: fixed;
     bottom: 0;
     left: 0;
+    z-index: 999;
 
     .show-total {
       flex: 1;

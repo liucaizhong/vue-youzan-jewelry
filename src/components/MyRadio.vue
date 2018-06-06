@@ -1,7 +1,7 @@
 <template>
   <van-radio
     :name="radioName"
-    :class="[radioClass, { checked: type === radioName }]"
+    :class="['my-radio', radioClass, { checked: type === radioName }]"
   >
     <slot name="title"></slot>
     <slot name="content"></slot>
@@ -16,7 +16,7 @@ export default {
     radioClass: {
       type: String,
       default: 'my-radio-square',
-    }
+    },
   },
   data () {
     return {
@@ -35,9 +35,9 @@ export default {
 </script>
 
 <style lang="less">
-.my-radio-square {
+.my-radio {
   display: flex;
-  margin-bottom: 18px;
+  margin-bottom: 20px;
 
   .van-radio__input {
     width: 20px;
@@ -60,16 +60,40 @@ export default {
     }
   }
 
+  .van-radio__label {
+    width: 100%;
+  }
+
   &.checked {
-    .van-radio__input {
+    > .van-radio__input {
       border: 1px solid #000000;
     }
   }
+}
+
+.my-radio-square {
 
   .van-radio__label {
     font-size: 16px;
     color: #000000;
-    text-align: center;
+    text-align: left;
+    line-height: 20px;
+  }
+}
+
+.my-radio-circle {
+  .van-radio__input {
+    border-radius: 50%;
+
+    .van-icon {
+      border-radius: 50%;
+    }
+  }
+
+  .van-radio__label {
+    font-size: 14px;
+    color: #000000;
+    text-align: left;
     line-height: 20px;
   }
 }

@@ -19,7 +19,25 @@
         >
           <template slot="title">{{ $t('buyNewPackage') }}</template>
           <div v-show="packageType === '1'" slot="content" class="radio1-content">
-            content1
+            <van-radio-group
+              class="sub-radio-group"
+              v-model="newPackageSelect"
+            >
+              <my-radio
+                :radioType="newPackageSelect"
+                :radioName="'0'"
+                radioClass="my-radio-circle"
+              >
+                <template slot="title">1个月/30天随心换套餐 ￥1000</template>
+              </my-radio>
+              <my-radio
+                :radioType="newPackageSelect"
+                :radioName="'1'"
+                radioClass="my-radio-circle"
+              >
+                <template slot="title">2个月/60天随心换套餐 ￥1800</template>
+              </my-radio>
+            </van-radio-group>
             <p class="deposit">
               {{ $t('package') + $t('deposit', [productDetail.deposit]) }}
             </p>
@@ -57,6 +75,8 @@ export default {
         totalAmount: '0',
       },
       packageType: '0', // 0: use current, 1: buy new
+      curPackageSelect: '0',
+      newPackageSelect: '0',
     }
   },
   computed: {
@@ -75,7 +95,12 @@ export default {
 
 <style lang="less">
 .rent-package-detail {
+  .sub-radio-group {
+    margin-top: 25px;
+  }
+
   .deposit {
+    margin: 0;
     margin-top: 15px;
     font-size: 12px;
     color: #999999;
@@ -88,6 +113,7 @@ export default {
     position: fixed;
     bottom: 0;
     left: 0;
+    z-index: 999;
 
     .show-total {
       flex: 1;

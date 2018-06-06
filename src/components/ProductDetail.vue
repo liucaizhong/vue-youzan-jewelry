@@ -38,7 +38,7 @@ export default {
     },
     onConfirmBuy () {
       console.log('onConfirmBuy')
-      this.$router.push(`/payment-buy/${this.product.productid}`)
+      this.$router.push(`/payment/${this.product.productid}?type=2`)
     },
   },
 }

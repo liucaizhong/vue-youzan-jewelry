@@ -33,14 +33,7 @@ export default new Router({
       component: ProductDetail,
     },
     {
-      path: '/payment-rent/:serviceno',
-      component: PaymentDetail,
-      // meta: {
-      //   requiresAuth: true,
-      // },
-    },
-    {
-      path: '/payment-buy/:productid',
+      path: '/payment/:id',
       component: PaymentDetail,
       // meta: {
       //   requiresAuth: true,
