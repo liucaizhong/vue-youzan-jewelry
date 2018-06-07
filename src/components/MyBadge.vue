@@ -47,8 +47,12 @@ export default {
     color: #fff;
     text-align: center;
     line-height: 18px;
-    top: 14px;
+    top: 10px;
     right: 18px;
+  }
+
+  .my-badge__title {
+    margin-top: 5px;
   }
 }
 </style>
