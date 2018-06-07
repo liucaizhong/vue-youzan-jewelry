@@ -369,7 +369,7 @@ export default {
     .product-list {
       overflow: auto;
       height: calc(100vh - 44px);
-      padding: 32px 18px 50px;
+      padding: 24px 18px 50px;
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;

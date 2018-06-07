@@ -50,6 +50,9 @@ export default {
       loginLoading: false,
     }
   },
+  created () {
+    this.redirectUrl = this.$route.query.redirect || '/index'
+  },
   methods: {
     login () {
       if (this.userNameErr || this.verifyCodeErr ||
@@ -73,6 +76,7 @@ export default {
           this.$message({
             content: this.$t('loginSuccess'),
           })
+          this.$router.push(this.redirectUrl)
         }).catch(err => {
           console.log(err)
           this.loginLoading = false

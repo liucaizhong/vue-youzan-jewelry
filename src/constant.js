@@ -67,5 +67,26 @@ module.exports = {
     key: '1',
     name: 'deliveryMode1',
   }],
+  MYSERVICETABS: [{
+    key: '0',
+    title: 'serviceToPay',
+    icon: () => import('@/assets/svg/my1.svg'),
+    url: '/my-service#0',
+  }, {
+    key: '1',
+    title: 'serviceToDelivery',
+    icon: () => import('@/assets/svg/my2.svg'),
+    url: '/my-service#1',
+  }, {
+    key: '2',
+    title: 'serviceRenting',
+    icon: () => import('@/assets/svg/my3.svg'),
+    url: '/my-service#2',
+  }, {
+    key: '3',
+    title: 'serviceCompleted',
+    icon: () => import('@/assets/svg/my4.svg'),
+    url: '/my-service#3',
+  }],
 }
 // IsAuthenticated: 1 未完善， 0 已完善

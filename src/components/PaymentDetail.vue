@@ -40,11 +40,11 @@
         >
           <template slot="title">{{ $t(item.name) }}</template>
           <div v-show="deliveryMode === `${i}`" slot="content">
-            <div v-if="item.key === '0'">
+            <div v-if="item.key === '1'">
               上海市静安区
             </div>
             <edit-receiver
-              v-else-if="item.key === '1'"
+              v-else-if="item.key === '0'"
               :form.sync="receiverForm"
             />
           </div>
@@ -101,7 +101,7 @@ export default {
       id: '',
       type: 0, // 0: one, 1: package, 2: buy
       deliveryModes: DELIVERYMODE,
-      deliveryMode: DELIVERYMODE[0].key,
+      deliveryMode: DELIVERYMODE[1].key,
       confirmPayLoading: false,
       totalAmount: '4999',
       useBalance: false,
@@ -128,6 +128,16 @@ export default {
           return true
         }
         const val = this.receiverForm[key]
+        if (key === 'phone') {
+          const pattern = /^1[3|5|7|8]\d{9}$/gi
+          if (!pattern.test(val)) {
+            this.$message({
+              content: this.$t('invalidPhoneNo'),
+            })
+            return false
+          }
+          return true
+        }
         if (typeof val === 'object') {
           return val.every(area => {
             return area.code !== '-1'
@@ -140,16 +150,18 @@ export default {
       })
     },
     formShipInfo () {
-      const { gender, lastName, firstName, phone, area, address, remark } = this.receiverForm
       const postData = {}
-      postData.gender = gender
-      postData.name = lastName + firstName
-      postData.phone = phone
-      postData.address = area.reduce((cum, cur) => {
-        return cum + (cur.code !== '-1' ? cur.name + ' ' : '')
-      }, '') + address
-      if (remark) {
-        postData.remark = remark
+      if (this.deliveryMode === '1') {
+        const { gender, lastName, firstName, phone, area, address, remark } = this.receiverForm
+        postData.gender = gender
+        postData.name = lastName + firstName
+        postData.phone = phone
+        postData.address = area.reduce((cum, cur) => {
+          return cum + (cur.code !== '-1' ? cur.name + ' ' : '')
+        }, '') + address
+        if (remark) {
+          postData.remark = remark
+        }
       }
       return postData
     },
@@ -165,12 +177,14 @@ export default {
       this.confirmPayLoading = true
       const fieldName = this.type !== 2 ? 'serviceNo' : 'reservedProductid'
       const url = '/common/order/'
+      console.log('ordertype', this.type)
       this.$fetch(url, {
         data: {
           [fieldName]: this.id,
+          serviceType: this.type,
           orderType: this.type,
           deliveryMode: this.deliveryMode,
-          useBalance: this.useBalance,
+          useBalance: +this.useBalance,
           ...this.formShipInfo(),
         },
         method: 'post',

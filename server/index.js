@@ -6,7 +6,7 @@ const axios = require('axios')
 
 // const multipartMiddleware = multipart()
 const router = express.Router()
-const baseUrl = 'http://xnjykj.natappfree.cc/api-auth'
+const baseUrl = 'http://j2bcga.natappfree.cc/api-auth'
 
 function mapUrl (rawUrl) {
   return baseUrl + rawUrl

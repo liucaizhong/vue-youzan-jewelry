@@ -4,22 +4,53 @@
       <span class="username">{{ userName }}</span>
       <a href="javascript:void(0)" @click="onUser">{{ userBtnText }}</a>
     </header>
+    <!-- <div class="van-hairline--top"></div> -->
+    <van-cell-group>
+      <van-cell
+        class="my-field"
+        :title="$t('myService')"
+        is-link
+        to="/my-service"
+      />
+    </van-cell-group>
+    <div class="service-tab">
+      <my-badge
+        v-for="(item, i) in myServiceTabs"
+        :key="item.key"
+        :url="item.url"
+        :info="myServiceTabInfo[i]"
+        :title="$t(item.title)"
+      >
+        <template slot="icon">
+          <my-svg v-if="item.icon" :render="item.icon" />
+        </template>
+      </my-badge>
+    </div>
+    <van-cell-group class="other-info">
+      <van-cell :title="$t('myWallet')" is-link to="/my-wallet" />
+      <van-cell :title="$t('myReservation')" is-link to="/my-reservation" />
+      <van-cell :title="$t('outlets')" is-link to="/outlets" />
+      <van-cell :title="$t('FAQ')" is-link to="/FAQ" />
+      <van-cell :title="$t('aboutUs')" is-link to="/about-us" />
+    </van-cell-group>
   </div>
 </template>
 
 <script>
+import MyBadge from './MyBadge'
+import MySvg from './MySvg'
+import { MYSERVICETABS } from '@/constant'
+
 export default {
-  // props: {
-  //   logged: Boolean,
-  // },
-  // watch: {
-  //   logged: function (val, oldVal) {
-  //     console.log('logged', val)
-  //   },
-  // },
+  components: {
+    MyBadge,
+    MySvg,
+  },
   data () {
     return {
       logged: false,
+      myServiceTabs: MYSERVICETABS,
+      myServiceTabInfo: [10, 0, 5, 0],
     }
   },
   activated () {
@@ -41,6 +72,9 @@ export default {
       } else {
         // todo: login
       }
+    },
+    onServiceTab (key) {
+      console.log('serviceTab', key)
     },
   },
 }
@@ -76,6 +110,32 @@ export default {
       text-align: left;
       line-height: 16px;
     }
+  }
+
+  .my-field {
+    .van-cell__title {
+      span {
+        font-size: 14px;
+        color: #B99F85;
+        line-height: 14px;
+      }
+    }
+  }
+
+  .service-tab {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    background: #fff;
+
+    .my-svg {
+      width: 30px;
+      height: 30px;
+    }
+  }
+
+  .other-info {
+    margin-top: 12px;
   }
 }
 </style>

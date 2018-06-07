@@ -115,6 +115,12 @@ export default {
       border: 1px solid #000000;
       margin-bottom: 24px;
 
+      .van-cell__value {
+        input {
+          height: 100%;
+        }
+      }
+
       .van-field__control {
         font-size: 14px;
         color: #919191;

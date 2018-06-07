@@ -87,7 +87,7 @@ export default {
   methods: {
     onPayment () {
       console.log('onPayment')
-      this.$router.push(`/payment-rent/${'serviceNo'}`)
+      this.$router.push(`/payment/${'serviceNo'}?type=1`)
     },
   },
 }

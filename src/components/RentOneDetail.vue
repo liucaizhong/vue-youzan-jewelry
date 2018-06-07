@@ -79,7 +79,7 @@ export default {
         }).then(resp => {
           console.log(resp)
           this.paymentLoading = false
-          this.$router.replace(`/payment/${resp.data.serviceNo}?query=0`)
+          this.$router.replace(`/payment/${resp.data.serviceNo}?type=0`)
         }).catch(err => {
           console.log(err)
           this.paymentLoading = false
