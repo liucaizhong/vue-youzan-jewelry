@@ -27,11 +27,11 @@
       </my-badge>
     </div>
     <van-cell-group class="other-info">
-      <van-cell :title="$t('myWallet')" is-link to="/my-wallet" />
-      <van-cell :title="$t('myReservation')" is-link to="/my-reservation" />
-      <van-cell :title="$t('outlets')" is-link to="/outlets" />
-      <van-cell :title="$t('FAQ')" is-link to="/FAQ" />
-      <van-cell :title="$t('aboutUs')" is-link to="/about-us" />
+      <van-cell class="my-field" :title="$t('myWallet')" is-link to="/my-wallet" />
+      <van-cell class="my-field" :title="$t('myReservation')" is-link to="/my-reservation" />
+      <van-cell class="my-field" :title="$t('outlets')" is-link to="/outlets" />
+      <van-cell class="my-field" :title="$t('FAQ')" is-link to="/FAQ" />
+      <van-cell class="my-field" :title="$t('aboutUs')" is-link to="/about-us" />
     </van-cell-group>
   </div>
 </template>
@@ -61,7 +61,7 @@ export default {
       return this.logged ? '137XXXX1111' : this.$t('notLoggedIn')
     },
     userBtnText: function () {
-      return this.logged ? `${this.$t('detail')} >` : `${this.$t('loginBtn')} >`
+      return this.logged ? `${this.$t('detail')}` : `${this.$t('loginBtn')}`
     },
   },
   methods: {
@@ -113,12 +113,18 @@ export default {
   }
 
   .my-field {
+    height: 50px;
+
     .van-cell__title {
       span {
         font-size: 14px;
         color: #B99F85;
-        line-height: 14px;
+        line-height: 30px;
       }
+    }
+
+    .van-icon {
+      line-height: 30px;
     }
   }
 
@@ -136,6 +142,14 @@ export default {
 
   .other-info {
     margin-top: 12px;
+
+    .my-field {
+      .van-cell__title {
+        span {
+          color: #000;
+        }
+      }
+    }
   }
 }
 </style>
