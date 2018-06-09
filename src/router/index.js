@@ -8,6 +8,7 @@ const Login = () => import('@/components/Login')
 const ProductDetail = () => import('@/components/ProductDetail')
 const PaymentDetail = () => import('@/components/PaymentDetail')
 const RentDetail = () => import('@/components/RentDetail')
+const PayConfirm = () => import('@/components/PayConfirm')
 
 export default new Router({
   mode: 'history',
@@ -46,5 +47,9 @@ export default new Router({
       //   requiresAuth: true,
       // },
     },
+    {
+      path: '/confirm-pay',
+      component: PayConfirm,
+    }
   ]
 })

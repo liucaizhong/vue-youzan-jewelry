@@ -6,7 +6,7 @@
         type="default"
         bottom-action
         @click="onConfirmRent"
-      >{{ $t('rentProduct', [product.rent]) }}</van-button>
+      >{{ $t('rentProduct', [$n(product.rent, 'currency')]) }}</van-button>
       <van-button
         class="my-button buy-btn"
         type="default"

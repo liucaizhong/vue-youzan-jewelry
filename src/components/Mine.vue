@@ -71,6 +71,7 @@ export default {
         // todo: show detail
       } else {
         // todo: login
+        this.$router.push('/login')
       }
     },
     onServiceTab (key) {

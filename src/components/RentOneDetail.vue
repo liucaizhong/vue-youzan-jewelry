@@ -10,7 +10,7 @@
       @confirm="confirmRentPeriod"
       @change="changeRentPeriod"
     />
-    <p class="deposit">{{ $t('deposit', [productDetail.deposit]) }}</p>
+    <p class="deposit">{{ $t('deposit', [$n(productDetail.deposit, 'currency')]) }}</p>
     <footer class="rent-detail__footer">
       <div class="show-total van-ellipsis">
         {{ showTotalText }}
@@ -51,7 +51,7 @@ export default {
   },
   computed: {
     showTotalText: function () {
-      return this.$t('totalRent', [this.rentDetail.rentPeriod, this.rentDetail.totalAmount])
+      return this.$t('totalRent', [this.rentDetail.rentPeriod, this.$n(this.rentDetail.totalAmount, 'currency')])
     },
   },
   activated () {
@@ -99,7 +99,7 @@ export default {
         ++i
         resArr.push(this.$t('rentPickerValue', [
           firstValue + i,
-          (firstValue + i) * this.productDetail.rent,
+          this.$n((firstValue + i) * this.productDetail.rent, 'currency'),
         ]))
       }
       return resArr

@@ -3,27 +3,27 @@
     <section class="payment-detail__info">
       <van-card
         class="my-card"
-        title="标题"
-        desc="描述"
+        :title="productTitle"
+        :desc="productDesc"
         num="1"
-        price="4999.00"
+        :price="reservedProduct.sellingPrice"
       >
-        <img v-lazy="'imgURL'" slot="thumb">
+        <img v-lazy="reservedProduct.mainimage" slot="thumb">
       </van-card>
     </section>
     <div class="van-hairline--top" />
     <section class="payment-detail__price">
       <div class="some-price">
-        <span class="label">日租10天</span>
-        <span class="value">￥1000</span>
+        <span class="label">{{ $t('rentPeriod', [rentPeriod])}}</span>
+        <span class="value">{{ $n(rent, 'currency') }}</span>
       </div>
       <div class="some-price">
         <span class="label">押金</span>
-        <span class="value">￥5000</span>
+        <span class="value">{{ $n(deposit, 'currency') }}</span>
       </div>
       <div class="total">
         <span class="label">{{ $t('totalAmount') }}</span>
-        <span class="value">￥6000</span>
+        <span class="value">{{ $n(totalAmount, 'currency')}}</span>
       </div>
     </section>
     <section class="payment-detail__delivery">
@@ -62,7 +62,7 @@
         <van-cell class="my-cell" center>
           <div slot="title">
             <span>{{ $t('useBalance') }}</span>
-            <span class="subtitle">{{ $t('curBalance', ['3500'])}}</span>
+            <span class="subtitle">{{ $t('curBalance', [$n('3500', 'currency')])}}</span>
           </div>
           <van-switch
             v-model="useBalance"
@@ -73,7 +73,7 @@
     </section>
     <footer class="payment-detail__footer">
       <div class="show-total van-ellipsis">
-        {{ $t('totalPayAmount', [totalAmount] )}}
+        {{ $t('totalPayAmount', [$n(totalAmount, 'currency')] )}}
       </div>
       <van-button
         class="my-button pay-btn"
@@ -81,7 +81,7 @@
         bottom-action
         @click="onConfirmPay"
         :loading="confirmPayLoading"
-      >{{ $t('confirmPay') }}</van-button>
+      >{{ $t('payment') }}</van-button>
     </footer>
   </div>
 </template>
@@ -89,7 +89,7 @@
 <script>
 import MyRadio from './MyRadio'
 import EditReceiver from './EditReceiver'
-import { DELIVERYMODE } from '@/constant'
+import { DELIVERYMODE, CATEGORYOFPRODUCT } from '@/constant'
 
 export default {
   components: {
@@ -102,9 +102,13 @@ export default {
       type: 0, // 0: one, 1: package, 2: buy
       deliveryModes: DELIVERYMODE,
       deliveryMode: DELIVERYMODE[1].key,
+      productCategory: CATEGORYOFPRODUCT,
       confirmPayLoading: false,
-      totalAmount: '4999',
+      totalAmount: '',
       useBalance: false,
+      deposit: '',
+      rent: '',
+      rentPeriod: 0,
       receiverForm: {
         gender: '0',
         lastName: '',
@@ -114,12 +118,56 @@ export default {
         address: '',
         remark: '',
       },
+      reservedProduct: {
+        mainimage: '',
+        brand: '',
+        category: '',
+        model: '',
+        sellingPrice: '',
+        series: '',
+        title: '',
+      },
     }
   },
   created () {
     console.log('$route', this.$route)
     this.id = this.$route.params.id
     this.type = this.$route.query.type
+    this.$nextTick(function () {
+      const url = '/client/RentalService/'
+      this.$fetch(url, {
+        params: {
+          serviceNo: this.id,
+        },
+      }, true).then(resp => {
+        console.log('resp', resp)
+        const serviceInfo = resp.data.results[0]
+        const { 'current_payamount': totalAmount, initialDeposit, initialRent,
+          rentPeriod } = serviceInfo
+        this.totalAmount = totalAmount
+        this.deposit = initialDeposit
+        this.rent = initialRent
+        this.rentPeriod = rentPeriod
+        this.reservedProduct = {
+          ...serviceInfo.reservedProduct,
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+    })
+  },
+  computed: {
+    productTitle: function () {
+      return (this.reservedProduct.series ? this.reservedProduct.series + '-' : '') +
+        this.reservedProduct.title
+    },
+    productDesc: function () {
+      const category = this.productCategory.find(cur => {
+        return cur.key === this.reservedProduct.category
+      })
+
+      return (category && this.$t(category.name)) || ''
+    },
   },
   methods: {
     shipValidation () {
@@ -151,7 +199,7 @@ export default {
     },
     formShipInfo () {
       const postData = {}
-      if (this.deliveryMode === '1') {
+      if (this.deliveryMode === '0') {
         const { gender, lastName, firstName, phone, area, address, remark } = this.receiverForm
         postData.gender = gender
         postData.name = lastName + firstName
@@ -167,7 +215,7 @@ export default {
     },
     onConfirmPay () {
       console.log('onConfirmPay')
-      if (this.deliveryMode === '1' && !this.shipValidation()) {
+      if (this.deliveryMode === '0' && !this.shipValidation()) {
         this.$message({
           content: this.$t('shippingInvalid'),
         })
@@ -190,13 +238,16 @@ export default {
         method: 'post',
       }).then(resp => {
         console.log(resp)
+        const { orderNo, payedamount } = resp.data
         this.confirmPayLoading = false
-        // this.$router.replace(`/payment/${resp.data.serviceNo}?query=0`)
+        this.$router.replace(
+          `/confirm-pay?id=${orderNo}&total=${payedamount}&due=${Date.now()}`
+        )
       }).catch(err => {
         console.log(err)
         this.confirmPayLoading = false
         this.$message({
-          content: this.$t('confirmPayFail'),
+          content: this.$t('paymentFail'),
         })
       })
     },
@@ -287,6 +338,12 @@ export default {
 
     .pay-btn {
       max-width: 120px;
+    }
+  }
+
+  .payment-detail__others {
+    .van-cell__title {
+      min-width: 250px;
     }
   }
 }

@@ -6,7 +6,7 @@ const axios = require('axios')
 
 // const multipartMiddleware = multipart()
 const router = express.Router()
-const baseUrl = 'http://j2bcga.natappfree.cc/api-auth'
+const baseUrl = 'http://jfvch8.natappfree.cc/api-auth'
 
 function mapUrl (rawUrl) {
   return baseUrl + rawUrl
@@ -101,7 +101,21 @@ module.exports = () => {
     }, req, res)
   })
 
+  router.get('/client/RentalService/', (req, res) => {
+    request({
+      url: mapUrl(req.url),
+    }, req, res)
+  })
+
   router.post('/common/order/', (req, res) => {
+    request({
+      url: mapUrl(req.url),
+      method: 'post',
+      data: req.body,
+    }, req, res)
+  })
+
+  router.post('/common/payment/', (req, res) => {
     request({
       url: mapUrl(req.url),
       method: 'post',

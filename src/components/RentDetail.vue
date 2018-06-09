@@ -19,7 +19,7 @@
           @click="changeServiceType(0)"
         >
           <p class="title">{{ $t('rentAProduct') }}</p>
-          <p class="desc">{{ $t('moneyPerDay', [productDetail.rent]) }}</p>
+          <p class="desc">{{ $t('moneyPerDay', [$n(productDetail.rent, 'currency')]) }}</p>
         </div>
         <div
           :class="['rent-selection__tabs-block', { active: serviceType === 1 }]"

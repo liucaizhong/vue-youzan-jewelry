@@ -88,5 +88,35 @@ module.exports = {
     icon: () => import('@/assets/svg/my4.svg'),
     url: '/my-service#3',
   }],
+  PAYMENTWAY: [{
+    key: '0',
+    title: 'payMethod0',
+    icon: () => import('@/assets/svg/wechatpay.svg'),
+  }],
+  CATEGORYOFPRODUCT: [{
+    key: '0',
+    name: 'productCategory0',
+  }, {
+    key: '1',
+    name: 'productCategory1',
+  }, {
+    key: '2',
+    name: 'productCategory2',
+  }, {
+    key: '3',
+    name: 'productCategory3',
+  }, {
+    key: '4',
+    name: 'productCategory4',
+  }, {
+    key: '5',
+    name: 'productCategory5_0',
+  }, {
+    key: '6',
+    name: 'productCategory5_1',
+  }, {
+    key: '7',
+    name: 'productCategory5_2',
+  }],
 }
 // IsAuthenticated: 1 未完善， 0 已完善

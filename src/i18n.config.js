@@ -13,6 +13,20 @@ export const i18n = new VueI18n({
   messages: {
     'zh-CN': messages,
   },
+  numberFormats: {
+    'zh-CN': {
+      currency: {
+        style: 'currency',
+        currency: 'CNY',
+      },
+    },
+    'en-US': {
+      currency: {
+        style: 'currency',
+        currency: 'USD',
+      },
+    },
+  }
 })
 
 Locale.use('zh-CN', zhCN)

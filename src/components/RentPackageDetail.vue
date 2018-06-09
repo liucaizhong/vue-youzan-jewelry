@@ -39,7 +39,7 @@
               </my-radio>
             </van-radio-group>
             <p class="deposit">
-              {{ $t('package') + $t('deposit', [productDetail.deposit]) }}
+              {{ $t('package') + $t('deposit', [$n(productDetail.deposit, 'currency')]) }}
             </p>
           </div>
         </my-radio>
@@ -81,7 +81,7 @@ export default {
   },
   computed: {
     showTotalText: function () {
-      return this.$t('totalPackage', [this.rentDetail.totalAmount])
+      return this.$t('totalPackage', [this.$n(this.rentDetail.totalAmount, 'currency')])
     },
   },
   methods: {

@@ -45,7 +45,7 @@ export default {
   font-family: PingFangSC-Regular;
   width: 100vw;
   height: 100vh;
-  // background: #F5F5F5;
+  background: #F5F5F5;
 
   .rhombus {
     position: relative;
@@ -316,6 +316,68 @@ export default {
       .van-switch__node {
         transform: translateX(24px);
       }
+    }
+  }
+
+  .my-radio {
+    display: flex;
+    margin-bottom: 20px;
+
+    .van-radio__input {
+      width: 20px;
+      height: 20px;
+      border: 1px solid #B5B5B5;
+
+      .van-icon {
+        width: 10px;
+        height: 10px;
+        margin: 4px;
+
+        &::before {
+          content: none;
+        }
+
+        &.van-icon-checked {
+          color: #000000;
+          background: #000000;
+        }
+      }
+    }
+
+    .van-radio__label {
+      width: 100%;
+    }
+
+    &.checked {
+      > .van-radio__input {
+        border: 1px solid #000000;
+      }
+    }
+  }
+
+  .my-radio-square {
+    .van-radio__label {
+      font-size: 16px;
+      color: #000000;
+      text-align: left;
+      line-height: 20px;
+    }
+  }
+
+  .my-radio-circle {
+    .van-radio__input {
+      border-radius: 50%;
+
+      .van-icon {
+        border-radius: 50%;
+      }
+    }
+
+    .van-radio__label {
+      font-size: 14px;
+      color: #000000;
+      text-align: left;
+      line-height: 20px;
     }
   }
 }
