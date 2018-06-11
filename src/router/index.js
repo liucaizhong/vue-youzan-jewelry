@@ -12,6 +12,7 @@ const PayConfirm = () => import('@/components/PayConfirm')
 
 export default new Router({
   mode: 'history',
+  base: '/C/',
   routes: [
     // {
     //   path: '*',
