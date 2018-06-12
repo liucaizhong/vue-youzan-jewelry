@@ -201,6 +201,7 @@ export default {
           console.log('resp', resp)
           const results = resp.data.results
           this.imgList = results
+          this.keywordCount = resp.count
           this.loading = false
           this.refreshing = false
           if (results.length < this.searchCond.limit) {
