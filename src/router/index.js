@@ -14,6 +14,7 @@ const PerfectInfo = () => import('@/components/PerfectInfo')
 
 export default new Router({
   mode: 'history',
+  base: '/C/',
   routes: [
     // {
     //   path: '*',
