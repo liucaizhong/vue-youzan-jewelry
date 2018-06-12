@@ -30,7 +30,7 @@ export default {
   width: 80px;
   height: 80px;
   justify-content: flex-end;
-  padding: 26px 0 15px;
+  padding-bottom: 10px;
 
   div {
     font-size: 12px;

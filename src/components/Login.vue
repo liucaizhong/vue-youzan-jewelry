@@ -98,7 +98,8 @@ export default {
   // padding: 142px 24px 0;
   padding: 80px 24px 0;
   width: 100vw;
-  height: 100vh;
+  // height: 100vh;
+  height: 600px;
 
   h3 {
     // line-height: 16px;
@@ -135,9 +136,10 @@ export default {
     font-size: 14px;
     color: #545454;
     text-align: center;
-    // line-height: 14px;
-    position: absolute;
-    bottom: 70px;
+    position: relative;
+    top: 100px;
+    // position: absolute;
+    // bottom: 70px;
     display: inline-flex;
     height: 19px;
     align-items: center;

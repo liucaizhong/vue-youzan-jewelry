@@ -40,6 +40,7 @@
 import MyBadge from './MyBadge'
 import MySvg from './MySvg'
 import { MYSERVICETABS } from '@/constant'
+import { mapState } from 'vuex'
 
 export default {
   components: {
@@ -55,6 +56,8 @@ export default {
   },
   activated () {
     this.logged = this.$getCookie('logged') === '0'
+    console.log('loading', this.loading)
+    this.loading || this.$store.commit('updateGlobalLoading', false)
   },
   computed: {
     userName: function () {
@@ -63,6 +66,9 @@ export default {
     userBtnText: function () {
       return this.logged ? `${this.$t('detail')}` : `${this.$t('loginBtn')}`
     },
+    ...mapState([
+      'loading',
+    ]),
   },
   methods: {
     onUser () {
@@ -135,6 +141,7 @@ export default {
     flex-wrap: nowrap;
     justify-content: space-between;
     background: #fff;
+    max-height: 80px;
 
     .my-svg {
       width: 30px;

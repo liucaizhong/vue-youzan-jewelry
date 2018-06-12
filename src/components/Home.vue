@@ -111,7 +111,10 @@ export default {
     },
     onSearch (val) {
       console.log('Search value', val)
-      val && this.$router.push(`/index?keyword=${val}#products`)
+      if (val) {
+        this.focused = false
+        this.$router.push(`/index?keyword=${val}#products`)
+      }
     },
   },
 }

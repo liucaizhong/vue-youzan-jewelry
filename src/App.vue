@@ -125,7 +125,7 @@ export default {
         font-size: 14px;
         color: #919191;
         letter-spacing: 0.58px;
-        line-height: 14px;
+        line-height: 22px;
       }
 
       .van-field__button {
@@ -138,7 +138,7 @@ export default {
           font-size: 14px;
           color: #B99F85;
           letter-spacing: 0;
-          line-height: 14px;
+          line-height: 22px;
           height: 22px;
         }
       }
