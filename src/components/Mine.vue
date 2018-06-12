@@ -87,6 +87,7 @@ export default {
   height: 100vh;
   background: #F5F5F5;
   overflow: auto;
+  padding-bottom: 60px;
 
   .user-info {
     width: 100%;
@@ -102,7 +103,7 @@ export default {
       font-size: 24px;
       color: #333333;
       text-align: center;
-      line-height: 20px;
+      // line-height: 20px;
     }
 
     a {

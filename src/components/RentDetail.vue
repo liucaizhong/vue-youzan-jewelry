@@ -111,7 +111,7 @@ export default {
       .rent-selection__title {
         font-size: 16px;
         color: #000000;
-        line-height: 14px;
+        // line-height: 14px;
       }
 
       .rent-selection__how-to-rent {
@@ -137,7 +137,7 @@ export default {
         .title {
           font-size: 16px;
           color: #000000;
-          line-height: 14px;
+          // line-height: 14px;
           text-align: center;
         }
 

@@ -95,7 +95,7 @@ export default {
     font-size: 14px;
     color: #919191;
     letter-spacing: 0.58px;
-    line-height: 14px;
+    // line-height: 14px;
     padding: 15px 12px;
     position: relative;
 

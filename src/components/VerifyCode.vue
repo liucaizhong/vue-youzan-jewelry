@@ -64,8 +64,8 @@ export default {
   },
   methods: {
     handleInput (val) {
+      console.log('handleInput', val)
       this.$emit('input', val)
-      this.phone = val
       this.validation(val)
     },
     validation (val) {
@@ -99,7 +99,8 @@ export default {
             },
           }).then(resp => {
             console.log('resp', resp)
-            // const code = resp.data.verifycode
+            const code = resp.data.verifycode
+            this.handleInput(code)
             this.$message({
               content: this.$t('verifyCodeSuccess'),
             })

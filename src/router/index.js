@@ -9,6 +9,8 @@ const ProductDetail = () => import('@/components/ProductDetail')
 const PaymentDetail = () => import('@/components/PaymentDetail')
 const RentDetail = () => import('@/components/RentDetail')
 const PayConfirm = () => import('@/components/PayConfirm')
+const BindPhone = () => import('@/components/BindPhone')
+const PerfectInfo = () => import('@/components/PerfectInfo')
 
 export default new Router({
   mode: 'history',
@@ -36,20 +38,37 @@ export default new Router({
     {
       path: '/payment/:id',
       component: PaymentDetail,
-      // meta: {
-      //   requiresAuth: true,
-      // },
+      meta: {
+        requiresAuth: true,
+      },
     },
     {
       path: '/rent/:id',
       component: RentDetail,
-      // meta: {
-      //   requiresAuth: true,
-      // },
+      meta: {
+        requiresAuth: true,
+      },
     },
     {
       path: '/confirm-pay',
       component: PayConfirm,
-    }
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/bindphone',
+      component: BindPhone,
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/perfectinfo',
+      component: PerfectInfo,
+      meta: {
+        requiresAuth: true,
+      },
+    },
   ]
 })

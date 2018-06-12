@@ -118,5 +118,15 @@ module.exports = {
     key: '7',
     name: 'productCategory5_2',
   }],
+  IDTYPE: [{
+    key: '0',
+    name: 'identity0',
+  }, {
+    key: '1',
+    name: 'identity1',
+  }, {
+    key: '2',
+    name: 'identity2',
+  }],
 }
 // IsAuthenticated: 1 未完善， 0 已完善

@@ -1,7 +1,7 @@
 <template>
-  <div id="login">
-    <h3>{{ $t('loginByPhone') }}</h3>
-    <div class="login-container">
+  <div id="bind">
+    <h3>{{ $t('bindPhone') }}</h3>
+    <div class="bind-container">
       <phone-input
         v-model="userName"
         @handleError="userNameErr = $event"
@@ -16,19 +16,14 @@
           phoneInvalid: userNameErr,
         }"
       />
-      <p v-html="$t('loginTerm', { path: '/terms' })"></p>
     </div>
     <van-button
       class="my-button"
       type="default"
       bottom-action
-      @click="login"
-      :loading="loginLoading"
-    >{{ $t('loginBtn') }}</van-button>
-    <a href="#" class="wechat-login">
-      <img src="../assets/img/wechat.png" />
-      <span>{{ $t('wechatLogin') }}</span>
-    </a>
+      @click="bind"
+      :loading="bindLoading"
+    >{{ $t('bindPhoneBtn') }}</van-button>
   </div>
 </template>
 
@@ -47,21 +42,21 @@ export default {
       verifyCode: '',
       userNameErr: false,
       verifyCodeErr: false,
-      loginLoading: false,
+      bindLoading: false,
     }
   },
   created () {
     this.redirectUrl = this.$route.query.redirect || '/index'
   },
   methods: {
-    login () {
+    bind () {
       if (this.userNameErr || this.verifyCodeErr ||
           !this.userName || !this.verifyCode) {
         this.userNameErr = this.userNameErr || !this.userName
         this.verifyCodeErr = this.verifyCodeErr || !this.verifyCode
       } else {
-        this.loginLoading = true
-        const url = '/client/UserLogin/'
+        this.bindLoading = true
+        const url = '/client/bindphone/'
         this.$fetch(url, {
           data: {
             username: this.userName,
@@ -70,18 +65,18 @@ export default {
           method: 'post',
         }).then(resp => {
           console.log(resp)
-          // const loginInfo = Object.assign({}, resp.data)
-          // this.$store.commit('userLogin', loginInfo)
-          this.loginLoading = false
+          // const bindInfo = Object.assign({}, resp.data)
+          // this.$store.commit('userbind', bindInfo)
+          this.bindLoading = false
           this.$message({
-            content: this.$t('loginSuccess'),
+            content: this.$t('bindPhoneSuccess'),
           })
           this.$router.push(this.redirectUrl)
         }).catch(err => {
           console.log(err)
-          this.loginLoading = false
+          this.bindLoading = false
           this.$message({
-            content: this.$t('loginFail'),
+            content: this.$t('bindPhoneFail'),
           })
         })
       }
@@ -91,7 +86,7 @@ export default {
 </script>
 
 <style lang="less">
-#login {
+#bind {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -108,7 +103,7 @@ export default {
     margin-bottom: 30px;
   }
 
-  .login-container {
+  .bind-container {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -128,23 +123,6 @@ export default {
         color: #AFAFAF;
         text-decoration: underline;
       }
-    }
-  }
-
-  .wechat-login {
-    font-size: 14px;
-    color: #545454;
-    text-align: center;
-    // line-height: 14px;
-    position: fixed;
-    bottom: 70px;
-    display: inline-flex;
-    height: 19px;
-    align-items: center;
-
-    img {
-      width: 23px;
-      margin-right: 7px;
     }
   }
 }

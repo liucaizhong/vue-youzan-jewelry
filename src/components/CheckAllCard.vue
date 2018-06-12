@@ -46,7 +46,7 @@ export default {
         font-size: 16px;
         color: #000000;
         text-align: center;
-        line-height: 16px;
+        // line-height: 16px;
         padding: 0 5px;
       }
     }
@@ -56,7 +56,7 @@ export default {
         font-size: 14px;
         color: #CCB8A3;
         text-align: center;
-        line-height: 14px;
+        // line-height: 14px;
       }
     }
   }

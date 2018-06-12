@@ -287,7 +287,7 @@ export default {
       span {
         font-size: 16px;
         color: #B99F85;
-        line-height: 16px;
+        // line-height: 16px;
       }
     }
   }

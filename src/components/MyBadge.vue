@@ -35,7 +35,7 @@ export default {
   div {
     font-size: 12px;
     color: #B99F85;
-    line-height: 12px;
+    // line-height: 12px;
   }
 
   .my-badge__info {

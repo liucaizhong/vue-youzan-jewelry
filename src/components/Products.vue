@@ -215,10 +215,12 @@ export default {
     },
     onRefresh () {
       this.searchCond.offset = 0
+      this.refreshing = true
       this.requestProductList()
     },
     onLoadmore () {
       this.searchCond.offset++
+      this.loading = true
       this.requestProductList()
     },
     onCheckAll () {
@@ -229,11 +231,14 @@ export default {
 </script>
 
 <style lang="less">
-@imgSize: 160px;
+@imgSize--large: 160px;
+@imgSize--small: 140px;
 
 #products {
   width: 100vw;
   height: 100vh;
+  background: #fff;
+  overflow: auto;
 
   .mask {
     position: fixed;
@@ -365,10 +370,12 @@ export default {
 
   .van-pull-refresh {
     margin-top: 44px;
+    padding-bottom: 50px;
 
     .product-list {
-      overflow: auto;
-      height: calc(100vh - 44px);
+      // overflow: auto;
+      height: auto;
+      min-height: calc(100vh - 44px);
       padding: 24px 18px 50px;
       display: flex;
       flex-wrap: wrap;
@@ -401,18 +408,35 @@ export default {
       }
 
       .product-item {
-        width: @imgSize;
+        width: @imgSize--large;
 
         a {
           .thumb {
-            width: @imgSize;
-            height: @imgSize;
+            width: @imgSize--large;
+            height: @imgSize--large;
             border: none;
           }
         }
 
         .desc {
-          width: @imgSize;
+          width: @imgSize--large;
+        }
+      }
+
+      @media screen and (max-width: 375px) {
+        .product-item {
+          width: @imgSize--small;
+
+          a {
+            .thumb {
+              width: @imgSize--small;
+              height: @imgSize--small;
+            }
+          }
+
+          .desc {
+            width: @imgSize--small;
+          }
         }
       }
     }

@@ -62,7 +62,7 @@ export default {
     text-align: center;
     font-size: 14px;
     color: #999999;
-    line-height: 14px;
+    // line-height: 14px;
     padding-bottom: 5px;
     border-bottom: 1.3px solid transparent;
 

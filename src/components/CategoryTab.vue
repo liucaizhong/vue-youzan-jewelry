@@ -73,7 +73,7 @@ export default {
         font-size: 12px;
         color: #000000;
         text-align: center;
-        line-height: 12px;
+        // line-height: 12px;
       }
     }
   }

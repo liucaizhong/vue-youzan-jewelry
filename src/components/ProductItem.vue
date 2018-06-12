@@ -7,9 +7,9 @@
       >
       <div class="desc">
         <p v-if="img.series || img.title" class="name van-ellipsis">{{ productName }}</p>
-        <p v-if="img.sellingPrice" class="price">{{ '￥' + img.sellingPrice }}</p>
+        <p v-if="img.sellingPrice" class="price">{{ $n(img.sellingPrice, 'currency') }}</p>
         <p v-if="img.rent" class="rent">
-          {{ '￥' + img.rent + '/' + $t('day') }}
+          {{ $n(img.rent, 'currency') + '/' + $t('day') }}
         </p>
       </div>
     </router-link>
@@ -63,19 +63,19 @@ export default {
     .name {
       font-size: 14px;
       color: #000000;
-      line-height: 14px;
+      // line-height: 14px;
     }
 
     .price {
       font-size: 14px;
       color: #333333;
-      line-height: 14px;
+      // line-height: 14px;
     }
 
     .rent {
       font-size: 12px;
       color: #B99F85;
-      line-height: 12px;
+      // line-height: 12px;
     }
   }
 }

@@ -129,7 +129,7 @@ export default {
       h3 {
         font-size: 14px;
         color: #000000;
-        line-height: 14px;
+        // line-height: 14px;
         text-align: left;
         margin: 0;
         margin-bottom: 18px;
@@ -149,7 +149,7 @@ export default {
       display: block;
       font-size: 14px;
       color: #000000;
-      line-height: 14px;
+      // line-height: 14px;
     }
 
     .filter-panel__btn {
