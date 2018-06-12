@@ -136,7 +136,7 @@ export default {
     color: #545454;
     text-align: center;
     // line-height: 14px;
-    position: fixed;
+    position: absolute;
     bottom: 70px;
     display: inline-flex;
     height: 19px;
