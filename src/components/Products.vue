@@ -370,7 +370,7 @@ export default {
 
   .van-pull-refresh {
     margin-top: 44px;
-    padding-bottom: 50px;
+    // padding-bottom: 50px;
 
     .product-list {
       // overflow: auto;
