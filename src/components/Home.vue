@@ -126,6 +126,7 @@ export default {
   height: 100vh;
   background: #F5F5F5;
   overflow: auto;
+  --webkit-overflow-scrolling: touch;
 
   .mask {
     position: fixed;
@@ -140,7 +141,7 @@ export default {
 
   .van-pull-refresh {
     // height: 100%;
-    margin-bottom: 50px;
+    // margin-bottom: 50px;
 
     .van-pull-refresh__track {
       // height: 100%;
@@ -274,6 +275,7 @@ export default {
         justify-content: space-around;
         background: transparent;
         padding: 22px 0;
+        margin-bottom: 50px;
       }
 
       .van-list__loading {

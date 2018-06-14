@@ -241,7 +241,8 @@ export default {
     .van-search {
       // width: 339px;
       width: 100%;
-      min-height: 36px;
+      // min-height: 36px;
+      height: 60px;
       background: transparent !important;
       padding: 12px 18px;
       // margin: 12px 0;

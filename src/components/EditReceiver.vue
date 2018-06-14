@@ -23,20 +23,31 @@
       <div class="name-part">
         <label class="required">{{ $t('lastName') }}</label>
         <van-field
-          v-model="form.lastName"
+          class="my-field"
+          :value="form.lastName"
+          :error="err.lastName"
+          :error-message="$t('lastNameInvalid')"
+          @input="handleInput('lastName', $event)"
+          @blur="validationInput('lastName', $event.target.value)"
         />
       </div>
       <div class="name-part">
         <label class="required">{{ $t('firstName') }}</label>
         <van-field
+          class="my-field"
           v-model="form.firstName"
+          :error="err.firstName"
+          :error-message="$t('firstNameInvalid')"
         />
       </div>
     </div>
     <div class="edit-receiver__phone">
       <label class="required">{{ $t('cellPhone') }}</label>
       <van-field
+        class="my-field"
         v-model="form.phone"
+        :error="err.phone"
+        :error-message="$t('invalidPhoneNo')"
       />
     </div>
     <div class="edit-receiver__area">
@@ -48,17 +59,23 @@
         class="edit-receiver__area-picker"
         :defaultValue="defaultAreaCode"
         @confirm="confirmArea"
+        :error="err.area"
+        :error-message="$t('areaInvalid')"
       />
     </div>
     <div class="edit-receiver__address">
       <label class="required">{{ $t('address') }}</label>
       <van-field
+        class="my-field"
         v-model="form.address"
+        :error="err.address"
+        :error-message="$t('addressInvalid')"
       />
     </div>
     <div class="edit-receiver__remark">
       <label>{{ $t('addRemark') }}</label>
       <van-field
+        class="my-field"
         v-model="form.remark"
         type="textarea"
       />
@@ -80,10 +97,17 @@ export default {
       type: Object,
       required: true,
     },
+    validation: {
+      type: Object,
+      default: function () {
+        return {}
+      },
+    },
   },
   data () {
     return {
       defaultAreaCode: '',
+      err: this.validation,
     }
   },
   methods: {
@@ -96,6 +120,14 @@ export default {
           break
         }
       }
+    },
+    handleInput (key, val) {
+      this.form[key] = val
+      this.validationInput(key, val)
+    },
+    validationInput (key, val) {
+      console.log('validationInput', key, val)
+      this.err[key] = !val
     },
   },
 }
@@ -131,11 +163,11 @@ export default {
     }
   }
 
-  .van-field {
+  .my-field {
     margin-top: 15px;
-    width: 100%;
-    height: 44px;
-    border: 1px solid #333333;
+    // width: 100%;
+    // height: 44px;
+    // border: 1px solid #333333;
   }
 
   .mode-group {
@@ -175,11 +207,14 @@ export default {
   }
 
   .edit-receiver__remark {
-    .van-field {
-      height: 100px;
+    .my-field {
+      // height: 100px;
+      .van-cell__value {
+        height: 100px !important;
 
-      textarea {
-        height: 100%;
+        textarea {
+          height: 100%;
+        }
       }
     }
   }

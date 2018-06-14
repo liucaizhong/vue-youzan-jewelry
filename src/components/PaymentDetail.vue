@@ -5,7 +5,6 @@
         class="my-card"
         :title="productTitle"
         :desc="productDesc"
-        num="1"
         :price="reservedProduct.sellingPrice"
       >
         <img v-lazy="reservedProduct.mainimage" slot="thumb">
@@ -46,6 +45,7 @@
             <edit-receiver
               v-else-if="item.key === '0'"
               :form.sync="receiverForm"
+              :validation.sync="receiverFormValidation"
             />
           </div>
         </my-radio>
@@ -118,6 +118,7 @@ export default {
         address: '',
         remark: '',
       },
+      receiverFormValidation: {},
       reservedProduct: {
         mainimage: '',
         brand: '',
@@ -178,21 +179,28 @@ export default {
         const val = this.receiverForm[key]
         if (key === 'phone') {
           const pattern = /^1[3|5|7|8]\d{9}$/gi
-          if (!pattern.test(val)) {
-            this.$message({
-              content: this.$t('invalidPhoneNo'),
-            })
-            return false
-          }
-          return true
+          const phoneErr = !pattern.test(val)
+          // if (!pattern.test(val)) {
+          //   this.$message({
+          //     content: this.$t('invalidPhoneNo'),
+          //   })
+          //   return false
+          // }
+          // return true
+          this.receiverFormValidation[key] = !phoneErr
+          return phoneErr
         }
-        if (typeof val === 'object') {
-          return val.every(area => {
+        if (key === 'area') {
+          const areaErr = val.every(area => {
             return area.code !== '-1'
           })
+          this.receiverFormValidation[key] = !areaErr
+          return areaErr
         } else if (val) {
+          this.receiverFormValidation[key] = false
           return true
         } else {
+          this.receiverFormValidation[key] = true
           return false
         }
       })
@@ -219,37 +227,36 @@ export default {
         this.$message({
           content: this.$t('shippingInvalid'),
         })
-        return false
-      }
-
-      this.confirmPayLoading = true
-      const fieldName = this.type !== 2 ? 'serviceNo' : 'reservedProductid'
-      const url = '/common/order/'
-      console.log('ordertype', this.type)
-      this.$fetch(url, {
-        data: {
-          [fieldName]: this.id,
-          serviceType: this.type,
-          orderType: this.type,
-          deliveryMode: this.deliveryMode,
-          useBalance: +this.useBalance,
-          ...this.formShipInfo(),
-        },
-        method: 'post',
-      }).then(resp => {
-        console.log(resp)
-        const { orderNo, payedamount } = resp.data
-        this.confirmPayLoading = false
-        this.$router.replace(
-          `/confirm-pay?id=${orderNo}&total=${payedamount}&due=${Date.now()}`
-        )
-      }).catch(err => {
-        console.log(err)
-        this.confirmPayLoading = false
-        this.$message({
-          content: this.$t('paymentFail'),
+      } else {
+        this.confirmPayLoading = true
+        const fieldName = this.type !== 2 ? 'serviceNo' : 'reservedProductid'
+        const url = '/common/order/'
+        console.log('ordertype', this.type)
+        this.$fetch(url, {
+          data: {
+            [fieldName]: this.id,
+            serviceType: this.type,
+            orderType: this.type,
+            deliveryMode: this.deliveryMode,
+            useBalance: +this.useBalance,
+            ...this.formShipInfo(),
+          },
+          method: 'post',
+        }).then(resp => {
+          console.log(resp)
+          const { orderNo, payedamount } = resp.data
+          this.confirmPayLoading = false
+          this.$router.replace(
+            `/confirm-pay?id=${orderNo}&total=${payedamount}&due=${Date.now()}`
+          )
+        }).catch(err => {
+          console.log(err)
+          this.confirmPayLoading = false
+          this.$message({
+            content: this.$t('paymentFail'),
+          })
         })
-      })
+      }
     },
   },
 }
@@ -261,6 +268,7 @@ export default {
   height: 100vh;
   padding-bottom: 60px;
   overflow: auto;
+  --webkit-overflow-scrolling: touch;
   background: #F5F5F5;
 
   .payment-detail__price {

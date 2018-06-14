@@ -48,6 +48,7 @@ export default {
 #product-detail {
   margin-bottom: 50px;
   overflow: auto;
+  --webkit-overflow-scrolling: touch;
 
   .product-detail__footer {
     width: 100%;

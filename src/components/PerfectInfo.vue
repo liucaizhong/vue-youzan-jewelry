@@ -128,11 +128,7 @@ export default {
     },
     validateRealName (val) {
       console.log('validate', val)
-      if (val) {
-        this.realNameErr = false
-      } else {
-        this.realNameErr = true
-      }
+      this.realNameErr = !val
     },
     onInputRealName (val) {
       console.log('onchangerealname')
@@ -153,11 +149,7 @@ export default {
       if (this.idType === '0') {
         pattern = /(^\d{18}$)|(^\d{17}(\d|X|x)$)/g
       }
-      if (pattern && !pattern.test(val)) {
-        this.idNoErr = true
-      } else {
-        this.idNoErr = false
-      }
+      this.idNoErr = pattern && !pattern.test(val)
     },
     onInputEmail (val) {
       this.email = val
@@ -165,11 +157,7 @@ export default {
     },
     validateEmail (val) {
       const pattern = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/g
-      if (val && !pattern.test(val)) {
-        this.emailErr = true
-      } else {
-        this.emailErr = false
-      }
+      this.emailErr = val && !pattern.test(val)
     },
   },
 }

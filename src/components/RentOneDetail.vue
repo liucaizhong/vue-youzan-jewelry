@@ -9,7 +9,7 @@
       showToolbar
       @confirm="confirmRentPeriod"
       @change="changeRentPeriod"
-      :err="rentPeriodErr"
+      :error="rentPeriodErr"
       :errMsg="$t('rentPeriodInvalid')"
     />
     <p class="deposit">{{ $t('deposit', [$n(productDetail.deposit, 'currency')]) }}</p>
