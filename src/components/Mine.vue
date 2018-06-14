@@ -1,7 +1,7 @@
 <template>
   <div id="mine-page">
     <header class="user-info">
-      <span class="username">{{ userName }}</span>
+      <span class="username">{{ userNameText }}</span>
       <a href="javascript:void(0)" @click="onUser">{{ userBtnText }}</a>
     </header>
     <!-- <div class="van-hairline--top"></div> -->
@@ -18,7 +18,7 @@
         v-for="(item, i) in myServiceTabs"
         :key="item.key"
         :url="item.url"
-        :info="myServiceTabInfo[i]"
+        :info="userServiceCount[i]"
         :title="$t(item.title)"
       >
         <template slot="icon">
@@ -40,7 +40,7 @@
 import MyBadge from './MyBadge'
 import MySvg from './MySvg'
 import { MYSERVICETABS } from '@/constant'
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -51,7 +51,6 @@ export default {
     return {
       logged: false,
       myServiceTabs: MYSERVICETABS,
-      myServiceTabInfo: [10, 0, 5, 0],
     }
   },
   activated () {
@@ -60,8 +59,8 @@ export default {
     this.loading || this.$store.commit('updateGlobalLoading', false)
   },
   computed: {
-    userName: function () {
-      return this.logged ? '137XXXX1111' : this.$t('notLoggedIn')
+    userNameText: function () {
+      return this.logged ? this.userName : this.$t('notLoggedIn')
     },
     userBtnText: function () {
       return this.logged ? `${this.$t('detail')}` : `${this.$t('loginBtn')}`
@@ -69,6 +68,10 @@ export default {
     ...mapState([
       'loading',
     ]),
+    ...mapGetters([
+      'userName',
+      'userServiceCount',
+    ])
   },
   methods: {
     onUser () {

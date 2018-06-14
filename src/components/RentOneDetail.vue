@@ -9,6 +9,8 @@
       showToolbar
       @confirm="confirmRentPeriod"
       @change="changeRentPeriod"
+      :err="rentPeriodErr"
+      :errMsg="$t('rentPeriodInvalid')"
     />
     <p class="deposit">{{ $t('deposit', [$n(productDetail.deposit, 'currency')]) }}</p>
     <footer class="rent-detail__footer">
@@ -39,19 +41,28 @@ export default {
   data () {
     return {
       rentDetail: {
-        rentPeriod: '0',
+        rentPeriod: '',
         totalAmount: '0',
       },
       rentAmountColumns: [],
       countPerTurn: 100,
       defaultIndex: 0,
       paymentLoading: false,
-      error: false,
+      rentPeriodErr: false,
     }
   },
   computed: {
     showTotalText: function () {
       return this.$t('totalRent', [this.rentDetail.rentPeriod, this.$n(this.rentDetail.totalAmount, 'currency')])
+    },
+  },
+  watch: {
+    'rentDetail.rentPeriod': function (val, oldVal) {
+      if (!val) {
+        this.rentPeriodErr = true
+      } else {
+        this.rentPeriodErr = false
+      }
     },
   },
   activated () {
@@ -63,10 +74,12 @@ export default {
   },
   methods: {
     onPayment () {
-      if (this.rentDetail.rentPeriod === '0') {
-        this.$message({
-          content: this.$t('rentPeriodInvalid'),
-        })
+      if (this.rentPeriodErr || !this.rentDetail.rentPeriod) {
+        // this.$message({
+        //   content: this.$t('rentPeriodInvalid'),
+        // })
+        this.rentPeriodErr = this.rentPeriodErr ||
+          !this.rentDetail.rentPeriod
       } else {
         this.paymentLoading = true
         const url = '/client/RentalService/'

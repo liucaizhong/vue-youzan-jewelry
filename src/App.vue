@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 export default {
   name: 'App',
@@ -28,6 +28,15 @@ export default {
     ...mapState([
       'loading',
       'message',
+    ]),
+  },
+  created () {
+    // getUserInfo
+    this.$getCookie('logged') === '0' && this.getUserInfo()
+  },
+  methods: {
+    ...mapActions([
+      'getUserInfo',
     ]),
   },
 }
@@ -45,7 +54,7 @@ export default {
   font-family: PingFangSC-Regular;
   width: 100vw;
   height: 100vh;
-  background: #F5F5F5;
+  background: #fff;
 
   .rhombus {
     position: relative;
@@ -111,12 +120,33 @@ export default {
     &.van-field {
       // width: 327px;
       width: 100%;
-      min-height: 44px;
-      border: 1px solid #000000;
-      margin-bottom: 24px;
+      // min-height: 44px;
+      // border: 1px solid #000000;
+      // margin-bottom: 24px;
+      padding: 0;
+      padding-bottom: 24px;
+
+      &.required::before {
+        content: '*';
+        position: absolute;
+        color: #B99F85;
+        font-size: 1.125rem;
+        top: 14px;
+        left: 3px;
+      }
+
+      &::after {
+        content: none;
+      }
 
       .van-cell__value {
+        position: initial;
+        border: 1px solid #000000;
+        height: 44px;
+        width: 100%;
+
         input {
+          padding: 0 15px;
           height: 100%;
         }
       }
@@ -128,10 +158,23 @@ export default {
         line-height: 22px;
       }
 
+      &.has-btn {
+        .van-cell__value {
+          input {
+            padding-right: 139px;
+          }
+        }
+      }
+
       .van-field__button {
+        position: absolute;
         padding-left: 18px;
         border: none;
         border-left: 1px solid #DFDFDF;
+        top: 10px;
+        right: 19px;
+        width: 105px;
+        height: 24px;
 
         .van-button--default {
           border: none;
@@ -140,12 +183,17 @@ export default {
           letter-spacing: 0;
           line-height: 22px;
           height: 22px;
+          width: 100%;
         }
       }
 
       &.van-field--error {
-        border-color: #B99F85;
-        margin-bottom: 54px;
+        // border-color: #B99F85;
+        padding-bottom: 54px;
+
+        .van-cell__value {
+          border-color: #B99F85;
+        }
 
         .van-field__control {
           color: #B99F85;
@@ -155,13 +203,16 @@ export default {
         }
 
         .van-field__error-message {
-          position: fixed;
-          margin-top: 33px;
-          margin-left: -15px;
+          // position: fixed;
+          // margin-top: 33px;
+          // margin-left: -15px;
           font-size: 14px;
           color: #B99F85;
-          letter-spacing: 0.58px;
+          // letter-spacing: 0.58px;
           line-height: 14px;
+          top: 59px;
+          position: absolute;
+          left: 0;
         }
       }
     }

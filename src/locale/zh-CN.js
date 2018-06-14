@@ -119,7 +119,12 @@ export default {
   realName: '真实姓名',
   realNameInvalid: '真实姓名不能为空',
   identityType: '证件类型',
+  identityTypeInvalid: '证件类型不能为空',
+  identityNo: '证件号码',
   identity0: '身份证',
   identity1: '护照',
   identity2: '其他证件',
+  idNoInvalid: '证件号码格式不正确',
+  email: '电子邮箱',
+  emailInvalid: '邮箱格式不正确',
 }

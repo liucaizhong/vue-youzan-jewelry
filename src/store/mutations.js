@@ -1,10 +1,4 @@
 export default {
-  userLogin (state, loginInfo) {
-    // state.login = {
-    //   ...loginInfo,
-    // }
-    state.login = Object.assign({}, state.login, loginInfo)
-  },
   updateGlobalLoading (state, loading) {
     state.loading = loading
   },
@@ -19,5 +13,8 @@ export default {
     state.message = {
       show: false,
     }
+  },
+  updateUserInfo (state, userInfo) {
+    state.userInfo = Object.assign({}, state.userInfo, userInfo)
   },
 }

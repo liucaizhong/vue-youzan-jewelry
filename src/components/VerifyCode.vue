@@ -1,6 +1,6 @@
 <template>
   <van-field
-    class="my-field"
+    class="my-field has-btn"
     :value="value"
     @input="handleInput($event)"
     :placeholder="$t('verifyCode')"

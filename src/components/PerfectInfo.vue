@@ -7,7 +7,7 @@
         :value="realName"
         :placeholder="$t('realName')"
         :error="realNameErr"
-        :error-message="realNameErrMsg"
+        :error-message="$t('realNameInvalid')"
         @input="onInputRealName($event)"
         @blur="validateRealName($event.target.value)"
         autofocus
@@ -20,16 +20,30 @@
         :columns="idTypes.map(cur => $t(cur.name))"
         showToolbar
         @confirm="confirmIdType"
+        :error="idTypeErr"
+        :errMsg="$t('identityTypeInvalid')"
       />
       <van-field
         class="my-field required"
         :value="idNo"
-        :placeholder="$t('realName')"
+        :placeholder="$t('identityNo')"
         :error="idNoErr"
-        :error-message="idNoErrMsg"
+        :error-message="$t('idNoInvalid')"
         @input="onInputIdNo($event)"
         @blur="validateIdNo($event.target.value)"
-        autofocus
+      />
+      <van-field
+        class="my-field"
+        :value="email"
+        :placeholder="$t('email')"
+        :error="emailErr"
+        :error-message="$t('emailInvalid')"
+        @input="onInputEmail($event)"
+      />
+      <van-field
+        class="my-field"
+        :value="address"
+        :placeholder="$t('address')"
       />
     </div>
     <van-button
@@ -54,11 +68,13 @@ export default {
     return {
       realName: '',
       realNameErr: false,
-      realNameErrMsg: '',
       idType: '',
+      idTypeErr: false,
       idNo: '',
       idNoErr: false,
-      idNoErrMsg: '',
+      email: '',
+      emailErr: false,
+      address: '',
       perfectLoading: false,
       idTypes: IDTYPE,
     }
@@ -66,12 +82,23 @@ export default {
   created () {
     this.redirectUrl = this.$route.query.redirect || '/index'
   },
+  watch: {
+    idType: function (val, oldVal) {
+      if (!val) {
+        this.idTypeErr = true
+      } else {
+        this.idTypeErr = false
+      }
+    },
+  },
   methods: {
     onPerfect () {
-      if (this.userNameErr || this.verifyCodeErr ||
-          !this.userName || !this.verifyCode) {
-        this.userNameErr = this.userNameErr || !this.userName
-        this.verifyCodeErr = this.verifyCodeErr || !this.verifyCode
+      if (this.realNameErr || this.idTypeErr || this.idNoErr ||
+          this.emailErr || !this.realName || !this.idType ||
+          !this.idNo) {
+        this.realNameErr = this.realNameErr || !this.realName
+        this.idTypeErr = this.idTypeErr || !this.idType
+        this.idNoErr = this.idNoErr || !this.idNo
       } else {
         this.perfectLoading = true
         const url = '/client/perfectinfo/'
@@ -103,20 +130,46 @@ export default {
       console.log('validate', val)
       if (val) {
         this.realNameErr = false
-        this.realNameErrMsg = ''
       } else {
         this.realNameErr = true
-        this.realNameErrMsg = this.$t('realNameInvalid')
       }
-    },
-    confirmIdType (val, idx) {
-      console.log(idx)
-      this.idType = `${idx}`
     },
     onInputRealName (val) {
       console.log('onchangerealname')
       this.realName = val
       this.validateRealName(val)
+    },
+    confirmIdType (val, idx) {
+      console.log(idx)
+      this.idType = `${idx}`
+    },
+    onInputIdNo (val) {
+      this.idNo = val
+      this.validateIdNo(val)
+    },
+    validateIdNo (val) {
+      console.log('val', val)
+      let pattern
+      if (this.idType === '0') {
+        pattern = /(^\d{18}$)|(^\d{17}(\d|X|x)$)/g
+      }
+      if (pattern && !pattern.test(val)) {
+        this.idNoErr = true
+      } else {
+        this.idNoErr = false
+      }
+    },
+    onInputEmail (val) {
+      this.email = val
+      this.validateEmail(val)
+    },
+    validateEmail (val) {
+      const pattern = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/g
+      if (val && !pattern.test(val)) {
+        this.emailErr = true
+      } else {
+        this.emailErr = false
+      }
     },
   },
 }
@@ -147,15 +200,6 @@ export default {
     align-items: center;
     width: 100%;
     margin-bottom: 12px;
-
-    .required::before {
-      content: '*';
-      position: absolute;
-      color: #B99F85;
-      font-size: 18px;
-      top: 12px;
-      left: 3px;
-    }
 
     .my-field {
       .van-field__control {

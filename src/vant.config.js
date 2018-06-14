@@ -2,7 +2,7 @@ import { LAZYLOADOPTIONS } from '@/constant'
 import { Loading, DatetimePicker, Field, Button, Search, Swipe, SwipeItem,
   Popup, Tabbar, TabbarItem, PullRefresh, Toast, Lazyload, Collapse,
   CollapseItem, List, Picker, RadioGroup, Radio, Card, CellGroup,
-  Cell, Switch, Area } from 'vant'
+  Cell, Switch, Area, Tab, Tabs } from 'vant'
 
 export default {
   init (Vue) {
@@ -26,5 +26,6 @@ export default {
     Vue.use(Cell).use(CellGroup)
     Vue.use(Switch)
     Vue.use(Area)
+    Vue.use(Tab).use(Tabs)
   }
 }

@@ -11,15 +11,16 @@ const RentDetail = () => import('@/components/RentDetail')
 const PayConfirm = () => import('@/components/PayConfirm')
 const BindPhone = () => import('@/components/BindPhone')
 const PerfectInfo = () => import('@/components/PerfectInfo')
+const MyService = () => import('@/components/MyService')
 
 export default new Router({
   mode: 'history',
   base: '/C/',
   routes: [
-    // {
-    //   path: '*',
-    //   component: NotFound,
-    // },
+    {
+      path: '*',
+      component: Index,
+    },
     {
       path: '/login',
       component: Login,
@@ -67,6 +68,13 @@ export default new Router({
     {
       path: '/perfectinfo',
       component: PerfectInfo,
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/my-service',
+      component: MyService,
       meta: {
         requiresAuth: true,
       },

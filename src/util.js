@@ -71,7 +71,10 @@ export default {
             const rsp = await axios(mergeConfig)
             resolve(rsp)
             // dispatch action to synchronus mine tab
-            // todo
+            if (mergeConfig.method !== 'get' &&
+              ['/client/UserLogin/', '/common/payment/'].includes(url)) {
+              this.$store.dispatch('getUserInfo')
+            }
           } catch (err) {
             // todo: error handle
             console.error(err)

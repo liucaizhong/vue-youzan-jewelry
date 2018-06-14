@@ -1,0 +1,15 @@
+<template>
+  <div id="delivery-service">delivery-service</div>
+</template>
+
+<script>
+export default {
+  data () {
+    return {}
+  }
+}
+</script>
+
+<style lang="less">
+
+</style>
