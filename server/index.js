@@ -94,6 +94,12 @@ module.exports = () => {
     }, req, res)
   })
 
+  router.get('/client/ProductDetail/', (req, res) => {
+    request({
+      url: mapUrl(req.url),
+    }, req, res)
+  })
+
   router.post('/client/RentalService/', (req, res) => {
     request({
       url: mapUrl(req.url),

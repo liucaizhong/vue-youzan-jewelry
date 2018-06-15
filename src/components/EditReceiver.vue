@@ -25,7 +25,7 @@
         <van-field
           class="my-field"
           :value="form.lastName"
-          :error="err.lastName"
+          :error="error.lastName"
           :error-message="$t('lastNameInvalid')"
           @input="handleInput('lastName', $event)"
           @blur="validationInput('lastName', $event.target.value)"
@@ -36,8 +36,10 @@
         <van-field
           class="my-field"
           v-model="form.firstName"
-          :error="err.firstName"
+          :error="error.firstName"
           :error-message="$t('firstNameInvalid')"
+          @input="handleInput('firstName', $event)"
+          @blur="validationInput('firstName', $event.target.value)"
         />
       </div>
     </div>
@@ -46,8 +48,10 @@
       <van-field
         class="my-field"
         v-model="form.phone"
-        :error="err.phone"
+        :error="error.phone"
         :error-message="$t('invalidPhoneNo')"
+        @input="handleInput('phone', $event)"
+        @blur="validationInput('phone', $event.target.value)"
       />
     </div>
     <div class="edit-receiver__area">
@@ -59,8 +63,8 @@
         class="edit-receiver__area-picker"
         :defaultValue="defaultAreaCode"
         @confirm="confirmArea"
-        :error="err.area"
-        :error-message="$t('areaInvalid')"
+        :error="error.area"
+        :errMsg="$t('areaInvalid')"
       />
     </div>
     <div class="edit-receiver__address">
@@ -68,8 +72,10 @@
       <van-field
         class="my-field"
         v-model="form.address"
-        :error="err.address"
+        :error="error.address"
         :error-message="$t('addressInvalid')"
+        @input="handleInput('address', $event)"
+        @blur="validationInput('address', $event.target.value)"
       />
     </div>
     <div class="edit-receiver__remark">
@@ -97,18 +103,40 @@ export default {
       type: Object,
       required: true,
     },
-    validation: {
-      type: Object,
-      default: function () {
-        return {}
-      },
-    },
   },
   data () {
     return {
       defaultAreaCode: '',
-      err: this.validation,
+      error: {},
     }
+  },
+  created () {
+    this.$eventHub.$on('receiverValidation', () => {
+      const keys = Object.keys(this.error)
+      if (!keys.length) {
+        this.error = {
+          lastName: true,
+          firstName: true,
+          phone: true,
+          area: true,
+          address: true,
+        }
+        this.$eventHub.$emit('receiverValidationResult', false)
+      } else {
+        this.$eventHub.$emit('receiverValidationResult',
+          !keys.some(
+            key => this.error[key]
+          ))
+      }
+    })
+  },
+  watch: {
+    'form.area': function (val, old) {
+      console.log('area', val)
+      this.error.area = val.some(val => {
+        return val.code === '-1'
+      })
+    },
   },
   methods: {
     confirmArea (val) {
@@ -127,7 +155,12 @@ export default {
     },
     validationInput (key, val) {
       console.log('validationInput', key, val)
-      this.err[key] = !val
+      if (key === 'phone') {
+        const pattern = /^1[3|5|7|8]\d{9}$/gi
+        this.error[key] = !pattern.test(val)
+      } else {
+        this.error[key] = !val
+      }
     },
   },
 }
@@ -135,13 +168,13 @@ export default {
 
 <style lang="less">
 .edit-receiver {
-  > div:not(:last-of-type) {
-    margin-bottom: 20px;
-  }
+  // > div:not(:last-of-type) {
+  //   margin-bottom: 20px;
+  // }
 
-  > div.mode-group {
-    margin-bottom: 0;
-  }
+  // > div.mode-group {
+  //   margin-bottom: 0;
+  // }
 
   label {
     font-size: 14px;
@@ -200,9 +233,9 @@ export default {
   .edit-receiver__area {
     .edit-receiver__area-picker {
       margin-top: 15px;
-      width: 100%;
-      height: 44px;
-      border: 1px solid #333333;
+      // width: 100%;
+      // height: 44px;
+      // border: 1px solid #333333;
     }
   }
 
@@ -214,6 +247,7 @@ export default {
 
         textarea {
           height: 100%;
+          padding: 5px 8px;
         }
       }
     }

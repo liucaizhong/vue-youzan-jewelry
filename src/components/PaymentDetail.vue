@@ -45,7 +45,6 @@
             <edit-receiver
               v-else-if="item.key === '0'"
               :form.sync="receiverForm"
-              :validation.sync="receiverFormValidation"
             />
           </div>
         </my-radio>
@@ -118,7 +117,6 @@ export default {
         address: '',
         remark: '',
       },
-      receiverFormValidation: {},
       reservedProduct: {
         mainimage: '',
         brand: '',
@@ -134,27 +132,37 @@ export default {
     console.log('$route', this.$route)
     this.id = this.$route.params.id
     this.type = this.$route.query.type
-    this.$nextTick(function () {
-      const url = '/client/RentalService/'
-      this.$fetch(url, {
-        params: {
-          serviceNo: this.id,
-        },
-      }, true).then(resp => {
-        console.log('resp', resp)
-        const serviceInfo = resp.data.results[0]
-        const { 'current_payamount': totalAmount, initialDeposit, initialRent,
-          rentPeriod } = serviceInfo
-        this.totalAmount = totalAmount
-        this.deposit = initialDeposit
-        this.rent = initialRent
-        this.rentPeriod = rentPeriod
-        this.reservedProduct = {
-          ...serviceInfo.reservedProduct,
-        }
-      }).catch(err => {
-        console.log(err)
-      })
+
+    const url = '/client/RentalService/'
+    this.$fetch(url, {
+      params: {
+        serviceNo: this.id,
+      },
+    }, true).then(resp => {
+      console.log('resp', resp)
+      const serviceInfo = resp.data.results[0]
+      const { 'current_payamount': totalAmount, initialDeposit, initialRent,
+        rentPeriod } = serviceInfo
+      this.totalAmount = totalAmount
+      this.deposit = initialDeposit
+      this.rent = initialRent
+      this.rentPeriod = rentPeriod
+      this.reservedProduct = {
+        ...serviceInfo.reservedProduct,
+      }
+    }).catch(err => {
+      console.log(err)
+    })
+
+    this.$eventHub.$on('receiverValidationResult', valid => {
+      console.log('valid', valid)
+      if (!valid) {
+        this.$message({
+          content: this.$t('shippingInvalid'),
+        })
+      } else {
+        this.confirmPayRequest()
+      }
     })
   },
   computed: {
@@ -171,40 +179,6 @@ export default {
     },
   },
   methods: {
-    shipValidation () {
-      return Object.keys(this.receiverForm).every(key => {
-        if (key === 'remark') {
-          return true
-        }
-        const val = this.receiverForm[key]
-        if (key === 'phone') {
-          const pattern = /^1[3|5|7|8]\d{9}$/gi
-          const phoneErr = !pattern.test(val)
-          // if (!pattern.test(val)) {
-          //   this.$message({
-          //     content: this.$t('invalidPhoneNo'),
-          //   })
-          //   return false
-          // }
-          // return true
-          this.receiverFormValidation[key] = !phoneErr
-          return phoneErr
-        }
-        if (key === 'area') {
-          const areaErr = val.every(area => {
-            return area.code !== '-1'
-          })
-          this.receiverFormValidation[key] = !areaErr
-          return areaErr
-        } else if (val) {
-          this.receiverFormValidation[key] = false
-          return true
-        } else {
-          this.receiverFormValidation[key] = true
-          return false
-        }
-      })
-    },
     formShipInfo () {
       const postData = {}
       if (this.deliveryMode === '0') {
@@ -223,40 +197,41 @@ export default {
     },
     onConfirmPay () {
       console.log('onConfirmPay')
-      if (this.deliveryMode === '0' && !this.shipValidation()) {
-        this.$message({
-          content: this.$t('shippingInvalid'),
-        })
+      if (this.deliveryMode === '0') {
+        this.$eventHub.$emit('receiverValidation')
       } else {
-        this.confirmPayLoading = true
-        const fieldName = this.type !== 2 ? 'serviceNo' : 'reservedProductid'
-        const url = '/common/order/'
-        console.log('ordertype', this.type)
-        this.$fetch(url, {
-          data: {
-            [fieldName]: this.id,
-            serviceType: this.type,
-            orderType: this.type,
-            deliveryMode: this.deliveryMode,
-            useBalance: +this.useBalance,
-            ...this.formShipInfo(),
-          },
-          method: 'post',
-        }).then(resp => {
-          console.log(resp)
-          const { orderNo, payedamount } = resp.data
-          this.confirmPayLoading = false
-          this.$router.replace(
-            `/confirm-pay?id=${orderNo}&total=${payedamount}&due=${Date.now()}`
-          )
-        }).catch(err => {
-          console.log(err)
-          this.confirmPayLoading = false
-          this.$message({
-            content: this.$t('paymentFail'),
-          })
-        })
+        this.confirmPayRequest()
       }
+    },
+    confirmPayRequest () {
+      this.confirmPayLoading = true
+      const fieldName = this.type !== 2 ? 'serviceNo' : 'reservedProductid'
+      const url = '/common/order/'
+      console.log('ordertype', this.type)
+      this.$fetch(url, {
+        data: {
+          [fieldName]: this.id,
+          serviceType: this.type,
+          orderType: this.type,
+          deliveryMode: this.deliveryMode,
+          useBalance: +this.useBalance,
+          ...this.formShipInfo(),
+        },
+        method: 'post',
+      }).then(resp => {
+        console.log(resp)
+        const { orderNo, payedamount } = resp.data
+        this.confirmPayLoading = false
+        this.$router.replace(
+          `/confirm-pay?id=${orderNo}&total=${payedamount}&due=${Date.now()}`
+        )
+      }).catch(err => {
+        console.log(err)
+        this.confirmPayLoading = false
+        this.$message({
+          content: this.$t('paymentFail'),
+        })
+      })
     },
   },
 }

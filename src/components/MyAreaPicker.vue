@@ -71,6 +71,8 @@ export default {
 
 <style lang="less">
 .my-area-picker {
+  padding-bottom: 24px;
+
   .van-picker-column {
     font-size: 14px;
   }
@@ -97,17 +99,17 @@ export default {
   // }
 
   .picker-trigger {
-    height: 100%;
-
     .picker-btn {
       // border: 1px solid #D6D6D6;
       font-size: 14px;
       color: #919191;
       letter-spacing: 0.58px;
       // line-height: 14px;
-      padding: 15px 12px;
+      padding: 0 12px;
       position: relative;
-      height: 100%;
+      height: 44px;
+      line-height: 44px;
+      border: 1px solid #333333;
 
       &::after {
         content: '';
@@ -130,14 +132,14 @@ export default {
         }
       }
     }
+  }
 
-    .picker-err {
-      width: 100%;
-      height: 30px;
-      font-size: 14px;
-      color: #B99F85;
-      line-height: 44px;
-    }
+  .picker-err {
+    width: 100%;
+    height: 30px;
+    font-size: 14px;
+    color: #B99F85;
+    line-height: 44px;
   }
 
   .van-picker__toolbar {

@@ -58,11 +58,7 @@ export default {
   },
   watch: {
     'rentDetail.rentPeriod': function (val, oldVal) {
-      if (!val) {
-        this.rentPeriodErr = true
-      } else {
-        this.rentPeriodErr = false
-      }
+      this.rentPeriodErr = !val
     },
   },
   activated () {

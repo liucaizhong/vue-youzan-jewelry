@@ -84,11 +84,7 @@ export default {
   },
   watch: {
     idType: function (val, oldVal) {
-      if (!val) {
-        this.idTypeErr = true
-      } else {
-        this.idTypeErr = false
-      }
+      this.idTypeErr = !val
     },
   },
   methods: {

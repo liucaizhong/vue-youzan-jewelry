@@ -3,7 +3,12 @@
 </template>
 
 <script>
+import MyServiceCard from './MyServiceCard'
+
 export default {
+  components: {
+    MyServiceCard,
+  },
   data () {
     return {
       api: '',

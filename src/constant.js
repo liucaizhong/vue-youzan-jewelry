@@ -136,5 +136,21 @@ module.exports = {
     key: '2',
     name: 'identity2',
   }],
+  GOLDPURITY: [{
+    key: '0',
+    value: '18K',
+  }, {
+    key: '1',
+    value: '24K',
+  }, {
+    key: '2',
+    value: '900',
+  }, {
+    key: '3',
+    value: '950',
+  }, {
+    key: '4',
+    value: '990',
+  }],
 }
 // IsAuthenticated: 1 未完善， 0 已完善

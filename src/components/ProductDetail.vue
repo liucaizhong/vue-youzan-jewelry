@@ -1,12 +1,53 @@
 <template>
   <div id="product-detail">
+    <header class="banner">
+      <van-swipe>
+        <van-swipe-item v-for="i in 5" :key="i">
+          <img v-lazy="productDetail[`MainImage${i}`]" />
+        </van-swipe-item>
+      </van-swipe>
+    </header>
+    <section class="product-title">
+      <div class="row">
+        <div class="left van-ellipsis">{{ productName }}</div>
+        <div class="right">
+          {{ $n(productDetail.sellingPrice, 'currency') }}
+        </div>
+      </div>
+      <div class="row">
+        <div class="left van-ellipsis">{{ productDesc }}</div>
+        <div class="right">
+          {{ $t('moneyPerDay', [$n(productDetail.rent, 'currency')]) }}
+        </div>
+      </div>
+    </section>
+    <section class="product-spec">
+      <div class="title">{{ $t('productSpec') }}</div>
+      <div class="content">
+        <div v-if="productDetail.diamondWeight" class="spec">
+          {{ `-${$t('diamondWeightDesc', [productDetail.diamondWeight])}` }}
+        </div>
+        <div
+          v-if="productDetail.goldType || productDetail.goldPurity || productDetail.goldContent"
+          class="spec"
+        >
+          {{ goldContentDesc }}
+        </div>
+        <div v-if="productDetail.size" class="spec">
+          {{ `-${productDetail.size}` }}
+        </div>
+        <div v-if="productDetail.certificate" class="spec">
+          {{ `-${productDetail.certificate}` }}
+        </div>
+      </div>
+    </section>
     <footer class="product-detail__footer">
       <van-button
         class="my-button rent-btn"
         type="default"
         bottom-action
         @click="onConfirmRent"
-      >{{ $t('rentProduct', [$n(product.rent, 'currency')]) }}</van-button>
+      >{{ $t('rentProduct', [$n(productDetail.rent, 'currency')]) }}</van-button>
       <van-button
         class="my-button buy-btn"
         type="default"
@@ -18,27 +59,64 @@
 </template>
 
 <script>
+import { GOLDPURITY, GOLDTYPE } from '@/constant'
+
 export default {
   data () {
     return {
-      product: {
-        productid: '',
-        rent: '499',
-      },
+      productid: '',
+      productDetail: {},
+      goldPurity: GOLDPURITY,
+      goldType: GOLDTYPE,
     }
   },
   created () {
     console.log('$route', this.$route)
-    this.product.productid = this.$route.params.id
+    this.productid = this.$route.params.id
+    const url = '/client/ProductDetail/'
+    this.$fetch(url, {
+      params: {
+        productid: this.productid,
+      },
+    }, true).then(resp => {
+      console.log('resp', resp)
+      const data = resp.data.results[0]
+      this.productDetail = { ...data }
+    }).catch(err => {
+      console.log(err)
+    })
+  },
+  computed: {
+    productName: function () {
+      const { series, title } = this.productDetail
+      return (series && series + '-') + title
+    },
+    productDesc: function () {
+      const { category, brand } = this.productDetail
+      let categoryText = +category > 4
+        ? this.$t(`productCategory5_${+category - 5}`)
+        : this.$t(`productCategory${category}`)
+      return categoryText + (brand && ` | ${brand}`)
+    },
+    goldContentDesc: function () {
+      const { goldType, goldPurity, goldContent } = this.productDetail
+      const goldTypeText = goldType &&
+        this.$t(this.goldType.find(item => item.key === goldType).name)
+      const goldPurityText = goldPurity &&
+        this.goldPurity.find(item => item.key === goldPurity).value
+      const goldContentText = goldContent && this.$t('gram', [goldContent])
+
+      return goldTypeText + goldPurityText + ' ' + goldContentText
+    },
   },
   methods: {
     onConfirmRent () {
       console.log('onConfirmRent')
-      this.$router.push(`/rent/${this.product.productid}`)
+      this.$router.push(`/rent/${this.productid}`)
     },
     onConfirmBuy () {
       console.log('onConfirmBuy')
-      this.$router.push(`/payment/${this.product.productid}?type=2`)
+      this.$router.push(`/payment/${this.productid}?type=2`)
     },
   },
 }
@@ -49,6 +127,88 @@ export default {
   margin-bottom: 50px;
   overflow: auto;
   --webkit-overflow-scrolling: touch;
+
+  .banner {
+    width: 100%;
+
+    .van-swipe {
+      width: 100%;
+      height: 0;
+      padding-top: 100%;
+      position: relative;
+      background: #fff;
+
+      .van-swipe__indicators {
+        bottom: 17px;
+
+        .van-swipe__indicator {
+          width: 8px;
+          height: 8px;
+          // background-color: #fff;
+          opacity: .4;
+
+          &.van-swipe__indicator--active {
+            opacity: 1;
+            background-color: #B99F85;
+          }
+        }
+      }
+
+      .van-swipe__track {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+      }
+
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+
+  .product-title {
+    width: 100%;
+    height: 94px;
+    border-bottom: 1px solid #e5e5e5;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 24px 18px;
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      line-height: 100%;
+
+      &:first-child {
+        font-size: 16px;
+        color: #000;
+      }
+      &:last-child {
+        font-size: 14px;
+        color: #999999;
+      }
+    }
+  }
+
+  .product-spec {
+    width: 100%;
+    height: 246px;
+    padding: 24px 18px;
+    border-bottom: 1px solid #e5e5e5;
+
+    .title {
+      font-size: 14px;
+      color: #000000;
+      text-align: left;
+    }
+
+    .content {
+      padding: 14px 0 20px;
+    }
+  }
 
   .product-detail__footer {
     width: 100%;

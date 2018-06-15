@@ -131,4 +131,7 @@ export default {
   idNoInvalid: '证件号码格式不正确',
   email: '电子邮箱',
   emailInvalid: '邮箱格式不正确',
+  productSpec: '产品规格',
+  diamondWeightDesc: '镶嵌{0}克拉中央主钻',
+  gram: '{0}克',
 }
