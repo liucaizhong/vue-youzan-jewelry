@@ -25,7 +25,7 @@
       <div class="title">{{ $t('productSpec') }}</div>
       <div class="content">
         <div v-if="productDetail.diamondWeight" class="spec">
-          {{ `-${$t('diamondWeightDesc', [productDetail.diamondWeight])}` }}
+          {{ `- ${$t('diamondWeightDesc', [productDetail.diamondWeight])}` }}
         </div>
         <div
           v-if="productDetail.goldType || productDetail.goldPurity || productDetail.goldContent"
@@ -34,12 +34,35 @@
           {{ goldContentDesc }}
         </div>
         <div v-if="productDetail.size" class="spec">
-          {{ `-${productDetail.size}` }}
+          {{ `- ${productDetail.size}` }}
         </div>
         <div v-if="productDetail.certificate" class="spec">
-          {{ `-${productDetail.certificate}` }}
+          {{ `- ${productDetail.certificate}` }}
         </div>
       </div>
+      <div class="desc">{{ productDetail.desc }}</div>
+    </section>
+    <section class="product-tabs">
+      <van-tabs v-model="activeTab" swipeable>
+        <van-tab
+          :title="$t('productDetail')"
+        >
+          <img class="product-tabs__img" v-lazy="productDetail.detailImages">
+        </van-tab>
+        <van-tab
+          :title="$t('rentStrategy')"
+        >
+          <img class="product-tabs__img" v-lazy="rentStrategy">
+        </van-tab>
+        <van-tab
+          :title="$t('FAQ')"
+        >
+          <img class="product-tabs__img" v-lazy="faq">
+        </van-tab>
+      </van-tabs>
+    </section>
+    <section class="product-detail__notice">
+      <img class="product-detail__notice-img" v-lazy="noticeImg">
     </section>
     <footer class="product-detail__footer">
       <van-button
@@ -68,6 +91,10 @@ export default {
       productDetail: {},
       goldPurity: GOLDPURITY,
       goldType: GOLDTYPE,
+      activeTab: 0,
+      rentStrategy: '',
+      faq: '',
+      noticeImg: '',
     }
   },
   created () {
@@ -106,7 +133,7 @@ export default {
         this.goldPurity.find(item => item.key === goldPurity).value
       const goldContentText = goldContent && this.$t('gram', [goldContent])
 
-      return goldTypeText + goldPurityText + ' ' + goldContentText
+      return '- ' + goldTypeText + goldPurityText + ' ' + goldContentText
     },
   },
   methods: {
@@ -195,9 +222,9 @@ export default {
 
   .product-spec {
     width: 100%;
-    height: 246px;
-    padding: 24px 18px;
-    border-bottom: 1px solid #e5e5e5;
+    height: auto;
+    padding: 24px 18px 0;
+    // border-bottom: 1px solid #e5e5e5;
 
     .title {
       font-size: 14px;
@@ -207,6 +234,64 @@ export default {
 
     .content {
       padding: 14px 0 20px;
+      font-size: 14px;
+      color: #999999;
+    }
+
+    .desc {
+      padding-bottom: 20px;
+      font-size: 14px;
+      color: #999999;
+    }
+  }
+
+  .product-tabs {
+    width: 100%;
+    border-bottom: 1px solid #e5e5e5;
+
+    .van-tabs--line {
+      padding-top: 64px;
+    }
+
+    .van-tabs__wrap {
+      height: 64px;
+
+      &::after {
+        border-bottom-width: 0;
+      }
+
+      .van-tabs__line {
+        width: 17.5% !important;
+        left: 8%;
+        bottom: 25px;
+        background-color: #B99F85;
+      }
+
+      .van-ellipsis {
+        font-size: 16px;
+        color: #999999;
+        line-height: 64px;
+      }
+
+      .van-tab--active {
+        .van-ellipsis {
+          color: #B99F85;
+        }
+      }
+    }
+
+    .van-tabs__content {
+      .product-tabs__img {
+        width: 100%;
+      }
+    }
+  }
+
+  .product-detail__notice {
+    width: 100%;
+
+    .product-detail__notice-img {
+      width: 100%;
     }
   }
 

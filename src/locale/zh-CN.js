@@ -132,6 +132,8 @@ export default {
   email: '电子邮箱',
   emailInvalid: '邮箱格式不正确',
   productSpec: '产品规格',
+  productDetail: '产品详情',
+  rentStrategy: '租赁攻略',
   diamondWeightDesc: '镶嵌{0}克拉中央主钻',
   gram: '{0}克',
 }

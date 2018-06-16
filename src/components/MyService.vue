@@ -1,12 +1,10 @@
 <template>
   <div id="my-service">
-    <van-tabs v-model="activeTab">
+    <van-tabs v-model="activeTab" swipeable sticky>
       <van-tab
         v-for="(tab, i) in myServiceTabs"
         :key="i"
         :title="$t(tab.title)"
-        sticky
-        swipeable
       >
         <component :is="tab.component" :api="tab.api"  />
       </van-tab>
