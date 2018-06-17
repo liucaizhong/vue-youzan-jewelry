@@ -239,8 +239,8 @@ export default {
   width: 100vw;
   height: 100vh;
   background: #fff;
-  overflow: auto;
-  --webkit-overflow-scrolling: touch;
+  // overflow: auto;
+  // -webkit-overflow-scrolling: touch;
 
   .mask {
     position: fixed;

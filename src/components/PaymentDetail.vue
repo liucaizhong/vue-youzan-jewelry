@@ -243,7 +243,7 @@ export default {
   height: 100vh;
   padding-bottom: 60px;
   overflow: auto;
-  --webkit-overflow-scrolling: touch;
+  -webkit-overflow-scrolling: touch;
   background: #F5F5F5;
 
   .payment-detail__price {

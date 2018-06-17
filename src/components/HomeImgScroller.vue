@@ -77,6 +77,7 @@ export default {
   width: 100vw;
   overflow-x: auto;
   overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
   display: flex;
   flex-wrap: nowrap;
   padding: 5px 0 20px;

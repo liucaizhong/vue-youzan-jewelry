@@ -146,7 +146,7 @@ export default {
   height: 100vh;
   padding-bottom: 50px;
   overflow: auto;
-  --webkit-overflow-scrolling: touch;
+  -webkit-overflow-scrolling: touch;
 
   header {
     width: 100%;

@@ -153,7 +153,7 @@ export default {
 #product-detail {
   margin-bottom: 50px;
   overflow: auto;
-  --webkit-overflow-scrolling: touch;
+  -webkit-overflow-scrolling: touch;
 
   .banner {
     width: 100%;
@@ -222,7 +222,6 @@ export default {
 
   .product-spec {
     width: 100%;
-    height: auto;
     padding: 24px 18px 0;
     // border-bottom: 1px solid #e5e5e5;
 
@@ -255,6 +254,7 @@ export default {
 
     .van-tabs__wrap {
       height: 64px;
+      z-index: 0;
 
       &::after {
         border-bottom-width: 0;

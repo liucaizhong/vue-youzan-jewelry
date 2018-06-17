@@ -119,6 +119,7 @@ export default {
   width: 100%;
   max-height: 100vh;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 
   .content {
     padding-bottom: 20px;

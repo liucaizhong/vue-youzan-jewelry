@@ -83,7 +83,7 @@ export default {
 #rent-detail {
   padding-bottom: 50px;
   overflow: auto;
-  --webkit-overflow-scrolling: touch;
+  -webkit-overflow-scrolling: touch;
   background: #F5F5F5;
   width: 100vw;
   height: 100vh;

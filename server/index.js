@@ -68,8 +68,13 @@ function request ({ url, method = 'get', headers = {}, ...args }, req, res) {
       res.setHeader('set-cookie', resp.headers['set-cookie'])
     }
   }).catch(err => {
-    console.error('error is', err)
-    res.status(500).send('500 | Internal Server Error')
+    // console.error('error is', err)
+    // res.status(500).send('500 | Internal Server Error')
+    console.error('error code is', err.response.data.statusCode)
+    console.error('error message is', err.response.data.statusMessage)
+    const { statusCode, statusMessage } = err.response.data
+    // res.status(500).send('500 | Internal Server Error')
+    res.status(500).send(statusCode + ' | ' + statusMessage)
   })
 }
 
