@@ -124,7 +124,7 @@ export default {
 #home {
   width: 100vw;
   height: 100vh;
-  background: #F5F5F5;
+  // background: #F5F5F5;
   // overflow: auto;
   // -webkit-overflow-scrolling: touch;
 
@@ -260,6 +260,7 @@ export default {
       pointer-events: none;
       box-sizing: border-box;
       border-top: 1px solid #e5e5e5;
+      border-bottom: 1px solid #e5e5e5;
     }
   }
 

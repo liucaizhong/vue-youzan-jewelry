@@ -94,7 +94,7 @@ export default {
 #mine-page {
   width: 100vw;
   height: 100vh;
-  background: #F5F5F5;
+  // background: #F5F5F5;
   // overflow: auto;
   // -webkit-overflow-scrolling: touch;
   padding-bottom: 60px;

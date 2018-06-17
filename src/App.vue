@@ -54,7 +54,8 @@ export default {
   font-family: PingFangSC-Regular;
   width: 100vw;
   height: 100vh;
-  background: #fff;
+  // background: #fff;
+  background: #F5F5F5;
 
   .rhombus {
     position: relative;
