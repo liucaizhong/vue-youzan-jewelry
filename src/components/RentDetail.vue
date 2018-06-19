@@ -33,11 +33,11 @@
         <keep-alive>
           <rent-package-detail
             v-if="serviceType"
-            :productDetail="productDetail"
+            :product="productDetail"
           />
           <rent-one-detail
             v-else
-            :productDetail="productDetail"
+            :product="productDetail"
           />
         </keep-alive>
       </section>
@@ -58,9 +58,9 @@ export default {
     return {
       serviceType: 0, // 0: rental, 1: package
       productDetail: {
-        rent: '10',
-        deposit: '2000',
-        rentcycle: '10',
+        rent: '',
+        deposit: '',
+        rentcycle: '',
         productid: '',
       },
     }
@@ -69,7 +69,18 @@ export default {
     console.log('$route', this.$route)
     this.productDetail.productid = this.$route.params.id
     // get product detail
-    // todo...
+    const url = '/client/ProductDetail/'
+    this.$fetch(url, {
+      params: {
+        productid: this.productDetail.productid,
+      },
+    }, true).then(resp => {
+      console.log('resp', resp)
+      const data = resp.data.results[0]
+      this.productDetail = { ...data }
+    }).catch(err => {
+      console.log(err)
+    })
   },
   methods: {
     changeServiceType (type) {

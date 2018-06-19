@@ -36,7 +36,7 @@ export default {
     MyPicker,
   },
   props: {
-    productDetail: Object,
+    product: Object,
   },
   data () {
     return {
@@ -49,6 +49,7 @@ export default {
       defaultIndex: 0,
       paymentLoading: false,
       rentPeriodErr: false,
+      productDetail: {},
     }
   },
   computed: {
@@ -60,10 +61,18 @@ export default {
     'rentDetail.rentPeriod': function (val, oldVal) {
       this.rentPeriodErr = !val
     },
+    product: {
+      deep: true,
+      handler: function (val, oldVal) {
+        // console.log('product', val)
+        this.productDetail = { ...val }
+        this.rentAmountColumns = this.rentAmountColumns.concat(this.mockrentAmountColumns())
+      },
+    }
   },
   activated () {
     console.log('activated')
-    this.rentAmountColumns = this.rentAmountColumns.concat(this.mockrentAmountColumns())
+    // this.rentAmountColumns = this.rentAmountColumns.concat(this.mockrentAmountColumns())
     // const match = this.getPeriodRentFromPicker(this.rentAmountColumns[this.curPickerIndex])
     // this.rentDetail.rentPeriod = match[0]
     // this.rentDetail.totalAmount = `${+this.productDetail.deposit + +match[1]}`
@@ -103,12 +112,14 @@ export default {
       const firstValue = (count &&
         +this.getPeriodRentFromPicker(this.rentAmountColumns[count - 1])[0]) ||
         +this.productDetail.rentcycle
+      console.log('rentcycle', firstValue)
+      console.log('rentcycle2', this.productDetail.rentcycle)
       const resArr = []
       for (let i = 0; i < this.countPerTurn;) {
         ++i
         resArr.push(this.$t('rentPickerValue', [
           firstValue + i,
-          this.$n((firstValue + i) * this.productDetail.rent, 'currency'),
+          this.$n((firstValue + i) * (+this.productDetail.rent), 'currency'),
         ]))
       }
       return resArr

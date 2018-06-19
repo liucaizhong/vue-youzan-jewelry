@@ -383,6 +383,7 @@ export default {
       flex-wrap: wrap;
       justify-content: space-between;
       align-content: flex-start;
+      background: #fff;
 
       .products-footer {
         width: 100%;

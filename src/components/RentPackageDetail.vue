@@ -67,7 +67,7 @@ export default {
     MyRadio,
   },
   props: {
-    productDetail: Object,
+    product: Object,
   },
   data () {
     return {
@@ -77,6 +77,15 @@ export default {
       packageType: '0', // 0: use current, 1: buy new
       curPackageSelect: '0',
       newPackageSelect: '0',
+      productDetail: {},
+    }
+  },
+  watch: {
+    product: {
+      deep: true,
+      handler: function (val, oldVal) {
+        this.productDetail = { ...val }
+      },
     }
   },
   computed: {

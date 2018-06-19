@@ -16,7 +16,7 @@
         ref="myPicker"
         :show-toolbar="showToolbar"
         :title="title"
-        :columns="columns"
+        :columns="showColumns"
         @cancel="onCancel"
         @confirm="onConfirm"
         @change="onChange"
@@ -61,6 +61,16 @@ export default {
     return {
       show: false,
       value: '',
+      showColumns: [],
+    }
+  },
+  watch: {
+    columns: {
+      deep: true,
+      handler: function (val, oldVal) {
+        // console.log('columns', val)
+        this.showColumns = [...val]
+      }
     }
   },
   updated () {

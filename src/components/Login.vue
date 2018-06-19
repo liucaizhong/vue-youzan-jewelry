@@ -1,5 +1,5 @@
 <template>
-  <div id="login">
+  <div id="login" :style="{ height: height + 'px'}">
     <h3>{{ $t('loginByPhone') }}</h3>
     <div class="login-container">
       <phone-input
@@ -48,10 +48,13 @@ export default {
       userNameErr: false,
       verifyCodeErr: false,
       loginLoading: false,
+      height: 0,
     }
   },
   created () {
     this.redirectUrl = this.$route.query.redirect || '/index'
+    const app = document.getElementById('app')
+    this.height = app.clientHeight
   },
   methods: {
     login () {
@@ -98,9 +101,9 @@ export default {
   // padding: 142px 24px 0;
   padding: 80px 24px 0;
   width: 100vw;
-  height: 100vh;
+  // height: 100vh;
   background: #fff;
-  // height: 500px;
+  min-height: 500px;
 
   h3 {
     // line-height: 16px;
