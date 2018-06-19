@@ -154,6 +154,7 @@ export default {
   margin-bottom: 50px;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
+  background: #fff;
 
   .banner {
     width: 100%;
@@ -163,7 +164,6 @@ export default {
       height: 0;
       padding-top: 100%;
       position: relative;
-      background: #fff;
 
       .van-swipe__indicators {
         bottom: 17px;

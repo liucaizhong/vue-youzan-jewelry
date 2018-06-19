@@ -97,7 +97,6 @@ export default {
   // background: #F5F5F5;
   // overflow: auto;
   // -webkit-overflow-scrolling: touch;
-  padding-bottom: 60px;
 
   .user-info {
     width: 100%;
@@ -155,6 +154,7 @@ export default {
 
   .other-info {
     margin-top: 12px;
+    margin-bottom: 62px;
 
     .my-field {
       .van-cell__title {

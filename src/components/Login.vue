@@ -91,10 +91,6 @@ export default {
 </script>
 
 <style lang="less">
-#app {
-  background: #fff;
-}
-
 #login {
   display: flex;
   flex-direction: column;
@@ -102,8 +98,9 @@ export default {
   // padding: 142px 24px 0;
   padding: 80px 24px 0;
   width: 100vw;
-  // height: 100vh;
-  height: 600px;
+  height: 100vh;
+  background: #fff;
+  // height: 500px;
 
   h3 {
     // line-height: 16px;
