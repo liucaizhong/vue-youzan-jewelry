@@ -116,11 +116,11 @@ export default {
       console.log('rentcycle2', this.productDetail.rentcycle)
       const resArr = []
       for (let i = 0; i < this.countPerTurn;) {
-        ++i
         resArr.push(this.$t('rentPickerValue', [
           firstValue + i,
           this.$n((firstValue + i) * (+this.productDetail.rent), 'currency'),
         ]))
+        ++i
       }
       return resArr
     },
