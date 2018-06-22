@@ -1,6 +1,15 @@
 <template>
   <div id="rent-detail">
     <section class="product-info">
+      <van-card
+        class="my-card"
+        :title="productTitle"
+        :desc="productDesc"
+        :price="productDetail.sellingPrice"
+      >
+        <img v-lazy="productDetail.MainImage0 && productDetail.MainImage0.avatar" slot="thumb">
+      </van-card>
+      <div class="product-info--rent">{{ productRent }}</div>
     </section>
     <section class="rent-selection">
       <header>
@@ -46,6 +55,7 @@
 </template>
 
 <script>
+import { CATEGORYOFPRODUCT } from '@/constant'
 import RentOneDetail from './RentOneDetail'
 import RentPackageDetail from './RentPackageDetail'
 
@@ -57,6 +67,7 @@ export default {
   data () {
     return {
       serviceType: 0, // 0: rental, 1: package
+      productCategory: CATEGORYOFPRODUCT,
       productDetail: {
         rent: '',
         deposit: '',
@@ -82,6 +93,23 @@ export default {
       console.log(err)
     })
   },
+  computed: {
+    productTitle: function () {
+      return (this.productDetail.series ? this.productDetail.series + '-' : '') +
+        this.productDetail.title
+    },
+    productDesc: function () {
+      const category = this.productCategory.find(cur => {
+        return cur.key === this.productDetail.category
+      })
+
+      return (category && this.$t(category.name)) || ''
+    },
+    productRent: function () {
+      return this.$t('rentPrice') +
+        this.$t('moneyPerDay', [this.$n(this.productDetail.rent, 'currency')])
+    },
+  },
   methods: {
     changeServiceType (type) {
       this.serviceType = type
@@ -103,6 +131,14 @@ export default {
     width: 100%;
     height: 128px;
     background: #fff;
+    position: relative;
+
+    .product-info--rent {
+      position: absolute;
+      bottom: 34px;
+      left: 116px;
+      font-size: 14px;
+    }
   }
 
   .rent-selection {

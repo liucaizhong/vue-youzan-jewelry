@@ -191,6 +191,9 @@ export default {
         const url = '/client/product/'
         const condParams = this.formSearchParams(this.searchCond)
         console.log('condParams', condParams)
+        const { offset, limit } = condParams
+        offset && (condParams.offset = offset * limit)
+
         this.$fetch(url, {
           params: {
             offset: 0,

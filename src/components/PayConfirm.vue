@@ -31,7 +31,7 @@
 
 <script>
 import MySvg from './MySvg'
-import { PAYMENTWAY } from '@/constant'
+import { PAYMENTWAY, ORDERTIMEOUT } from '@/constant'
 
 export default {
   components: {
@@ -67,14 +67,16 @@ export default {
       paymentMethod: PAYMENTWAY[0].key,
       paymentWay: PAYMENTWAY,
       confirmPayLoading: false,
+      orderTimeout: ORDERTIMEOUT,
     }
   },
   created () {
     const { id, total, due } = this.$route.query
-    this.orderNo = id
+    console.log('payConfirm', id)
+    this.orderNo = id.split`,`
     this.paymentAmount = total
     // this.paymentDueDate = new Date(due + 15 * 60 * 1000)
-    let gap = +due + 15 * 60 * 1000 - Date.now()
+    let gap = +due + this.orderTimeout - Date.now()
     if (gap <= 0) {
       this.paymentCountDownText = this.$t('paymentOvertime')
     } else {
@@ -101,7 +103,9 @@ export default {
   },
   computed: {
     orderNoTitle: function () {
-      return this.$t('orderNo') + ': ' + this.orderNo
+      return !this.orderNo.length
+        ? (this.$t('orderNo') + ': ' + this.orderNo[0])
+        : this.$t('batchPayment')
     },
     paymentAmountText: function () {
       return this.$n(this.paymentAmount, 'currency')
@@ -120,7 +124,7 @@ export default {
       const url = '/common/payment/'
       this.$fetch(url, {
         data: {
-          orderno: [this.orderNo],
+          orderno: this.orderNo,
           paymentMethod: this.paymentMethod,
         },
         method: 'post',

@@ -141,6 +141,30 @@ module.exports = () => {
     }, req, res)
   })
 
+  router.get('/client/tablist/paymentService/', (req, res) => {
+    request({
+      url: mapUrl(req.url),
+    }, req, res)
+  })
+
+  router.get('/client/tablist/deliveryService/', (req, res) => {
+    request({
+      url: mapUrl(req.url),
+    }, req, res)
+  })
+
+  router.get('/client/tablist/rentingService/', (req, res) => {
+    request({
+      url: mapUrl(req.url),
+    }, req, res)
+  })
+
+  router.get('/client/tablist/completedService/', (req, res) => {
+    request({
+      url: mapUrl(req.url),
+    }, req, res)
+  })
+
   // router.post('/productupdate/', multipartMiddleware, (req, res) => {
   //   let form = formData(null, req.body)
   //   form = formData(form, req.files, true)

@@ -2,8 +2,8 @@
   <div id="product-detail">
     <header class="banner">
       <van-swipe>
-        <van-swipe-item v-for="i in 5" :key="i">
-          <img v-lazy="productDetail[`MainImage${i}`]" />
+        <van-swipe-item v-for="i in 6" :key="i" v-if="i === 1 || productDetail[`MainImage${i}`]">
+          <img v-lazy="productDetail[`MainImage${i}`] && productDetail[`MainImage${i}`].avatar" />
         </van-swipe-item>
       </van-swipe>
     </header>
@@ -47,7 +47,10 @@
         <van-tab
           :title="$t('productDetail')"
         >
-          <img class="product-tabs__img" v-lazy="productDetail.detailImages">
+          <img
+            class="product-tabs__img"
+            v-lazy="productDetail.detailImages && productDetail.detailImages.url"
+          >
         </van-tab>
         <van-tab
           :title="$t('rentStrategy')"

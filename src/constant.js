@@ -152,5 +152,64 @@ module.exports = {
     key: '4',
     value: '990',
   }],
+  ORDERTIMEOUT: 15 * 60 * 1000,
+  SERVICETYPE: [{
+    key: '0',
+    name: 'serviceType0',
+  }, {
+    key: '1',
+    name: 'serviceType1',
+  }, {
+    key: '2',
+    name: 'serviceType2',
+  }],
+  ORDERTYPE: [{
+    key: '0',
+    name: 'orderType0',
+  }, {
+    key: '1',
+    name: 'orderType1',
+  }, {
+    key: '2',
+    name: 'orderType2',
+  }, {
+    key: '3',
+    name: 'orderType3',
+  }, {
+    key: '4',
+    name: 'orderType4',
+  }, {
+    key: '5',
+    name: 'orderType5',
+  }, {
+    key: '6',
+    name: 'orderType6',
+  }, {
+    key: '7',
+    name: 'orderType7',
+  }],
+  ORDERSTATUS: [{
+    key: '0',
+    name: 'orderStatus0',
+  }, {
+    key: '1',
+    name: 'orderStatus1',
+  }, {
+    key: '2',
+    name: 'orderStatus2',
+  }, {
+    key: '3',
+    name: 'orderStatus3',
+  }, {
+    key: '4',
+    name: 'orderStatus4',
+  }],
+  PAYMENTTYPE: [{
+    key: '0',
+    name: 'paymentType0',
+  }, {
+    key: '1',
+    name: 'paymentType1',
+  }],
 }
 // IsAuthenticated: 1 未完善， 0 已完善

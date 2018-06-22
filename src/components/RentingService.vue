@@ -1,15 +1,96 @@
 <template>
-  <div id="renting-service">renting-service</div>
+  <div v-if="serviceData.length" id="renting-service">
+    <van-list
+      class="renting-service-list"
+      v-model="loading"
+      :finished="finished"
+      @load="onLoadmore"
+      :loading-text="$t('loadMore')"
+      :immediate-check="false"
+    >
+      <my-service-card
+        v-for="(info, i) in serviceData"
+        :key="i"
+        :tab="2"
+        :serviceInfo="info"
+      >
+        <my-order-card
+          :orders="info.order"
+        />
+      </my-service-card>
+    </van-list>
+  </div>
+  <has-no-service v-else />
 </template>
 
 <script>
+import HasNoService from './HasNoService'
+import MyServiceCard from './MyServiceCard'
+import MyOrderCard from './MyOrderCard'
+
 export default {
+  components: {
+    HasNoService,
+    MyServiceCard,
+    MyOrderCard,
+  },
   data () {
-    return {}
+    return {
+      api: '',
+      loading: false,
+      finished: false,
+      offset: 0,
+      limit: 15,
+      serviceData: [],
+    }
+  },
+  watch: {
+    '$attrs': {
+      immediate: true,
+      handler: function (val, oldVal) {
+        if (val.active) {
+          console.log('this.$attrs', val.api)
+          this.api = val.api
+          this.offset = 0
+          this.getService(val.api)
+        }
+      }
+    },
+  },
+  methods: {
+    onLoadmore () {
+      this.loading = true
+      this.getService(this.api)
+    },
+    getService (url) {
+      const { offset, limit } = this.$data
+      this.$fetch(url, {
+        params: {
+          offset: offset * limit,
+          limit,
+        },
+      }).then(resp => {
+        console.log('resp', resp)
+        ++this.offset
+        const results = resp.data.results
+        this.serviceData = [...results]
+        this.loading = false
+        if (results.length < this.limit) {
+          this.finished = true
+        }
+      }).catch(err => {
+        console.log(err)
+        this.loading = false
+      })
+    }
   }
 }
 </script>
 
 <style lang="less">
-
+#renting-service {
+  width: 100%;
+  // height: 100%;
+  position: relative;
+}
 </style>

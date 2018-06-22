@@ -112,12 +112,12 @@ export default {
       const firstValue = (count &&
         +this.getPeriodRentFromPicker(this.rentAmountColumns[count - 1])[0]) ||
         +this.productDetail.rentcycle
-      console.log('rentcycle', firstValue)
-      console.log('rentcycle2', this.productDetail.rentcycle)
+      // console.log('rentcycle', firstValue)
+      // console.log('rentcycle2', this.productDetail.rentcycle)
       const resArr = []
       for (let i = 0; i < this.countPerTurn;) {
         resArr.push(this.$t('rentPickerValue', [
-          firstValue + i,
+          firstValue + i * this.productDetail.reletcycle,
           this.$n((firstValue + i) * (+this.productDetail.rent), 'currency'),
         ]))
         ++i

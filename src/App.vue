@@ -433,5 +433,17 @@ export default {
       line-height: 20px;
     }
   }
+
+  .my-checkbox {
+    .van-checkbox__icon {
+      border: 1px solid #CCCCCC;
+      font-size: 17px;
+
+      &.van-checkbox--checked {
+        border-color: #CCB8A3;
+        background-color: #CCB8A3;
+      }
+    }
+  }
 }
 </style>

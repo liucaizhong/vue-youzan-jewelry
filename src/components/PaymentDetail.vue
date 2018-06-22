@@ -17,7 +17,7 @@
         <span class="value">{{ $n(rent, 'currency') }}</span>
       </div>
       <div class="some-price">
-        <span class="label">押金</span>
+        <span class="label">{{ $t('deposit', ['']) }}</span>
         <span class="value">{{ $n(deposit, 'currency') }}</span>
       </div>
       <div class="total">
@@ -61,11 +61,12 @@
         <van-cell class="my-cell" center>
           <div slot="title">
             <span>{{ $t('useBalance') }}</span>
-            <span class="subtitle">{{ $t('curBalance', [$n('3500', 'currency')])}}</span>
+            <span class="subtitle">{{ $t('curBalance', [$n(userBalance, 'currency')])}}</span>
           </div>
           <van-switch
             v-model="useBalance"
             class="my-switch"
+            @change="onChangeUseBalance"
           />
         </van-cell>
       </van-cell-group>
@@ -86,6 +87,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import MyRadio from './MyRadio'
 import EditReceiver from './EditReceiver'
 import { DELIVERYMODE, CATEGORYOFPRODUCT } from '@/constant'
@@ -177,6 +179,9 @@ export default {
 
       return (category && this.$t(category.name)) || ''
     },
+    ...mapState({
+      userBalance: state => state.userInfo.balance,
+    }),
   },
   methods: {
     formShipInfo () {
@@ -223,7 +228,7 @@ export default {
         const { orderNo, payedamount } = resp.data
         this.confirmPayLoading = false
         this.$router.replace(
-          `/confirm-pay?id=${orderNo}&total=${payedamount}&due=${Date.now()}`
+          `/confirm-pay?id=${[orderNo]}&total=${payedamount}&due=${Date.now()}`
         )
       }).catch(err => {
         console.log(err)
@@ -232,6 +237,13 @@ export default {
           content: this.$t('paymentFail'),
         })
       })
+    },
+    onChangeUseBalance (checked) {
+      if (checked) {
+        this.totalAmount -= this.userBalance
+      } else {
+        this.totalAmount += this.userBalance
+      }
     },
   },
 }
