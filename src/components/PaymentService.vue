@@ -122,7 +122,6 @@ export default {
         return cum
       }, [])
       console.log('confirm pay', orders)
-      orders.push('dafsdf')
       orders.length && this.$router.push(
         `/confirm-pay?id=${orders}&total=${this.totalSelectedAmount}&due=${Date.now()}`
       )

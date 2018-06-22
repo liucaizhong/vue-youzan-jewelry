@@ -47,7 +47,7 @@
           <div v-if="!serviceInfo.product" class="has-no-product">{{ $t('hasNoProduct') }}</div>
           <van-button
             class="my-button"
-            v-if="tab && serviceInfo.serviceType !== '2' && serviceInfo.product"
+            v-if="tab === 2 && serviceInfo.serviceType !== '2' && serviceInfo.product"
             bottom-action
             type="default"
             @click="buyProduct"
@@ -208,7 +208,7 @@ export default {
 
     .service-title {
       flex: 1;
-      padding-right: 30px;
+      padding-right: 50px;
     }
 
     .service-detail {
