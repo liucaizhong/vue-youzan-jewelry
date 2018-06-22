@@ -313,27 +313,23 @@ export default {
         .van-card__title {
           font-size: 14px;
           color: #000000;
-          line-height: 14px;
         }
 
         .van-card__desc {
           font-size: 12px;
           color: #999999;
-          line-height: 14px;
         }
 
         .van-card__price {
           font-size: 14px;
           color: #6C6C6C;
           text-align: right;
-          line-height: 14px;
         }
 
         .van-card__num {
           font-size: 14px;
           color: #6C6C6C;
           text-align: right;
-          line-height: 18px;
         }
       }
     }
@@ -348,14 +344,12 @@ export default {
         font-size: 14px;
         color: #000000;
         text-align: left;
-        line-height: 16px;
       }
 
       .subtitle {
         margin-left: 10px;
         font-size: 12px;
         color: #999999;
-        line-height: 14px;
       }
     }
   }

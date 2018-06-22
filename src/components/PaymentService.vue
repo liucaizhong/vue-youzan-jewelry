@@ -13,7 +13,7 @@
         :key="i"
         :tab="0"
         checked
-        :checkValue.sync="checked[0]"
+        :checkValue.sync="checked[i]"
         :serviceInfo="info"
       >
         <my-order-card
@@ -97,6 +97,7 @@ export default {
       deep: true,
       handler: function (val, oldVal) {
         const allSameTrue = val.filter(cur => cur).length === val.length
+        console.log('checked', val)
         this.selectAll = allSameTrue
       },
     },
@@ -104,7 +105,14 @@ export default {
   methods: {
     onSelectAll (b) {
       console.log('onSelectAll', b)
-      this.checked = [...this.checked.fill(b)]
+      if (b) {
+        this.checked = [...this.checked.fill(b)]
+      } else {
+        const hasTrue = this.checked.some(cur => cur)
+        if (!hasTrue) {
+          this.checked = [...this.checked.fill(b)]
+        }
+      }
     },
     onConfirmPay () {
       const orders = this.checked.reduce((cum, cur, i) => {

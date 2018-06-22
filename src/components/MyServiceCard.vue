@@ -208,6 +208,7 @@ export default {
 
     .service-title {
       flex: 1;
+      padding-right: 30px;
     }
 
     .service-detail {
