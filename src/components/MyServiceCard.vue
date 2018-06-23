@@ -2,7 +2,7 @@
   <div class="my-service-card">
     <header class="my-service-card__header">
       <div class="service-title van-ellipsis">{{ serviceTitle }}</div>
-      <div v-if="tab >= 2" v-html="servicePeriod"></div>
+      <div v-if="tab === 2" v-html="servicePeriod"></div>
       <router-link
         :to="'/service-detail/'+serviceInfo.serviceNo"
         class="service-detail"

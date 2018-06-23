@@ -52,7 +52,7 @@ export default {
           console.log('this.$attrs', val.api)
           this.api = val.api
           this.offset = 0
-          this.getService(val.api)
+          this.getService(val.api, true)
         }
       }
     },
@@ -62,14 +62,14 @@ export default {
       this.loading = true
       this.getService(this.api)
     },
-    getService (url) {
+    getService (url, loading = false) {
       const { offset, limit } = this.$data
       this.$fetch(url, {
         params: {
           offset: offset * limit,
           limit,
         },
-      }).then(resp => {
+      }, loading).then(resp => {
         console.log('resp', resp)
         ++this.offset
         const results = resp.data.results

@@ -103,7 +103,7 @@ export default {
   },
   computed: {
     orderNoTitle: function () {
-      return !this.orderNo.length
+      return this.orderNo.length < 2
         ? (this.$t('orderNo') + ': ' + this.orderNo[0])
         : this.$t('batchPayment')
     },

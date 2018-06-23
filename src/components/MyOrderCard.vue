@@ -22,7 +22,7 @@
           <!-- <div v-if="order.orderStatus === '0'" class="row">
             {{ $t('paymentOrderNo') + ': ' + order.paymentOrderNo }}
           </div> -->
-          <div v-if="order.orderStatus === '0'" class="row">
+          <div v-if="order.orderStatus !== '0'" class="row">
             {{ $t('paymentType') + ': ' + $t(`paymentType${order.paymentMethod}`) }}
           </div>
           <div v-if="order.orderStatus === '0'" class="row">
@@ -78,6 +78,7 @@ export default {
     },
     calcPaymentDueDatetime (start) {
       const dueDate = new Date(new Date(start.replace(' ', 'T')).valueOf() + this.orderTimeout)
+      console.log('dueDate', dueDate)
       const year = dueDate.getFullYear()
       const month = dueDate.getMonth() < 10 ? '0' + dueDate.getMonth() : dueDate.getMonth()
       const day = dueDate.getDate() < 10 ? '0' + dueDate.getDate() : dueDate.getDate()
@@ -120,6 +121,7 @@ export default {
           .title {
             font-size: 14px;
             flex: 1;
+            padding-right: 50px;
           }
 
           .extra {
