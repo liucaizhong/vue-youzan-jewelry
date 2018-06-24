@@ -28,19 +28,19 @@ module.exports = {
     icon: () => import('@/assets/svg/pd1.svg'),
   }, {
     key: ['2'],
-    name: 'productCategory1',
+    name: 'productCategory2',
     icon: () => import('@/assets/svg/pd2.svg'),
   }, {
     key: ['4'],
-    name: 'productCategory2',
+    name: 'productCategory4',
     icon: () => import('@/assets/svg/pd3.svg'),
   }, {
     key: ['1'],
-    name: 'productCategory3',
+    name: 'productCategory1',
     icon: () => import('@/assets/svg/pd4.svg'),
   }, {
     key: ['3'],
-    name: 'productCategory4',
+    name: 'productCategory3',
     icon: () => import('@/assets/svg/pd5.svg'),
   }, {
     key: ['5', '6', '7'],
