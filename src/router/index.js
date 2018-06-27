@@ -12,6 +12,8 @@ const PayConfirm = () => import('@/components/PayConfirm')
 const BindPhone = () => import('@/components/BindPhone')
 const PerfectInfo = () => import('@/components/PerfectInfo')
 const MyService = () => import('@/components/MyService')
+const PaymentSuccess = () => import('@/components/PaymentSuccess')
+const ServiceDetail = () => import('@/components/ServiceDetail')
 
 export default new Router({
   mode: 'history',
@@ -59,6 +61,13 @@ export default new Router({
       },
     },
     {
+      path: '/payment-success',
+      component: PaymentSuccess,
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
       path: '/bindphone',
       component: BindPhone,
       meta: {
@@ -75,6 +84,13 @@ export default new Router({
     {
       path: '/my-service',
       component: MyService,
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/service-detail/:id',
+      component: ServiceDetail,
       meta: {
         requiresAuth: true,
       },

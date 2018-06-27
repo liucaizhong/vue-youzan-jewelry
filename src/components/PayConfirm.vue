@@ -139,7 +139,7 @@ export default {
       }).then(resp => {
         console.log(resp)
         this.confirmPayLoading = false
-        this.$router.replace('/index#mine')
+        this.$router.replace('/payment-success')
       }).catch(err => {
         console.log(err)
         this.confirmPayLoading = false

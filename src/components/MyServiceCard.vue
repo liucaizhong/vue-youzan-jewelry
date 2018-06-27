@@ -4,7 +4,7 @@
       <div class="service-title van-ellipsis">{{ serviceTitle }}</div>
       <div v-if="tab === 2" v-html="servicePeriod"></div>
       <router-link
-        :to="'/service-detail/'+serviceInfo.serviceNo"
+        :to="`/service-detail/${serviceInfo.serviceNo}?type=${serviceInfo.serviceType}`"
         class="service-detail"
       >
         {{ this.$t('detail') }}
@@ -209,6 +209,7 @@ export default {
     },
     buyProduct () {
       console.log('buy product', this.serviceInfo.product.productid)
+      this.$router.push(`/payment/${this.serviceInfo.product.productid}?type=2`)
     }
   },
 }

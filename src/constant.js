@@ -294,4 +294,4 @@ module.exports = {
     name: 'serviceStatus7',
   }],
 }
-// IsAuthenticated: 1 未完善， 0 已完善
+// isAuthenticated: 1 未完善， 0 已完善

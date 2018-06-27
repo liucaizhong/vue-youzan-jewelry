@@ -12,11 +12,11 @@
     </section>
     <div class="van-hairline--top" />
     <section class="payment-detail__price">
-      <div class="some-price">
+      <div class="some-price" v-if="rentPeriod">
         <span class="label">{{ $t('rentPeriod', [rentPeriod])}}</span>
         <span class="value">{{ $n(rent, 'currency') }}</span>
       </div>
-      <div class="some-price">
+      <div class="some-price" v-if="deposit">
         <span class="label">{{ $t('deposit', ['']) }}</span>
         <span class="value">{{ $n(deposit, 'currency') }}</span>
       </div>
@@ -110,7 +110,7 @@ export default {
   data () {
     return {
       id: '',
-      type: 0, // 0: one, 1: package, 2: buy
+      type: '0', // 0: one, 1: package, 2: buy
       showConfirmBalanceDeduction: false,
       deliveryModes: DELIVERYMODE,
       deliveryMode: DELIVERYMODE[1].key,
@@ -144,28 +144,51 @@ export default {
   created () {
     console.log('$route', this.$route)
     this.id = this.$route.params.id
-    this.type = this.$route.query.type
+    this.type = this.$route.query.type || '0'
 
-    const url = '/client/RentalService/'
-    this.$fetch(url, {
-      params: {
-        serviceNo: this.id,
-      },
-    }, true).then(resp => {
-      console.log('resp', resp)
-      const serviceInfo = resp.data.results[0]
-      const { 'current_payamount': totalAmount, initialDeposit, initialRent,
-        rentPeriod } = serviceInfo
-      this.totalAmount = totalAmount
-      this.deposit = initialDeposit
-      this.rent = initialRent
-      this.rentPeriod = rentPeriod
-      this.reservedProduct = {
-        ...serviceInfo.reservedProduct,
-      }
-    }).catch(err => {
-      console.log(err)
-    })
+    const url = this.type === '2' ? '/client/ProductDetail/' : '/client/RentalService/'
+    console.log('this.url', url)
+    if (this.type === '2') {
+      this.$fetch(url, {
+        params: {
+          productid: this.id,
+        },
+      }, true).then(resp => {
+        console.log('resp', resp)
+        const { MainImage0, sellingPrice, title, series, category } = resp.data.results[0]
+
+        this.reservedProduct = {
+          mainimage: MainImage0.avatar,
+          sellingPrice,
+          title,
+          series,
+          category,
+        }
+        this.totalAmount = sellingPrice
+      }).catch(err => {
+        console.log(err)
+      })
+    } else {
+      this.$fetch(url, {
+        params: {
+          serviceNo: this.id,
+        },
+      }, true).then(resp => {
+        console.log('resp', resp)
+        const serviceInfo = resp.data.results[0]
+        const { 'current_payamount': totalAmount, initialDeposit, initialRent,
+          rentPeriod } = serviceInfo
+        this.totalAmount = totalAmount
+        this.deposit = initialDeposit
+        this.rent = initialRent
+        this.rentPeriod = rentPeriod
+        this.reservedProduct = {
+          ...serviceInfo.reservedProduct,
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+    }
 
     this.$eventHub.$on('receiverValidationResult', valid => {
       console.log('valid', valid)
@@ -245,7 +268,7 @@ export default {
     },
     confirmPayRequest () {
       this.confirmPayLoading = true
-      const fieldName = this.type !== 2 ? 'serviceNo' : 'reservedProductid'
+      const fieldName = this.type !== '2' ? 'serviceNo' : 'reservedProductid'
       const url = '/common/order/'
       console.log('ordertype', this.type)
       this.$fetch(url, {
@@ -268,6 +291,7 @@ export default {
           )
         } else {
           // jump to pay success page
+          this.$router.replace('/payment-success')
         }
       }).catch(err => {
         console.log(err)

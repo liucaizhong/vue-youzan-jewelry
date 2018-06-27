@@ -119,6 +119,12 @@ module.exports = () => {
     }, req, res)
   })
 
+  router.get('/client/ComboService/', (req, res) => {
+    request({
+      url: mapUrl(req.url),
+    }, req, res)
+  })
+
   router.get('/client/GetUserInfo/', (req, res) => {
     request({
       url: mapUrl(req.url),
