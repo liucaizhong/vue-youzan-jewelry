@@ -1,5 +1,5 @@
 <template>
-  <div id="my-service">
+  <div id="my-service" class="scroll-fix">
     <van-tabs v-model="activeTab" swipeable>
       <van-tab
         v-for="(tab, i) in myServiceTabs"

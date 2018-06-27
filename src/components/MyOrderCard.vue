@@ -31,12 +31,14 @@
           <div v-else-if="order.paymentDatetime" class="row">
             {{ $t('paymentDatetime') + ': ' + order.paymentDatetime }}
           </div>
+          <div class="row" v-if="order.amount">
+            {{ $t('orderAmount') + ': ' + $n(order.amount, 'currency') }}
+          </div>
           <div class="row" v-if="order.balanceDeduction">
-            {{ $t('balanceDeduction') + ': ' + order.balanceDeduction }}
+            {{ $t('balanceDeduction') + ': ' + $n(order.balanceDeduction, 'currency') }}
           </div>
           <div class="row">
-            {{ (order.orderStatus === '0' ? $t('paymentAmount') : $t('toPayAmount')) +
-              ': ' + order.amount }}
+            {{ paymentAmount(order) }}
           </div>
           <van-button
             v-if="order.orderStatus === '0'"
@@ -69,6 +71,11 @@ export default {
     }
   },
   methods: {
+    paymentAmount (order) {
+      const { orderStatus, amount, balanceDeduction } = order
+      return (orderStatus === '0' ? this.$t('toPayAmount') : this.$t('paymentAmount')) +
+              ': ' + this.$n(Math.max(0, parseFloat(amount) - parseFloat(balanceDeduction)), 'currency')
+    },
     confirmPay (id, total, start) {
       const dueDateValue = this.calcPaymentDueDatetime(start).value
       console.log('dueDate', dueDateValue)

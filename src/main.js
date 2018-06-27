@@ -6,6 +6,7 @@ import axios from 'axios'
 import router from './router'
 import store from './store'
 import util from './util'
+import scrollFix from './scrollFix'
 import { i18n, loadLanguageAsync } from './i18n.config'
 // import VueI18n from 'vue-i18n'
 import vantConfig from './vant.config'
@@ -14,6 +15,7 @@ import vantConfig from './vant.config'
 
 Vue.config.productionTip = false
 Vue.use(util)
+Vue.use(scrollFix)
 // Vue.use(Vant)
 // Vue.use(VueI18n)
 vantConfig.init(Vue)

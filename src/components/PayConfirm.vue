@@ -1,5 +1,5 @@
 <template>
-  <div id="pay-confirm">
+  <div id="pay-confirm" class="scroll-fix">
     <header>
       <p class="order-no">{{ orderNoTitle }}</p>
       <p class="payment-amount">{{ paymentAmountText }}</p>
@@ -96,10 +96,18 @@ export default {
       }
     }
   },
+  mounted () {
+    Array.prototype.forEach.call(
+      document.getElementsByClassName('scroll-fix'), this.$scrollFixInit
+    )
+  },
   beforeDestroy () {
     if (this.countDownTimer) {
       clearInterval(this.countDownTimer)
     }
+    Array.prototype.forEach.call(
+      document.getElementsByClassName('scroll-fix'), this.$scrollFixDestory
+    )
   },
   computed: {
     orderNoTitle: function () {

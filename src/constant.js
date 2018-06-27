@@ -211,5 +211,87 @@ module.exports = {
     key: '1',
     name: 'paymentType1',
   }],
+  CERTIFICATES: [{
+    key: '0',
+    name: 'certificate0',
+  }, {
+    key: '1',
+    name: 'certificate1',
+  }, {
+    key: '2',
+    name: 'certificate2',
+  }, {
+    key: '3',
+    name: 'certificate3',
+  }, {
+    key: '4',
+    name: 'certificate4',
+  }, {
+    key: '5',
+    name: 'certificate5',
+  }, {
+    key: '6',
+    name: 'certificate6',
+  }, {
+    key: '7',
+    name: 'certificate7',
+  }],
+  CREDITSTATUS: [{
+    key: '0',
+    name: 'creditStatus0',
+  }, {
+    key: '1',
+    name: 'creditStatus1',
+  }, {
+    key: '2',
+    name: 'creditStatus2',
+  }],
+  PACKAGESTATUS: [{
+    key: '0',
+    name: 'packageStatus0',
+  }, {
+    key: '1',
+    name: 'packageStatus1',
+  }, {
+    key: '2',
+    name: 'packageStatus2',
+  }, {
+    key: '3',
+    name: 'packageStatus3',
+  }, {
+    key: '4',
+    name: 'packageStatus4',
+  }, {
+    key: '5',
+    name: 'packageStatus5',
+  }, {
+    key: '6',
+    name: 'packageStatus6',
+  }],
+  SERVICESTATUS: [{
+    key: '0',
+    name: 'serviceStatus0',
+  }, {
+    key: '1',
+    name: 'serviceStatus1',
+  }, {
+    key: '2',
+    name: 'serviceStatus2',
+  }, {
+    key: '3',
+    name: 'serviceStatus3',
+  }, {
+    key: '4',
+    name: 'serviceStatus4',
+  }, {
+    key: '5',
+    name: 'serviceStatus5',
+  }, {
+    key: '6',
+    name: 'serviceStatus6',
+  }, {
+    key: '7',
+    name: 'serviceStatus7',
+  }],
 }
 // IsAuthenticated: 1 未完善， 0 已完善

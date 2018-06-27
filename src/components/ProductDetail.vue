@@ -1,9 +1,9 @@
 <template>
-  <div id="product-detail">
+  <div id="product-detail" class="scroll-fix">
     <header class="banner">
       <van-swipe>
-        <van-swipe-item v-for="i in 6" :key="i" v-if="i === 1 || productDetail[`MainImage${i}`]">
-          <img v-lazy="productDetail[`MainImage${i}`] && productDetail[`MainImage${i}`].avatar" />
+        <van-swipe-item v-for="i in 6" :key="i" v-if="i === 1 || productDetail[`MainImage${i-1}`]">
+          <img v-lazy="productDetail[`MainImage${i-1}`] && productDetail[`MainImage${i-1}`].avatar" />
         </van-swipe-item>
       </van-swipe>
     </header>
@@ -25,7 +25,7 @@
       <div class="title">{{ $t('productSpec') }}</div>
       <div class="content">
         <div v-if="productDetail.diamondWeight" class="spec">
-          {{ `- ${$t('diamondWeightDesc', [productDetail.diamondWeight])}` }}
+          {{ `- ${$t('diamondWeightDesc')}: ${$t('karat', [productDetail.diamondWeight])}` }}
         </div>
         <div
           v-if="productDetail.goldType || productDetail.goldPurity || productDetail.goldContent"
@@ -34,10 +34,10 @@
           {{ goldContentDesc }}
         </div>
         <div v-if="productDetail.size" class="spec">
-          {{ `- ${productDetail.size}` }}
+          {{ `- ${$t('size') + ': ' + productDetail.size}` }}
         </div>
-        <div v-if="productDetail.certificate" class="spec">
-          {{ `- ${productDetail.certificate}` }}
+        <div v-if="productDetail.certificate && productDetail.certificate !== '0'" class="spec">
+          {{ `- ${certificateDesc}` }}
         </div>
       </div>
       <div class="desc">{{ productDetail.desc }}</div>
@@ -85,7 +85,7 @@
 </template>
 
 <script>
-import { GOLDPURITY, GOLDTYPE } from '@/constant'
+import { GOLDPURITY, GOLDTYPE, CERTIFICATES } from '@/constant'
 
 export default {
   data () {
@@ -94,6 +94,7 @@ export default {
       productDetail: {},
       goldPurity: GOLDPURITY,
       goldType: GOLDTYPE,
+      certificates: CERTIFICATES,
       activeTab: 0,
       rentStrategy: '',
       faq: '',
@@ -116,6 +117,16 @@ export default {
       console.log(err)
     })
   },
+  mounted () {
+    Array.prototype.forEach.call(
+      document.getElementsByClassName('scroll-fix'), this.$scrollFixInit
+    )
+  },
+  beforeDestroy () {
+    Array.prototype.forEach.call(
+      document.getElementsByClassName('scroll-fix'), this.$scrollFixDestory
+    )
+  },
   computed: {
     productName: function () {
       const { series, title } = this.productDetail
@@ -136,7 +147,12 @@ export default {
         this.goldPurity.find(item => item.key === goldPurity).value
       const goldContentText = goldContent && this.$t('gram', [goldContent])
 
-      return '- ' + goldTypeText + goldPurityText + ' ' + goldContentText
+      return '- ' + this.$t('texture') + ': ' + goldTypeText + goldPurityText + ', ' + goldContentText
+    },
+    certificateDesc: function () {
+      const { certificate } = this.productDetail
+      return certificate &&
+        this.$t(this.certificates.find(item => item.key === certificate).name)
     },
   },
   methods: {
@@ -154,6 +170,8 @@ export default {
 
 <style lang="less">
 #product-detail {
+  width: 100vw;
+  height: 100vh;
   margin-bottom: 50px;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
@@ -219,6 +237,10 @@ export default {
       &:last-child {
         font-size: 14px;
         color: #999999;
+      }
+
+      .left, .right {
+        padding: 1px 0;
       }
     }
   }

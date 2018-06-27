@@ -15,7 +15,8 @@
         v-if="tab && serviceInfo.serviceType !== '2'"
         class="my-service-card__section-header"
       >
-        {{ serviceContentHeader }}
+        <div>{{ serviceContentHeader }}</div>
+        <div v-if="tab === 3" v-html="serviceStatusDesc"></div>
       </header>
       <header
         v-if="serviceInfo.serviceType === '1' && serviceInfo.product"
@@ -84,7 +85,7 @@
 </template>
 
 <script>
-import { SERVICETYPE, CATEGORYOFPRODUCT } from '@/constant'
+import { SERVICETYPE, CATEGORYOFPRODUCT, SERVICESTATUS, PACKAGESTATUS, CREDITSTATUS } from '@/constant'
 // v-if="tab === 2"
 export default {
   props: {
@@ -109,6 +110,9 @@ export default {
     return {
       serviceTypes: SERVICETYPE,
       productCategory: CATEGORYOFPRODUCT,
+      serviceStatuss: SERVICESTATUS,
+      packageStatuss: PACKAGESTATUS,
+      creditStatuss: CREDITSTATUS,
       selected: false,
     }
   },
@@ -166,6 +170,27 @@ export default {
         return packageTitle
       }
     },
+    serviceStatusDesc: function () {
+      const { serviceType, serviceStatus, creditStatus } = this.serviceInfo
+      if (creditStatus === '2') {
+        const desc = this.creditStatuss.find(cur => cur.key === creditStatus).name || ''
+        return `<span style="color: red;">${this.$t(desc)}</span>`
+      } else {
+        let status = []
+        switch (serviceType) {
+          case '0': {
+            status = this.serviceStatuss
+            break
+          }
+          case '1': {
+            status = this.packageStatuss
+            break
+          }
+        }
+        const desc = status.find(cur => cur.key === serviceStatus).name || ''
+        return `<span>${this.$t(desc)}</span>`
+      }
+    },
     rentOrPackageAmount: function () {
       const { serviceType, initialRent, packagePrice } = this.serviceInfo
       if (serviceType === '0') {
@@ -209,6 +234,7 @@ export default {
     .service-title {
       flex: 1;
       padding-right: 50px;
+      font-weight: bold;
     }
 
     .service-detail {
@@ -221,6 +247,8 @@ export default {
     .my-service-card__section-header {
       padding: 15px 18px 0;
       font-size: 14px;
+      display: flex;
+      justify-content: space-between;
     }
 
     .my-service-card__section-subheader {

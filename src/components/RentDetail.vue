@@ -1,5 +1,5 @@
 <template>
-  <div id="rent-detail">
+  <div id="rent-detail" class="scroll-fix">
     <section class="product-info">
       <van-card
         class="my-card"
@@ -93,6 +93,16 @@ export default {
       console.log(err)
     })
   },
+  mounted () {
+    Array.prototype.forEach.call(
+      document.getElementsByClassName('scroll-fix'), this.$scrollFixInit
+    )
+  },
+  beforeDestroy () {
+    Array.prototype.forEach.call(
+      document.getElementsByClassName('scroll-fix'), this.$scrollFixDestory
+    )
+  },
   computed: {
     productTitle: function () {
       return (this.productDetail.series ? this.productDetail.series + '-' : '') +
@@ -120,12 +130,13 @@ export default {
 
 <style lang="less">
 #rent-detail {
-  padding-bottom: 50px;
+  // padding-bottom: 50px;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
   background: #F5F5F5;
   width: 100vw;
   height: 100vh;
+  position: relative;
 
   .product-info {
     width: 100%;
@@ -144,7 +155,7 @@ export default {
   .rent-selection {
     margin-top: 12px;
     width: 100%;
-    height: calc(100% - 140px);
+    min-height: calc(100% - 200px);
     background: #fff;
     padding: 24px 18px 50px;
 

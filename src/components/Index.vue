@@ -1,5 +1,5 @@
 <template>
-  <div id="index">
+  <div id="index" class="scroll-fix">
     <keep-alive>
       <component
         :is="curTabComponent"
@@ -37,6 +37,16 @@ export default {
       // params: null,
       // logged: false,
     }
+  },
+  mounted () {
+    Array.prototype.forEach.call(
+      document.getElementsByClassName('scroll-fix'), this.$scrollFixInit
+    )
+  },
+  beforeDestroy () {
+    Array.prototype.forEach.call(
+      document.getElementsByClassName('scroll-fix'), this.$scrollFixDestory
+    )
   },
   beforeRouteEnter (to, from, next) {
     next(vm => {

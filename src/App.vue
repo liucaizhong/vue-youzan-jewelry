@@ -47,6 +47,10 @@ export default {
   box-sizing: border-box;
 }
 
+body {
+  overflow: hidden;
+}
+
 #app {
   // font-family: 'Avenir', Helvetica, Arial, sans-serif;
   // -webkit-font-smoothing: antialiased;
@@ -55,6 +59,7 @@ export default {
   width: 100vw;
   height: 100vh;
   // background: #fff;
+  overflow: hidden;
   background: #F5F5F5;
 
   .rhombus {
@@ -311,6 +316,7 @@ export default {
         margin-bottom: 12px;
 
         .van-card__title {
+          padding-top: 1px;
           font-size: 14px;
           color: #000000;
         }

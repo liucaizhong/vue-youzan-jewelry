@@ -1,5 +1,5 @@
 <template>
-  <div id="payment-detail">
+  <div id="payment-detail" class="scroll-fix">
     <section class="payment-detail__info">
       <van-card
         class="my-card"
@@ -66,14 +66,13 @@
           <van-switch
             v-model="useBalance"
             class="my-switch"
-            @change="onChangeUseBalance"
           />
         </van-cell>
       </van-cell-group>
     </section>
     <footer class="payment-detail__footer">
       <div class="show-total van-ellipsis">
-        {{ $t('totalPayAmount', [$n(totalAmount, 'currency')] )}}
+        {{ $t('totalPayAmount', [$n(totalPayAmount, 'currency')] )}}
       </div>
       <van-button
         class="my-button pay-btn"
@@ -83,6 +82,17 @@
         :loading="confirmPayLoading"
       >{{ $t('payment') }}</van-button>
     </footer>
+    <van-dialog
+      class="my-dialog"
+      v-model="showConfirmBalanceDeduction"
+      show-cancel-button
+      :title="$t('balanceDeductionTip')"
+      :message="$n(this.totalAmount, 'currency')"
+      :confirmButtonText="$t('confirmPayBtnText')"
+      :cancelButtonText="$t('cancelPayBtnText')"
+      @confirm="confirmBalanceDeduction"
+    >
+    </van-dialog>
   </div>
 </template>
 
@@ -101,6 +111,7 @@ export default {
     return {
       id: '',
       type: 0, // 0: one, 1: package, 2: buy
+      showConfirmBalanceDeduction: false,
       deliveryModes: DELIVERYMODE,
       deliveryMode: DELIVERYMODE[1].key,
       productCategory: CATEGORYOFPRODUCT,
@@ -167,6 +178,16 @@ export default {
       }
     })
   },
+  mounted () {
+    Array.prototype.forEach.call(
+      document.getElementsByClassName('scroll-fix'), this.$scrollFixInit
+    )
+  },
+  beforeDestroy () {
+    Array.prototype.forEach.call(
+      document.getElementsByClassName('scroll-fix'), this.$scrollFixDestory
+    )
+  },
   computed: {
     productTitle: function () {
       return (this.reservedProduct.series ? this.reservedProduct.series + '-' : '') +
@@ -178,6 +199,13 @@ export default {
       })
 
       return (category && this.$t(category.name)) || ''
+    },
+    totalPayAmount: function () {
+      if (this.useBalance) {
+        return Math.max(this.totalAmount - this.userBalance, 0)
+      } else {
+        return this.totalAmount
+      }
     },
     ...mapState({
       userBalance: state => state.userInfo.balance,
@@ -205,8 +233,15 @@ export default {
       if (this.deliveryMode === '0') {
         this.$eventHub.$emit('receiverValidation')
       } else {
-        this.confirmPayRequest()
+        if (this.totalPayAmount) {
+          this.confirmPayRequest()
+        } else {
+          this.showConfirmBalanceDeduction = true
+        }
       }
+    },
+    confirmBalanceDeduction () {
+      this.confirmPayRequest()
     },
     confirmPayRequest () {
       this.confirmPayLoading = true
@@ -225,11 +260,15 @@ export default {
         method: 'post',
       }).then(resp => {
         console.log(resp)
-        const { orderNo, payedamount } = resp.data
+        const { orderNo, payedamount, orderStatus } = resp.data
         this.confirmPayLoading = false
-        this.$router.replace(
-          `/confirm-pay?id=${[orderNo]}&total=${payedamount}&due=${Date.now()}`
-        )
+        if (orderStatus === '0') {
+          this.$router.replace(
+            `/confirm-pay?id=${[orderNo]}&total=${payedamount}&due=${Date.now()}`
+          )
+        } else {
+          // jump to pay success page
+        }
       }).catch(err => {
         console.log(err)
         this.confirmPayLoading = false
@@ -238,13 +277,13 @@ export default {
         })
       })
     },
-    onChangeUseBalance (checked) {
-      if (checked) {
-        this.totalAmount -= this.userBalance
-      } else {
-        this.totalAmount += this.userBalance
-      }
-    },
+    // onChangeUseBalance (checked) {
+    //   if (checked) {
+    //     this.totalAmount -= this.userBalance
+    //   } else {
+    //     this.totalAmount += this.userBalance
+    //   }
+    // },
   },
 }
 </script>
@@ -253,7 +292,7 @@ export default {
 #payment-detail {
   width: 100vw;
   height: 100vh;
-  padding-bottom: 60px;
+  // padding-bottom: 60px;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
   background: #F5F5F5;
@@ -337,8 +376,35 @@ export default {
   }
 
   .payment-detail__others {
+    margin-bottom: 60px;
     .van-cell__title {
       min-width: 250px;
+    }
+  }
+
+  .my-dialog {
+    border-radius: 0;
+
+    .van-dialog__header {
+      padding-top: 42px;
+      font-size: 16px;
+    }
+
+    .van-dialog__message--withtitle {
+      font-size: 24px;
+      text-align: center;
+      color: #000;
+      padding: 10px 0 28px;
+    }
+
+    .van-button__text {
+      font-size: 16px;
+      color: #B99F85;
+    }
+
+    .van-dialog__confirm {
+      background: #000000;
+      border-radius: 0;
     }
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <div id="login" :style="{ height: height + 'px'}">
+  <div id="login" :style="{ height: height + 'px'}" class="scroll-fix">
     <h3>{{ $t('loginByPhone') }}</h3>
     <div class="login-container">
       <phone-input
@@ -55,6 +55,16 @@ export default {
     this.redirectUrl = this.$route.query.redirect || '/index'
     const app = document.getElementById('app')
     this.height = app.clientHeight
+  },
+  mounted () {
+    Array.prototype.forEach.call(
+      document.getElementsByClassName('scroll-fix'), this.$scrollFixInit
+    )
+  },
+  beforeDestroy () {
+    Array.prototype.forEach.call(
+      document.getElementsByClassName('scroll-fix'), this.$scrollFixDestory
+    )
   },
   methods: {
     login () {
