@@ -41,7 +41,7 @@ export default {
       this.validation(val)
     },
     validation (val) {
-      const pattern = /^1[3|5|7|8]\d{9}$/gi
+      const pattern = /^\d{11}$/gi
       if (!pattern.test(val)) {
         this.err = 1
         this.$emit('handleError', true)

@@ -83,7 +83,7 @@ export default {
   confirmPayFail: '支付失败',
   rentPeriodInvalid: '租赁时长不能为空',
   rentPeriod: '租期{0}天',
-  rentPeriodTitle: '租赁时长',
+  rentPeriodTitle: '租赁时间',
   sendInvoice: '开具发票',
   useBalance: '使用余额',
   curBalance: '当前余额{0}',
@@ -234,4 +234,9 @@ export default {
   overtimeTip: '租赁服务已逾期，我们将自动从您的押金中扣除租金，请尽快至门店归还商品。',
   rentStartDate: '服务开始时间',
   rentDueDate: '服务结束时间',
+  reservedProduct: '预约商品',
+  rentingProduct: '在租商品',
+  saleProduct: '销售商品',
+  changeProduct: '更换商品',
+  serialNumber: '商品编号',
 }

@@ -62,20 +62,76 @@
         {{ $t('overtimeTip' )}}
       </div>
     </div>
+
+    <div
+      class="reserved-product"
+      v-if="serviceInfo.serviceType === '1' && serviceInfo.reservedProduct"
+    >
+      <header>{{ $t('reservedProduct') }}</header>
+      <div class="product-info">
+        <img
+          class="thumb"
+          v-lazy="serviceInfo.reservedProduct.mainimage"
+        >
+        <div class="desc">
+          <div class="row van-ellipsis">{{ productTitle(serviceInfo.reservedProduct) }}</div>
+          <div class="category">{{ productCategory(serviceInfo.reservedProduct) }}</div>
+        </div>
+        <van-button
+          class="my-button"
+          bottom-action
+          type="default"
+          @click="changeProduct"
+        >{{ $t('changeProduct') }}</van-button>
+      </div>
+    </div>
+
+    <div
+      class="current-product"
+      v-if="serviceInfo.product"
+    >
+      <header>
+        {{ $t(serviceInfo.serviceType === '2' ? 'saleProduct' : 'rentingProduct') }}
+      </header>
+      <div class="product-period" v-if="serviceInfo.serviceType !== '2'">
+        {{ productRentPeriod(serviceInfo) }}
+      </div>
+      <div class="product-info">
+        <img
+          class="thumb"
+          v-lazy="serviceInfo.product.mainimage"
+        >
+        <div class="desc">
+          <div class="row van-ellipsis">{{ productTitle(serviceInfo.product) }}</div>
+          <div class="row van-ellipsis" v-if="serviceInfo.product.serialNumber">
+            {{ productSerialNumber(serviceInfo.product) }}
+          </div>
+          <div class="category">{{ productCategory(serviceInfo.product) }}</div>
+        </div>
+        <van-button
+          v-if="serviceInfo.serviceType !== '2'"
+          class="my-button"
+          bottom-action
+          type="default"
+          @click="buyProduct(serviceInfo.productid)"
+        >{{ $t('justBuyHere') }}</van-button>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-// 套餐名称，
-// 套餐时间，租金，初始押金，剩余押金，信用状态
+import { CATEGORYOFPRODUCT } from '@/constant'
+// obj['startDate'] = timezone.now().strftime('%y-%m-%d')
+//         obj['endDate'] = None
+//         obj['product'] = getproductsnap(pd)
+//         obj['productid'] = productid
+//         obj['leaseholdStatus'] = LEASEHOLDGOOD
 export default {
   data () {
     return {
       type: '0',
-      // timeShow: {
-      //   color: '',
-      //   desc: '',
-      // },
+      productCategorys: CATEGORYOFPRODUCT,
       serviceInfo: {},
     }
   },
@@ -127,6 +183,33 @@ export default {
       }
     },
   },
+  methods: {
+    productTitle (product) {
+      const { series, title } = product
+      return (series ? series + '-' : '') + title
+    },
+    productCategory (product) {
+      const category = this.productCategorys.find(cur => {
+        return cur.key === product.category
+      })
+
+      return (category && this.$t(category.name)) || ''
+    },
+    productSerialNumber (product) {
+      return this.$t('serialNumber') + ': ' + product.serialNumber
+    },
+    changeProduct () {
+      this.$router.push('/index#products')
+    },
+    buyProduct (productid) {
+      this.$router.push(`/payment/${productid}?type=2`)
+    },
+    productRentPeriod (service) {
+      const { rentStartDate, rentDueDate } = service
+      return this.$t('rentPeriodTitle') + ': ' + rentStartDate +
+        (rentDueDate ? ' ~ ' + rentDueDate : '')
+    },
+  }
 }
 </script>
 
@@ -136,6 +219,7 @@ export default {
   height: 100vh;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
+  padding-bottom: 20px;
 
   .service-detail--timer {
     width: 100%;
@@ -188,6 +272,72 @@ export default {
       padding-top: 10px;
       font-size: 12px;
       color: #666666;
+    }
+  }
+
+  .product-period {
+    font-size: 14px;
+    padding-top: 12px;
+  }
+
+  .product-info {
+    position: relative;
+    padding: 22px 0;
+    display: flex;
+
+    .thumb {
+      width: 80px;
+      height: 80px;
+    }
+
+    .desc {
+      flex: 1;
+      padding-left: 18px;
+      max-width: calc(100% - 195px);
+
+      > div:not(:last-child) {
+        margin-bottom: 8px;
+      }
+
+      .row {
+        font-size: 14px;
+      }
+
+      .category {
+        font-size: 12px;
+        color: #999999;
+      }
+    }
+  }
+
+  .my-button {
+    position: relative;
+    width: 115px !important;
+    height: 40px;
+    align-self: flex-end;
+  }
+
+  .reserved-product {
+    background: #fff;
+    margin-top: 12px;
+    padding: 0 18px;
+
+    header {
+      padding: 18px 0;
+      font-size: 14px;
+      border-bottom: .5px solid #e5e5e5;
+    }
+  }
+
+  .current-product {
+    background: #fff;
+    margin-top: 12px;
+    padding: 0 18px;
+
+    header {
+      padding: 18px 0;
+      font-size: 14px;
+      border-bottom: .5px solid #e5e5e5;
     }
   }
 }

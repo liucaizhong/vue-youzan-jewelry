@@ -156,7 +156,7 @@ export default {
     validationInput (key, val) {
       console.log('validationInput', key, val)
       if (key === 'phone') {
-        const pattern = /^1[3|5|7|8]\d{9}$/gi
+        const pattern = /^\d{11}$/gi
         this.error[key] = !pattern.test(val)
       } else {
         this.error[key] = !val
