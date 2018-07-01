@@ -213,9 +213,9 @@ export default {
           (new Date(y, m - 1, d)).valueOf()
         const gap = Math.ceil(range / (24 * 60 * 60 * 1000))
         return {
-          color: gap < 0 ? '#B99F85' : '#D0021B',
+          color: gap <= 0 ? '#B99F85' : '#D0021B',
           gap: Math.abs(gap),
-          desc: gap < 0 ? this.$t('rentRemainingDays') : this.$t('rentOvertime'),
+          desc: gap <= 0 ? this.$t('rentRemainingDays') : this.$t('rentOvertime'),
         }
       } else {
         return null
