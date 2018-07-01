@@ -7,15 +7,49 @@
         <my-radio
           :radioType="packageType"
           :radioName="'0'"
+          v-if="myPackages && myPackages.length"
         >
           <template slot="title">{{ $t('useCurrentPackage') }}</template>
           <div v-show="packageType === '0'" slot="content" class="radio0-content">
-            content0
+            <van-radio-group
+              class="sub-radio-group"
+              v-model="myPackageSelect"
+            >
+              <van-list
+                class="my-package-list"
+                v-model="myPackageCond.loading"
+                :finished="myPackageCond.finished"
+                @load="onLoadMyPackageCond"
+                :loading-text="$t('loadMore')"
+                :immediate-check="false"
+              >
+                <my-radio
+                  v-for="(item, i) in myPackages"
+                  :key="i"
+                  :radioType="myPackageSelect"
+                  :radioName="`${i}`"
+                  radioClass="my-radio-circle"
+                >
+                  <template slot="title">
+                    <div class="title">
+                      <div class="desc">
+                        {{ composeMyPackageTitle(item) }}
+                      </div>
+                      <router-link :to="`/service-detail/${item.serviceNo}/?type=1`">
+                        {{ $t('detail') }}
+                      </router-link>
+                    </div>
+                  </template>
+                </my-radio>
+              </van-list>
+            </van-radio-group>
+            <!-- <div v-else class="no-package">{{ $t('hasNoPackage') }}</div> -->
           </div>
         </my-radio>
         <my-radio
           :radioType="packageType"
           :radioName="'1'"
+          v-if="newPackages && newPackages.length"
         >
           <template slot="title">{{ $t('buyNewPackage') }}</template>
           <div v-show="packageType === '1'" slot="content" class="radio1-content">
@@ -23,24 +57,38 @@
               class="sub-radio-group"
               v-model="newPackageSelect"
             >
-              <my-radio
-                :radioType="newPackageSelect"
-                :radioName="'0'"
-                radioClass="my-radio-circle"
+              <van-list
+                class="new-package-list"
+                v-model="newPackageCond.loading"
+                :finished="newPackageCond.finished"
+                @load="onLoadNewPackageCond"
+                :loading-text="$t('loadMore')"
+                :immediate-check="false"
               >
-                <template slot="title">1个月/30天随心换套餐 ￥1000</template>
-              </my-radio>
-              <my-radio
-                :radioType="newPackageSelect"
-                :radioName="'1'"
-                radioClass="my-radio-circle"
-              >
-                <template slot="title">2个月/60天随心换套餐 ￥1800</template>
-              </my-radio>
+                <my-radio
+                  v-for="(item, i) in newPackages"
+                  :key="i"
+                  :radioType="newPackageSelect"
+                  :radioName="`${i}`"
+                  radioClass="my-radio-circle"
+                >
+                  <template slot="title">
+                    <div class="title">
+                      <div class="desc">
+                        {{ composeNewPackageTitle(item) }}
+                      </div>
+                      <router-link to="/package-list">
+                        {{ $t('detail') }}
+                      </router-link>
+                    </div>
+                  </template>
+                </my-radio>
+              </van-list>
             </van-radio-group>
-            <p class="deposit">
+            <!-- <div v-else class="no-package">{{ $t('hasNoNewPackage') }}</div> -->
+            <!-- <p class="deposit">
               {{ $t('package') + $t('deposit', [$n(productDetail.deposit, 'currency')]) }}
-            </p>
+            </p> -->
           </div>
         </my-radio>
       </van-radio-group>
@@ -53,9 +101,21 @@
         class="my-button pay-btn"
         type="default"
         bottom-action
+        :loading="paymentLoading"
         @click="onPayment"
-      >{{ $t('payment') }}</van-button>
+      >{{ rentPackagePayment }}</van-button>
     </footer>
+    <van-dialog
+      class="my-dialog"
+      v-model="showConfirmChangeProduct"
+      show-cancel-button
+      :title="$t('changeProductTip')"
+      :message="productTitle"
+      :confirmButtonText="$t('confirmChange')"
+      :cancelButtonText="$t('cancelPayBtnText')"
+      @confirm="confirmChangeProduct"
+    >
+    </van-dialog>
   </div>
 </template>
 
@@ -72,31 +132,222 @@ export default {
   data () {
     return {
       rentDetail: {
-        totalAmount: '0',
+        totalAmount: 0,
       },
       packageType: '0', // 0: use current, 1: buy new
-      curPackageSelect: '0',
+      myPackageSelect: '0',
       newPackageSelect: '0',
       productDetail: {},
+      myPackages: [],
+      myPackageCond: {
+        limit: 15,
+        offset: 0,
+        loading: false,
+        finished: false,
+      },
+      newPackages: [],
+      newPackageCond: {
+        limit: 15,
+        offset: 0,
+        loading: false,
+        finished: false,
+      },
+      showConfirmChangeProduct: false,
+      paymentLoading: false,
     }
   },
   watch: {
     product: {
       deep: true,
+      immediate: true,
       handler: function (val, oldVal) {
         this.productDetail = { ...val }
+        // get relevant package
+        Promise.all([this.fetchNewPackages(true), this.fetchMyPackages(true)])
+          .then(([data0, data1]) => {
+            this.getNewPackagesSuccess(data0)
+            this.getMyPackagesSuccess(data1)
+            if (data0.results && data0.results.length) {
+              this.packageType = '1'
+            }
+            if (data1.results && data1.results.length) {
+              this.packageType = '0'
+            }
+          }).catch(([err0, err1]) => {
+            this.getNewPackagesError(err0)
+            this.getMyPackagesError(err1)
+          })
       },
-    }
+    },
+    packageType: function (val, oldVal) {
+      const { newPackageSelect } = this.$data
+      if (val === '0') {
+        this.rentDetail.totalAmount = 0
+      } else {
+        const { deposit, price } = this.newPackages[newPackageSelect]
+        this.rentDetail.totalAmount = parseFloat(price) + parseFloat(deposit)
+      }
+    },
+    newPackageSelect: function (val, oldVal) {
+      const { deposit, price } = this.newPackages[val]
+      this.rentDetail.totalAmount = parseFloat(price) + parseFloat(deposit)
+    },
   },
   computed: {
     showTotalText: function () {
       return this.$t('totalPackage', [this.$n(this.rentDetail.totalAmount, 'currency')])
     },
+    rentPackagePayment: function () {
+      return this.packageType === '0' ? this.$t('change') : this.$t('payment')
+    },
+    productTitle: function () {
+      return (this.productDetail.series ? this.productDetail.series + '-' : '') +
+        this.productDetail.title
+    },
   },
   methods: {
+    composeNewPackageTitle (info) {
+      const { title, price, deposit } = info
+      const total = parseFloat(price) + parseFloat(deposit)
+      return title + ' ' + this.$n(total, 'currency')
+    },
+    composeMyPackageTitle (info) {
+      const { serviceNo } = info
+      return this.$t('serviceType1') + ': ' + serviceNo
+    },
     onPayment () {
       console.log('onPayment')
-      this.$router.push(`/payment/${'serviceNo'}?type=1`)
+      if (this.packageType === '1') {
+        this.paymentLoading = true
+        const url = '/client/ComboService/'
+        this.$fetch(url, {
+          data: {
+            reservedProductid: this.productDetail.productid,
+            packageNo: this.newPackages[this.newPackageSelect].packageNo,
+          },
+          method: 'post',
+        }).then(resp => {
+          console.log(resp)
+          this.paymentLoading = false
+          this.$router.replace(`/payment/${resp.data.serviceNo}?type=1`)
+        }).catch(err => {
+          console.log(err)
+          this.paymentLoading = false
+          this.$message({
+            content: this.$t('paymentFail'),
+          })
+        })
+      } else {
+        this.showConfirmChangeProduct = true
+      }
+    },
+    confirmChangeProduct () {
+      // change renting product
+      this.paymentLoading = true
+      const url = '/client/ComboService/changeproduct/'
+      this.$fetch(url, {
+        data: {
+          productid: this.productDetail.productid,
+          serviceNo: this.myPackages[this.myPackageSelect].serviceNo,
+        },
+        method: 'post',
+      }).then(resp => {
+        console.log(resp)
+        this.paymentLoading = false
+        this.$router.replace('/payment-success/?type=1')
+      }).catch(err => {
+        console.log(err)
+        this.paymentLoading = false
+        this.$message({
+          content: this.$t('paymentFail'),
+        })
+      })
+    },
+    onLoadNewPackageCond () {
+      this.newPackageCond.loading = true
+      this.getNewPackages()
+    },
+    async fetchNewPackages (loading = false) {
+      const url = '/client/package/ListInfo/'
+      const { limit, offset } = this.newPackageCond
+      try {
+        const { data } = await this.$fetch(url, {
+          params: {
+            offset: offset * limit,
+            limit,
+            productid: this.productDetail.productid,
+          },
+        }, loading)
+        return Promise.resolve(data)
+      } catch (err) {
+        return Promise.reject(err)
+      }
+    },
+    getNewPackages () {
+      this.fetchNewPackages().then(data => {
+        this.getNewPackagesSuccess(data)
+      }).catch(err => {
+        this.getNewPackagesError(err)
+      })
+    },
+    getNewPackagesSuccess (data) {
+      console.log('data', data)
+      const results = data.results
+      if (results && results.length) {
+        ++this.newPackageCond.offset
+        this.newPackages = [...results]
+        this.newPackageCond.loading = false
+        if (results.length < this.newPackageCond.limit) {
+          this.newPackageCond.finished = true
+        }
+      }
+    },
+    getNewPackagesError (err) {
+      console.log(err)
+      this.newPackageCond.loading = false
+    },
+    onLoadMyPackageCond () {
+      this.myPackageCond.loading = true
+      this.getMyPackages()
+    },
+    async fetchMyPackages (loading = false) {
+      const url = '/client/package/mine'
+      const { limit, offset } = this.newPackageCond
+      try {
+        const { data } = await this.$fetch(url, {
+          params: {
+            offset: offset * limit,
+            limit,
+            productid: this.productDetail.productid,
+          },
+        }, loading)
+        return Promise.resolve(data)
+      } catch (err) {
+        return Promise.reject(err)
+      }
+    },
+    getMyPackages () {
+      this.fetchMyPackages().then(data => {
+        this.getMyPackagesSuccess(data)
+      }).catch(err => {
+        this.getMyPackagesError(err)
+      })
+    },
+    getMyPackagesSuccess (data) {
+      console.log('data', data)
+      const results = data.results
+      if (results && results.length) {
+        ++this.myPackageCond.offset
+        this.myPackages = [...results]
+        this.myPackageCond.loading = false
+        if (results.length < this.myPackageCond.limit) {
+          this.myPackageCond.finished = true
+        }
+      }
+    },
+    getMyPackagesError (err) {
+      console.log(err)
+      this.myPackageCond.loading = false
     },
   },
 }
@@ -138,6 +389,32 @@ export default {
     .pay-btn {
       max-width: 120px;
     }
+  }
+
+  .title {
+    display: flex;
+    justify-content: space-between;
+
+    .desc {
+      font-size: 14px;
+    }
+
+    a {
+      font-size: 14px;
+      color: #CCB8A3;
+    }
+  }
+
+  .no-package {
+    font-size: 14px;
+    color: #AFAFAF;
+    margin-top: 20px;
+  }
+
+  .my-package-list, .new-package-list {
+    max-height: 300px;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
   }
 }
 </style>

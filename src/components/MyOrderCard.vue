@@ -87,7 +87,8 @@ export default {
       const dueDate = new Date(new Date(start.replace(' ', 'T')).valueOf() + this.orderTimeout)
       console.log('dueDate', dueDate)
       const year = dueDate.getFullYear()
-      const month = dueDate.getMonth() < 10 ? '0' + dueDate.getMonth() : dueDate.getMonth()
+      let month = dueDate.getMonth() + 1
+      month = month < 10 ? '0' + month : month
       const day = dueDate.getDate() < 10 ? '0' + dueDate.getDate() : dueDate.getDate()
       const hour = dueDate.getHours() < 10 ? '0' + dueDate.getHours() : dueDate.getHours()
       const min = dueDate.getMinutes() < 10 ? '0' + dueDate.getMinutes() : dueDate.getMinutes()

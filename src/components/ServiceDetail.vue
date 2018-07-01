@@ -31,7 +31,7 @@
       <div class="row" v-if="serviceInfo.rentDueDate">
         {{ $t('rentDueDate') + ': ' + serviceInfo.rentDueDate }}
       </div>
-      <div class="row" v-if="serviceInfo.rentPeriod">
+      <div class="row" v-if="+serviceInfo.rentPeriod">
         {{ $t('rentPeriodTitle') + ': ' + serviceInfo.rentPeriod + $t('day')}}
       </div>
       <div class="row" v-if="serviceInfo.packageTitle">
@@ -55,7 +55,7 @@
       <div class="row" v-if="+serviceInfo.residualDeposit">
         {{ $t('residualDeposit') + ': ' + $n(serviceInfo.residualDeposit, 'currency') }}
       </div>
-      <div class="row">
+      <div class="row" v-if="serviceInfo.serviceType !== '2'">
         {{ $t('creditStatus') + ': ' + $t(`creditStatus${serviceInfo.creditStatus}`) }}
       </div>
       <div class="tip" v-if="serviceInfo.creditStatus === '1'">
@@ -65,9 +65,9 @@
 
     <div
       class="reserved-product"
-      v-if="serviceInfo.serviceType === '1' && serviceInfo.reservedProduct"
+      v-if="reservedProductShow"
     >
-      <header>{{ $t('reservedProduct') }}</header>
+      <header>{{ $t(serviceInfo.serviceType === '2' ? 'saleProduct' : 'reservedProduct') }}</header>
       <div class="product-info">
         <img
           class="thumb"
@@ -78,6 +78,7 @@
           <div class="category">{{ productCategory(serviceInfo.reservedProduct) }}</div>
         </div>
         <van-button
+          v-if="serviceInfo.serviceType === '1'"
           class="my-button"
           bottom-action
           type="default"
@@ -116,6 +117,41 @@
           @click="buyProduct(serviceInfo.productid)"
         >{{ $t('justBuyHere') }}</van-button>
       </div>
+      <van-collapse v-model="deliveryInfo" class="delivery-info">
+        <van-collapse-item>
+          <div class="header" slot="title">
+            <div class="title van-ellipsis">{{ $t('deliveryInfo') }}</div>
+          </div>
+          <div v-if="serviceInfo.deliveryMode === '0'" class="content">
+            <div class="row">
+              {{ $t('deliveryMode') + ': ' + $t(`deliveryMode${serviceInfo.deliveryMode}`) }}
+            </div>
+            <div class="row">
+              {{ $t('receiverName') + ": " + serviceInfo.receiverName }}
+            </div>
+            <div class="row">
+              {{ $t('receiverPhone') + ": " + serviceInfo.receiverPhone }}
+            </div>
+            <div class="row">
+              {{ $t('receiverAddress') + ": " + serviceInfo.receiverAddress }}
+            </div>
+            <div class="row">
+              {{ $t('logisticsCompany') + ": " + serviceInfo.logisticsCompany }}
+            </div>
+            <div class="row">
+              {{ $t('trackingNumber') + ": " + serviceInfo.trackingNumber }}
+            </div>
+          </div>
+          <div v-if="serviceInfo.deliveryMode === '1'" class="content">
+            <div class="row">
+              {{ $t('deliveryMode') + ': ' + $t(`deliveryMode${serviceInfo.deliveryMode}`) }}
+            </div>
+            <div class="row">
+              {{ $t('deliveryStore') + ': ' + serviceInfo.deliveryStore }}
+            </div>
+          </div>
+        </van-collapse-item>
+      </van-collapse>
     </div>
   </div>
 </template>
@@ -133,6 +169,7 @@ export default {
       type: '0',
       productCategorys: CATEGORYOFPRODUCT,
       serviceInfo: {},
+      deliveryInfo: [],
     }
   },
   created () {
@@ -140,7 +177,7 @@ export default {
     this.type = this.$route.query.type || '0'
 
     const url = this.type === '0' ? '/client/RentalService/'
-      : (this.type === '1' ? '/client/ComboService/' : '')
+      : (this.type === '1' ? '/client/ComboService/' : '/client/SellService/')
 
     this.$fetch(url, {
       params: {
@@ -151,6 +188,7 @@ export default {
       const serviceInfo = resp.data.results[0]
       this.serviceInfo = {
         ...serviceInfo,
+        serviceType: this.type,
       }
     }).catch(err => {
       console.log(err)
@@ -168,11 +206,12 @@ export default {
   },
   computed: {
     servicePeriod: function () {
-      const { rentStartDate, rentDueDate, rentPeriod } = this.serviceInfo
-      if (rentDueDate && rentStartDate) {
-        const range = (new Date(...rentDueDate.split`-`)).valueOf() -
-                (new Date(...rentStartDate.split`-`)).valueOf()
-        const gap = rentPeriod - (range / (24 * 60 * 60 * 1000) + 1)
+      const { rentDueDate } = this.serviceInfo
+      if (rentDueDate) {
+        const [y, m, d] = rentDueDate.split`-`
+        const range = Date.now() -
+          (new Date(y, m - 1, d)).valueOf()
+        const gap = Math.ceil(range / (24 * 60 * 60 * 1000))
         return {
           color: gap < 0 ? '#B99F85' : '#D0021B',
           gap: Math.abs(gap),
@@ -180,6 +219,14 @@ export default {
         }
       } else {
         return null
+      }
+    },
+    reservedProductShow: function () {
+      const { serviceStatus, reservedProduct, serviceType } = this.serviceInfo
+      if (serviceType === '1') {
+        return !!reservedProduct
+      } else {
+        return +serviceStatus < 3 && reservedProduct
       }
     },
   },
@@ -333,11 +380,53 @@ export default {
     background: #fff;
     margin-top: 12px;
     padding: 0 18px;
+    padding-bottom: 15px;
 
     header {
       padding: 18px 0;
       font-size: 14px;
       border-bottom: .5px solid #e5e5e5;
+    }
+  }
+
+  .delivery-info {
+    .van-collapse-item {
+      .van-cell {
+        padding: 20px 0;
+
+        &::after {
+          content: none;
+        }
+
+        .header {
+          display: flex;
+          justify-content: space-between;
+          margin-right: 20px;
+
+          .title {
+            font-size: 14px;
+            flex: 1;
+            padding-right: 50px;
+          }
+        }
+      }
+
+      .van-collapse-item__content {
+        padding: 8px 0 28px;
+
+        .content {
+          font-size: 14px;
+          color: #666666;
+
+          .row {
+            margin-bottom: 18px;
+
+            &:last-child {
+              margin-bottom: 0;
+            }
+          }
+        }
+      }
     }
   }
 }

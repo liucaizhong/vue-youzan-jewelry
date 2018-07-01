@@ -23,7 +23,7 @@
             </router-link>
           </div>
           <div class="show-section__portal-content">
-            <router-link to="/package">
+            <router-link to="/package-list">
               <p class="title">{{ $t('package') }}</p>
               <p class="subtitle">{{ $t('packageDesc') }}</p>
             </router-link>

@@ -85,8 +85,9 @@
 </template>
 
 <script>
-import { SERVICETYPE, CATEGORYOFPRODUCT, SERVICESTATUS, PACKAGESTATUS, CREDITSTATUS } from '@/constant'
-// v-if="tab === 2"
+import { SERVICETYPE, CATEGORYOFPRODUCT, SERVICESTATUS,
+  PACKAGESTATUS, SALESTATUS, CREDITSTATUS } from '@/constant'
+
 export default {
   props: {
     tab: {
@@ -112,6 +113,7 @@ export default {
       productCategory: CATEGORYOFPRODUCT,
       serviceStatuss: SERVICESTATUS,
       packageStatuss: PACKAGESTATUS,
+      saleStatuss: SALESTATUS,
       creditStatuss: CREDITSTATUS,
       selected: false,
     }
@@ -136,11 +138,12 @@ export default {
       return serviceTypeText + ': ' + this.serviceInfo.serviceNo
     },
     servicePeriod: function () {
-      const { rentStartDate, rentDueDate, rentPeriod } = this.serviceInfo
-      if (rentDueDate && rentStartDate) {
-        const range = (new Date(...rentDueDate.split`-`)).valueOf() -
-                (new Date(...rentStartDate.split`-`)).valueOf()
-        const gap = rentPeriod - (range / (24 * 60 * 60 * 1000) + 1)
+      const { rentDueDate } = this.serviceInfo
+      if (rentDueDate) {
+        const [y, m, d] = rentDueDate.split`-`
+        const range = Date.now() -
+          (new Date(y, m - 1, d)).valueOf()
+        const gap = Math.ceil(range / (24 * 60 * 60 * 1000))
         const fontColor = `color: ${gap > 0 ? '#F01400' : '#000'}`
         return `<span style="${fontColor}">${this.$t(gap > 0 ? 'overtimeDays' : 'remainingDays', [Math.abs(gap)])}</span>`
       } else {
@@ -184,6 +187,10 @@ export default {
           }
           case '1': {
             status = this.packageStatuss
+            break
+          }
+          case '2': {
+            status = this.saleStatuss
             break
           }
         }
@@ -288,6 +295,7 @@ export default {
         .has-no-product {
           font-size: 14px;
           color: #6C6C6C;
+          padding: 15px 18px;
         }
 
         .my-button {

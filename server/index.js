@@ -6,7 +6,7 @@ const axios = require('axios')
 
 // const multipartMiddleware = multipart()
 const router = express.Router()
-// const baseUrl = 'http://v6tzc5.natappfree.cc/api-auth'
+// const baseUrl = 'http://5tskwy.natappfree.cc/api-auth'
 const baseUrl = 'http://120.55.55.106/api-auth'
 
 function mapUrl (rawUrl) {
@@ -113,6 +113,14 @@ module.exports = () => {
     }, req, res)
   })
 
+  router.post('/client/SellService/', (req, res) => {
+    request({
+      url: mapUrl(req.url),
+      method: 'post',
+      data: req.body,
+    }, req, res)
+  })
+
   router.get('/client/RentalService/', (req, res) => {
     request({
       url: mapUrl(req.url),
@@ -125,9 +133,49 @@ module.exports = () => {
     }, req, res)
   })
 
+  router.get('/client/SellService/', (req, res) => {
+    request({
+      url: mapUrl(req.url),
+    }, req, res)
+  })
+
   router.get('/client/GetUserInfo/', (req, res) => {
     request({
       url: mapUrl(req.url),
+    }, req, res)
+  })
+
+  router.get('/client/package', (req, res) => {
+    request({
+      url: mapUrl(req.url),
+    }, req, res)
+  })
+
+  router.get('/client/package/ListInfo/', (req, res) => {
+    request({
+      url: mapUrl(req.url),
+    }, req, res)
+  })
+
+  router.get('/client/package/mine/', (req, res) => {
+    request({
+      url: mapUrl(req.url),
+    }, req, res)
+  })
+
+  router.post('/client/ComboService', (req, res) => {
+    request({
+      url: mapUrl(req.url),
+      method: 'post',
+      data: req.body,
+    }, req, res)
+  })
+
+  router.post('/client/ComboService/changeproduct', (req, res) => {
+    request({
+      url: mapUrl(req.url),
+      method: 'post',
+      data: req.body,
     }, req, res)
   })
 

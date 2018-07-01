@@ -6,9 +6,15 @@
         :title="productTitle"
         :desc="productDesc"
         :price="reservedProduct.sellingPrice"
+        v-if='!nopr'
       >
         <img v-lazy="reservedProduct.mainimage" slot="thumb">
       </van-card>
+      <van-card v-else
+        class="my-card package-info"
+        :title="packageInfo.title"
+        num="1"
+      />
     </section>
     <div class="van-hairline--top" />
     <section class="payment-detail__price">
@@ -25,7 +31,7 @@
         <span class="value">{{ $n(totalAmount, 'currency')}}</span>
       </div>
     </section>
-    <section class="payment-detail__delivery">
+    <section class="payment-detail__delivery" v-if="!nopr">
       <span class="header">{{ $t('deliveryMode') }}</span>
       <van-radio-group
         class="mode-group"
@@ -40,7 +46,13 @@
           <template slot="title">{{ $t(item.name) }}</template>
           <div v-show="deliveryMode === `${i}`" slot="content">
             <div v-if="item.key === '1'">
-              上海市静安区
+              <p
+                class="content"
+                v-for="i in [1, 2]"
+                :key="i"
+              >
+                {{ $t(`paymentSuccessDescLine${i}`) }}
+              </p>
             </div>
             <edit-receiver
               v-else-if="item.key === '0'"
@@ -111,6 +123,7 @@ export default {
     return {
       id: '',
       type: '0', // 0: one, 1: package, 2: buy
+      nopr: false,
       showConfirmBalanceDeduction: false,
       deliveryModes: DELIVERYMODE,
       deliveryMode: DELIVERYMODE[1].key,
@@ -139,55 +152,115 @@ export default {
         series: '',
         title: '',
       },
+      packageInfo: {
+        title: '',
+        deposit: '',
+        price: '',
+        id: '',
+        period: '',
+      },
     }
   },
   created () {
     console.log('$route', this.$route)
     this.id = this.$route.params.id
     this.type = this.$route.query.type || '0'
+    this.nopr = !!this.$route.query.nopr
 
-    const url = this.type === '2' ? '/client/ProductDetail/' : '/client/RentalService/'
-    console.log('this.url', url)
-    if (this.type === '2') {
-      this.$fetch(url, {
-        params: {
-          productid: this.id,
-        },
-      }, true).then(resp => {
-        console.log('resp', resp)
-        const { MainImage0, sellingPrice, title, series, category } = resp.data.results[0]
+    switch (this.type) {
+      case '0': {
+        const url = '/client/RentalService/'
+        this.$fetch(url, {
+          params: {
+            serviceNo: this.id,
+          },
+        }, true).then(resp => {
+          console.log('resp', resp)
+          const serviceInfo = resp.data.results[0]
+          const { 'current_payamount': totalAmount, initialDeposit, initialRent,
+            rentPeriod } = serviceInfo
+          this.totalAmount = totalAmount
+          this.deposit = initialDeposit
+          this.rent = initialRent
+          this.rentPeriod = rentPeriod
+          this.reservedProduct = {
+            ...serviceInfo.reservedProduct,
+          }
+        }).catch(err => {
+          console.log(err)
+        })
+        break
+      }
+      case '1': {
+        // if (this.nopr) {
+        //   const url = '/client/package/'
+        //   this.$fetch(url, {
+        //     params: {
+        //       packageNo: this.id,
+        //     },
+        //   }, true).then(resp => {
+        //     console.log('resp', resp)
+        //     const info = resp.data.results[0]
+        //     this.packageInfo = {
+        //       ...info,
+        //     }
+        //     const { deposit, period, price } = info
+        //     this.deposit = deposit
+        //     this.rent = price
+        //     this.rentPeriod = period
+        //     this.totalAmount = parseFloat(deposit) + parseFloat(price)
+        //   }).catch(err => {
+        //     console.log(err)
+        //   })
+        // }
+        const url = '/client/ComboService/'
+        this.$fetch(url, {
+          params: {
+            serviceNo: this.id,
+          },
+        }, true).then(resp => {
+          console.log('resp', resp)
+          const serviceInfo = resp.data.results[0]
+          const { 'current_payamount': totalAmount, initialDeposit, initialRent,
+            rentPeriod } = serviceInfo
+          this.totalAmount = totalAmount
+          this.deposit = initialDeposit
+          this.rent = initialRent
+          this.rentPeriod = rentPeriod
+          this.reservedProduct = {
+            ...serviceInfo.reservedProduct,
+          }
+          this.packageInfo = {
+            ...serviceInfo.packageshot,
+          }
+        }).catch(err => {
+          console.log(err)
+        })
+        break
+      }
+      case '2': {
+        const url = '/client/ProductDetail/'
+        this.$fetch(url, {
+          params: {
+            productid: this.id,
+          },
+        }, true).then(resp => {
+          console.log('resp', resp)
+          const { MainImage0, sellingPrice, title, series, category } = resp.data.results[0]
 
-        this.reservedProduct = {
-          mainimage: MainImage0.avatar,
-          sellingPrice,
-          title,
-          series,
-          category,
-        }
-        this.totalAmount = sellingPrice
-      }).catch(err => {
-        console.log(err)
-      })
-    } else {
-      this.$fetch(url, {
-        params: {
-          serviceNo: this.id,
-        },
-      }, true).then(resp => {
-        console.log('resp', resp)
-        const serviceInfo = resp.data.results[0]
-        const { 'current_payamount': totalAmount, initialDeposit, initialRent,
-          rentPeriod } = serviceInfo
-        this.totalAmount = totalAmount
-        this.deposit = initialDeposit
-        this.rent = initialRent
-        this.rentPeriod = rentPeriod
-        this.reservedProduct = {
-          ...serviceInfo.reservedProduct,
-        }
-      }).catch(err => {
-        console.log(err)
-      })
+          this.reservedProduct = {
+            mainimage: MainImage0.avatar,
+            sellingPrice,
+            title,
+            series,
+            category,
+          }
+          this.totalAmount = sellingPrice
+        }).catch(err => {
+          console.log(err)
+        })
+        break
+      }
     }
 
     this.$eventHub.$on('receiverValidationResult', valid => {
@@ -267,39 +340,71 @@ export default {
       this.confirmPayRequest()
     },
     confirmPayRequest () {
-      this.confirmPayLoading = true
-      const fieldName = this.type !== '2' ? 'serviceNo' : 'reservedProductid'
-      const url = '/common/order/'
       console.log('ordertype', this.type)
-      this.$fetch(url, {
-        data: {
-          [fieldName]: this.id,
-          serviceType: this.type,
-          orderType: this.type,
-          deliveryMode: this.deliveryMode,
-          useBalance: +this.useBalance,
-          ...this.formShipInfo(),
-        },
-        method: 'post',
-      }).then(resp => {
-        console.log(resp)
-        const { orderNo, payedamount, orderStatus } = resp.data
-        this.confirmPayLoading = false
-        if (orderStatus === '0') {
-          this.$router.replace(
-            `/confirm-pay?id=${[orderNo]}&total=${payedamount}&due=${Date.now()}`
-          )
-        } else {
-          // jump to pay success page
-          this.$router.replace('/payment-success')
-        }
-      }).catch(err => {
-        console.log(err)
-        this.confirmPayLoading = false
-        this.$message({
-          content: this.$t('paymentFail'),
+      this.confirmPayLoading = true
+      if (this.type === '2') {
+        const url = '/client/SellService/'
+        this.$fetch(url, {
+          data: {
+            reservedProductid: this.id,
+            sellingPrice: this.reservedProduct.sellingPrice,
+            serviceType: this.type,
+            orderType: this.type,
+            deliveryMode: this.deliveryMode,
+            useBalance: +this.useBalance,
+            ...this.formShipInfo(),
+          },
+          method: 'post',
+        }).then(resp => {
+          console.log(resp)
+          const { orderNo, payedamount, orderStatus } = resp.data
+          this.confirmPayLoading = false
+          if (orderStatus === '0') {
+            this.$router.replace(
+              `/confirm-pay?id=${[orderNo]}&total=${payedamount}&due=${Date.now()}`
+            )
+          } else {
+            this.$router.replace('/payment-success')
+          }
+        }).catch(err => {
+          console.log(err)
+          this.confirmPayLoading = false
+          this.$message({
+            content: this.$t('paymentFail'),
+          })
         })
-      })
+      } else {
+        const url = '/common/order/'
+        this.$fetch(url, {
+          data: {
+            serviceNo: this.id,
+            serviceType: this.type,
+            orderType: this.type,
+            deliveryMode: this.deliveryMode,
+            useBalance: +this.useBalance,
+            ...this.formShipInfo(),
+          },
+          method: 'post',
+        }).then(resp => {
+          console.log(resp)
+          const { orderNo, payedamount, orderStatus } = resp.data
+          this.confirmPayLoading = false
+          if (orderStatus === '0') {
+            this.$router.replace(
+              `/confirm-pay?id=${[orderNo]}&total=${payedamount}&due=${Date.now()}`
+            )
+          } else {
+            // jump to pay success page
+            this.$router.replace('/payment-success')
+          }
+        }).catch(err => {
+          console.log(err)
+          this.confirmPayLoading = false
+          this.$message({
+            content: this.$t('paymentFail'),
+          })
+        })
+      }
     },
     // onChangeUseBalance (checked) {
     //   if (checked) {
@@ -324,6 +429,7 @@ export default {
   .payment-detail__price {
     background: #fff;
     padding: 18px;
+    margin-bottom: 12px;
 
     .some-price {
       display: flex;
@@ -351,7 +457,7 @@ export default {
   }
 
   .payment-detail__delivery {
-    margin: 12px 0;
+    margin-bottom: 12px;
     background: #fff;
     padding: 20px 18px;
 
@@ -370,6 +476,13 @@ export default {
         font-size: 14px;
         color: #000000;
         line-height: 20px;
+      }
+
+      .content {
+        font-size: 14px;
+        color: #AFAFAF;
+        margin: 0;
+        margin-top: 10px;
       }
     }
   }
@@ -406,29 +519,21 @@ export default {
     }
   }
 
-  .my-dialog {
-    border-radius: 0;
+  .package-info {
+    padding-left: 18px;
+    height: 60px;
 
-    .van-dialog__header {
-      padding-top: 42px;
-      font-size: 16px;
+    .van-card__thumb {
+      display: none;
     }
 
-    .van-dialog__message--withtitle {
-      font-size: 24px;
-      text-align: center;
-      color: #000;
-      padding: 10px 0 28px;
-    }
+    .van-card__content {
+      display: flex;
+      justify-content: space-between;
 
-    .van-button__text {
-      font-size: 16px;
-      color: #B99F85;
-    }
-
-    .van-dialog__confirm {
-      background: #000000;
-      border-radius: 0;
+      .van-card__row {
+        margin-bottom: 0;
+      }
     }
   }
 }

@@ -1,7 +1,7 @@
 <template>
   <div id="payment-success" class="scroll-fix">
     <header class="payment-success--header">
-      <p class="main-title">{{ $t('paymentSuccess') }}</p>
+      <p class="main-title">{{ isPackage ? $t('changeSuccess') : $t('paymentSuccess') }}</p>
       <p
         class="content"
         v-for="i in 7"
@@ -38,10 +38,12 @@ export default {
   data () {
     return {
       isAuth: true,
+      isPackage: false,
     }
   },
   created () {
     this.isAuth = this.$getCookie('logged') === '0'
+    this.isPackage = this.$route.query.type === '1'
   },
   mounted () {
     Array.prototype.forEach.call(

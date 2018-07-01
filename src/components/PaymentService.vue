@@ -82,14 +82,13 @@ export default {
     },
   },
   watch: {
-    '$attrs': {
+    '$attrs.active': {
       immediate: true,
       handler: function (val, oldVal) {
-        if (val.active) {
-          console.log('this.$attrs', val.api)
-          this.api = val.api
+        if (val) {
+          !this.api && (this.api = this.$attrs.api)
           this.offset = 0
-          this.getService(val.api, true)
+          this.getService(this.api, true)
         }
       }
     },

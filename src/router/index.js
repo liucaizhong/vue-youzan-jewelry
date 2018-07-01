@@ -14,6 +14,7 @@ const PerfectInfo = () => import('@/components/PerfectInfo')
 const MyService = () => import('@/components/MyService')
 const PaymentSuccess = () => import('@/components/PaymentSuccess')
 const ServiceDetail = () => import('@/components/ServiceDetail')
+const PackageList = () => import('@/components/PackageList')
 
 export default new Router({
   mode: 'history',
@@ -91,6 +92,13 @@ export default new Router({
     {
       path: '/service-detail/:id',
       component: ServiceDetail,
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/package-list',
+      component: PackageList,
       meta: {
         requiresAuth: true,
       },

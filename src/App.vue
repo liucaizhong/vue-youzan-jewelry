@@ -89,7 +89,7 @@ body {
     height: 100%;
     background: transparent;
     position: absolute;
-    z-index: 999;
+    z-index: 1999;
 
     .global-loading {
       padding: 10px;
@@ -443,6 +443,32 @@ body {
         border-color: #CCB8A3;
         background-color: #CCB8A3;
       }
+    }
+  }
+
+  .my-dialog {
+    border-radius: 0;
+
+    .van-dialog__header {
+      padding-top: 42px;
+      font-size: 16px;
+    }
+
+    .van-dialog__message--withtitle {
+      font-size: 24px;
+      text-align: center;
+      color: #000;
+      padding: 10px 0 28px;
+    }
+
+    .van-button__text {
+      font-size: 16px;
+      color: #B99F85;
+    }
+
+    .van-dialog__confirm {
+      background: #000000;
+      border-radius: 0;
     }
   }
 }

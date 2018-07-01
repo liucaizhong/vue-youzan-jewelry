@@ -293,5 +293,21 @@ module.exports = {
     key: '7',
     name: 'serviceStatus7',
   }],
+  SALESTATUS: [{
+    key: '0',
+    name: 'saleStatus0',
+  }, {
+    key: '1',
+    name: 'saleStatus1',
+  }, {
+    key: '2',
+    name: 'saleStatus2',
+  }, {
+    key: '3',
+    name: 'saleStatus3',
+  }, {
+    key: '4',
+    name: 'saleStatus4',
+  }],
 }
 // isAuthenticated: 1 未完善， 0 已完善
