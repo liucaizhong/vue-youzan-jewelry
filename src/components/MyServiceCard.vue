@@ -216,7 +216,9 @@ export default {
     },
     buyProduct () {
       console.log('buy product', this.serviceInfo.product.productid)
-      this.$router.push(`/payment/${this.serviceInfo.product.productid}?type=2`)
+      const type = this.serviceInfo.serviceType
+      const orderType = type === '0' ? '7' : '6'
+      this.$router.push(`/payment/${this.serviceInfo.serviceNo}/?type=${type}&orderType=${orderType}`)
     }
   },
 }

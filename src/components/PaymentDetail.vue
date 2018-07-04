@@ -123,6 +123,7 @@ export default {
     return {
       id: '',
       type: '0', // 0: one, 1: package, 2: buy
+      orderType: '',
       nopr: false,
       showConfirmBalanceDeduction: false,
       deliveryModes: DELIVERYMODE,
@@ -166,6 +167,7 @@ export default {
     this.id = this.$route.params.id
     this.type = this.$route.query.type || '0'
     this.nopr = !!this.$route.query.nopr
+    this.orderType = this.$route.query.orderType
 
     switch (this.type) {
       case '0': {
@@ -349,7 +351,7 @@ export default {
             reservedProductid: this.id,
             sellingPrice: this.reservedProduct.sellingPrice,
             serviceType: this.type,
-            orderType: this.type,
+            orderType: this.orderType || this.type,
             deliveryMode: this.deliveryMode,
             useBalance: +this.useBalance,
             ...this.formShipInfo(),
@@ -379,7 +381,7 @@ export default {
           data: {
             serviceNo: this.id,
             serviceType: this.type,
-            orderType: this.type,
+            orderType: this.orderType || this.type,
             deliveryMode: this.deliveryMode,
             useBalance: +this.useBalance,
             ...this.formShipInfo(),
