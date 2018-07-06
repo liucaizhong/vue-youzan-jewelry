@@ -116,7 +116,7 @@ export default {
     onConfirmPay () {
       const orders = this.checked.reduce((cum, cur, i) => {
         if (cur) {
-          cum.push(this.serviceData[i].serviceNo)
+          cum = cum.concat(this.serviceData[i].order.map(o => o.orderNo))
         }
         return cum
       }, [])

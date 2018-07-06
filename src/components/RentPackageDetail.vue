@@ -244,7 +244,7 @@ export default {
     confirmChangeProduct () {
       // change renting product
       this.paymentLoading = true
-      const url = '/client/ComboService/changeproduct/'
+      const url = '/client/ComboService/swap/'
       this.$fetch(url, {
         data: {
           productid: this.productDetail.productid,

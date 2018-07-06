@@ -171,7 +171,7 @@ module.exports = () => {
     }, req, res)
   })
 
-  router.post('/client/ComboService/changeproduct', (req, res) => {
+  router.post('/client/ComboService/swap', (req, res) => {
     request({
       url: mapUrl(req.url),
       method: 'post',
