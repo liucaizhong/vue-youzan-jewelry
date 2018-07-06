@@ -1,15 +1,15 @@
 <template>
   <div class="product-item">
-    <router-link :to="`/product/${img.productid}`">
+    <router-link :to="`/product/${product.productid}`">
       <img
         class="thumb"
-        v-lazy="img.mainimage"
+        v-lazy="product.mainimage"
       >
       <div class="desc">
-        <p v-if="img.series || img.title" class="name van-ellipsis">{{ productName }}</p>
-        <p v-if="img.sellingPrice" class="price">{{ $n(img.sellingPrice, 'currency') }}</p>
-        <p v-if="img.rent" class="rent">
-          {{ $n(img.rent, 'currency') + '/' + $t('day') }}
+        <p v-if="product.series || product.title" class="name van-ellipsis">{{ productName }}</p>
+        <p v-if="product.sellingPrice" class="price">{{ $n(product.sellingPrice, 'currency') }}</p>
+        <p v-if="product.rent" class="rent">
+          {{ $n(product.rent, 'currency') + '/' + $t('day') }}
         </p>
       </div>
     </router-link>
@@ -24,9 +24,25 @@ export default {
       required: true,
     }
   },
+  data () {
+    return {
+      product: null,
+    }
+  },
+  watch: {
+    img: {
+      deep: true,
+      immediate: true,
+      handler: function (val, oldVal) {
+        this.product = {
+          ...val,
+        }
+      },
+    }
+  },
   computed: {
     productName: function () {
-      return (this.img.series && this.img.series + '-') + this.img.title
+      return (this.product.series && this.product.series + '-') + this.product.title
     },
   },
 }

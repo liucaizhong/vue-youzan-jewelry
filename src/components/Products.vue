@@ -187,34 +187,33 @@ export default {
     },
     requestProductList (loading) {
       // todo: axios
-      this.$nextTick(function () {
-        const url = '/client/product/'
-        const condParams = this.formSearchParams(this.searchCond)
-        console.log('condParams', condParams)
-        const { offset, limit } = condParams
-        offset && (condParams.offset = offset * limit)
+      const url = '/client/product/'
+      const condParams = this.formSearchParams(this.searchCond)
+      console.log('condParams', condParams)
+      const { offset, limit } = condParams
+      offset && (condParams.offset = offset * limit)
 
-        this.$fetch(url, {
-          params: {
-            offset: 0,
-            limit: 50,
-            ...condParams,
-          },
-        }, loading).then(resp => {
-          console.log('resp', resp)
-          const results = resp.data.results
-          this.imgList = results
-          this.keywordCount = resp.data.count
-          this.loading = false
-          this.refreshing = false
-          if (results.length < this.searchCond.limit) {
-            this.finished = true
-          }
-        }).catch(err => {
-          console.log(err)
-          this.loading = false
-          this.refreshing = false
-        })
+      this.$fetch(url, {
+        params: {
+          offset: 0,
+          limit: 50,
+          ...condParams,
+        },
+      }, loading).then(resp => {
+        // alert(JSON.stringify(resp.data.results))
+        console.log('resp', resp)
+        const results = resp.data.results
+        this.imgList = [...results]
+        this.keywordCount = resp.data.count
+        this.loading = false
+        this.refreshing = false
+        if (results.length < this.searchCond.limit) {
+          this.finished = true
+        }
+      }).catch(err => {
+        console.log(err)
+        this.loading = false
+        this.refreshing = false
       })
     },
     onRefresh () {
@@ -242,8 +241,8 @@ export default {
   width: 100vw;
   height: 100vh;
   background: #fff;
-  // overflow: auto;
-  // -webkit-overflow-scrolling: touch;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
 
   .mask {
     position: fixed;

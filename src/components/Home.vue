@@ -125,8 +125,16 @@ export default {
   width: 100vw;
   height: 100vh;
   // background: #F5F5F5;
-  // overflow: auto;
-  // -webkit-overflow-scrolling: touch;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+
+  // .my-search {
+  //   position: fixed;
+  //   top: 0;
+  //   left: 0;
+  //   z-index: 999;
+  //   background: #F5F5F5;
+  // }
 
   .mask {
     position: fixed;
@@ -138,6 +146,10 @@ export default {
     background: rgba(0,0,0,0.50);
     z-index: 999;
   }
+
+  // .van-pull-refresh {
+  //   padding-top: 60px;
+  // }
 
   .show-section {
     width: 100%;

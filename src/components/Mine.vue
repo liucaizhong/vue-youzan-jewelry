@@ -95,8 +95,8 @@ export default {
   width: 100vw;
   height: 100vh;
   // background: #F5F5F5;
-  // overflow: auto;
-  // -webkit-overflow-scrolling: touch;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
 
   .user-info {
     width: 100%;
