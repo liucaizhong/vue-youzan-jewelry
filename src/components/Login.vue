@@ -51,18 +51,19 @@ export default {
       verifyCodeErr: false,
       loginLoading: false,
       height: 0,
-      isAuth: false,
+      redirectUrl: '',
+      // isAuth: false,
     }
   },
   created () {
-    this.isAuth = this.$getCookie('isAuthenticated') === '0'
-    const redirect = this.$route.query.redirect || '/index'
-    this.redirectUrl = this.isAuth ? redirect
-      : ('/bindphone?redirect=' + redirect)
-    const app = document.getElementById('app')
-    this.height = app.clientHeight
+    // this.isAuth = this.$getCookie('isAuthenticated') === '0'
+    this.redirectUrl = this.$route.query.redirect || '/index'
+    // this.redirectUrl = this.userInfo.phone ? redirect
+    //   : ('/bindphone?redirect=' + redirect)
   },
   mounted () {
+    const app = document.getElementById('app')
+    this.height = app.clientHeight
     Array.prototype.forEach.call(
       document.getElementsByClassName('scroll-fix'), this.$scrollFixInit
     )
@@ -117,6 +118,7 @@ export default {
         .catch(err => {
           console.log(err)
         })
+      this.$router.push('/bindphone?redirect=' + this.redirectUrl)
     },
   },
 }

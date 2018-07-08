@@ -17,7 +17,43 @@
       />
     </section>
     <div class="van-hairline--top" />
-    <section class="payment-detail__price">
+    <section v-if="orderType ==='6'" class="payment-detail__price">
+      <div class="some-price">
+        <span class="label">{{ $t('priceOffset')}}</span>
+        <span class="value">{{ $n(totalAmount, 'currency') }}</span>
+      </div>
+      <div class="total">
+        <span class="label">{{ $t('totalAmount') }}</span>
+        <span class="value">{{ $n(totalAmount, 'currency')}}</span>
+      </div>
+    </section>
+    <section v-else-if="orderType ==='7'" class="payment-detail__price">
+      <div class="some-price" v-if="totalAmount >= 0">
+        <span class="label">{{ $t('priceOffset')}}</span>
+        <span class="value">{{ $n(totalAmount, 'currency') }}</span>
+      </div>
+      <div class="total" v-if="totalAmount >= 0">
+        <span class="label">{{ $t('totalAmount') }}</span>
+        <span class="value">{{ $n(totalAmount, 'currency')}}</span>
+      </div>
+      <div class="some-price" v-if="totalAmount < 0">
+        <span class="label">{{ $t('rentPrice')}}</span>
+        <span class="value">{{ $n(rent, 'currency') }}</span>
+      </div>
+      <div class="some-price" v-if="totalAmount < 0">
+        <span class="label">{{ $t('deposit', [''])}}</span>
+        <span class="value">{{ $n(deposit, 'currency') }}</span>
+      </div>
+      <div class="some-price" v-if="totalAmount < 0">
+        <span class="label">{{ $t('sellingPrice')}}</span>
+        <span class="value">{{ '-'+$n(reservedProduct.sellingPrice, 'currency') }}</span>
+      </div>
+      <div class="total" v-if="totalAmount < 0">
+        <span class="label">{{ $t('returnDeposit', ['']) }}</span>
+        <span class="value">{{ $n(Math.abs(totalAmount, 'currency')) }}</span>
+      </div>
+    </section>
+    <section v-else class="payment-detail__price">
       <div class="some-price" v-if="rentPeriod">
         <span class="label">{{ $t('rentPeriod', [rentPeriod])}}</span>
         <span class="value">{{ $n(rent, 'currency') }}</span>
@@ -31,7 +67,7 @@
         <span class="value">{{ $n(totalAmount, 'currency')}}</span>
       </div>
     </section>
-    <section class="payment-detail__delivery" v-if="!nopr">
+    <section class="payment-detail__delivery" v-if="!nopr && (orderType !=='6' && orderType !== '7')">
       <span class="header">{{ $t('deliveryMode') }}</span>
       <van-radio-group
         class="mode-group"
@@ -70,7 +106,7 @@
           is-link
           center
         />
-        <van-cell class="my-cell" center>
+        <van-cell class="my-cell" center v-if="totalAmount > 0">
           <div slot="title">
             <span>{{ $t('useBalance') }}</span>
             <span class="subtitle">{{ $t('curBalance', [$n(userBalance, 'currency')])}}</span>
@@ -84,7 +120,7 @@
     </section>
     <footer class="payment-detail__footer">
       <div class="show-total van-ellipsis">
-        {{ $t('totalPayAmount', [$n(totalPayAmount, 'currency')] )}}
+        {{ totalPayAmountText }}
       </div>
       <van-button
         class="my-button pay-btn"
@@ -131,6 +167,8 @@ export default {
       productCategory: CATEGORYOFPRODUCT,
       confirmPayLoading: false,
       totalAmount: '',
+      // priceOffset: 0,
+      // returnDeposit: 0,
       useBalance: false,
       deposit: '',
       rent: '',
@@ -181,9 +219,16 @@ export default {
           const serviceInfo = resp.data.results[0]
           const { 'current_payamount': totalAmount, initialDeposit, initialRent,
             rentPeriod } = serviceInfo
-          this.totalAmount = totalAmount
           this.deposit = initialDeposit
           this.rent = initialRent
+          if (this.orderType === '7') {
+            this.totalAmount = this.$roundTo2Decimal(
+              (parseFloat(serviceInfo.reservedProduct.sellingPrice) || 0) -
+              (parseFloat(initialRent) || 0) -
+              (parseFloat(initialDeposit) || 0))
+          } else {
+            this.totalAmount = totalAmount
+          }
           this.rentPeriod = rentPeriod
           this.reservedProduct = {
             ...serviceInfo.reservedProduct,
@@ -225,12 +270,16 @@ export default {
           const serviceInfo = resp.data.results[0]
           const { 'current_payamount': totalAmount, initialDeposit, initialRent,
             rentPeriod } = serviceInfo
-          this.totalAmount = totalAmount
+          if (this.orderType === '6') {
+            this.totalAmount = serviceInfo.product.sellingPrice
+          } else {
+            this.totalAmount = totalAmount
+          }
           this.deposit = initialDeposit
           this.rent = initialRent
           this.rentPeriod = rentPeriod
           this.reservedProduct = {
-            ...serviceInfo.reservedProduct,
+            ...serviceInfo.product,
           }
           this.packageInfo = {
             ...serviceInfo.packageshot,
@@ -287,6 +336,13 @@ export default {
     )
   },
   computed: {
+    totalPayAmountText: function () {
+      if (this.totalAmount < 0) {
+        return this.$t('returnDeposit', [this.$n(Math.abs(this.totalPayAmount), 'currency')])
+      } else {
+        return this.$t('totalPayAmount', [this.$n(this.totalPayAmount, 'currency')])
+      }
+    },
     productTitle: function () {
       return (this.reservedProduct.series ? this.reservedProduct.series + '-' : '') +
         this.reservedProduct.title
@@ -381,7 +437,7 @@ export default {
           data: {
             serviceNo: this.id,
             serviceType: this.type,
-            orderType: this.orderType || this.type,
+            orderType: this.totalAmount < 0 ? '5' : (this.orderType || this.type),
             deliveryMode: this.deliveryMode,
             useBalance: +this.useBalance,
             ...this.formShipInfo(),
@@ -391,7 +447,7 @@ export default {
           console.log(resp)
           const { orderNo, payedamount, orderStatus } = resp.data
           this.confirmPayLoading = false
-          if (orderStatus === '0') {
+          if (orderStatus === '0' && this.totalAmount > 0) {
             this.$router.replace(
               `/confirm-pay?id=${[orderNo]}&total=${payedamount}&due=${Date.now()}`
             )

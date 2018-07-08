@@ -303,4 +303,7 @@ export default {
   udpateSuccess: '更改成功',
   udpateFail: '更改失败',
   birthdayInvalid: '生日不能为空',
+  priceOffset: '补差价',
+  returnDeposit: '应退款{0}',
+  sellingPrice: '销售价',
 }
