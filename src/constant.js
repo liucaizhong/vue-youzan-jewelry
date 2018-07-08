@@ -1,5 +1,5 @@
 module.exports = {
-  REALURL: 'service.theiajewel.com/C/',
+  REALURL: 'service.theiajewel.com/C',
   INDEXTABS: [{
     name: 'tabBarText0',
     // icon: () => import('@/assets/1.svg'),

@@ -47,6 +47,10 @@ export default {
       return true
     }
 
+    Vue.prototype.$roundTo2Decimal = function (number) {
+      return Math.round(number * 100) / 100
+    }
+
     Vue.prototype.$fetch = function (url, config = {}, loading) {
       loading && this.$store.commit('updateGlobalLoading', true)
       const baseUrl = '/api-auth'

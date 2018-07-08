@@ -5,7 +5,7 @@
     >
       <div class="content">
         <div class="desc">{{ $t('myTotalAssets') }}</div>
-        <div class="total van-ellipsis">{{ userInfo.balance + userInfo.deposit }}</div>
+        <div class="total van-ellipsis">{{ $roundTo2Decimal(userInfo.balance + userInfo.deposit) }}</div>
         <div class="unit">{{ $t('rmbUnit') }}</div>
       </div>
     </div>
