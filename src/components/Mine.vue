@@ -28,7 +28,7 @@
     </div>
     <van-cell-group class="other-info">
       <van-cell class="my-field" :title="$t('myWallet')" is-link to="/my-wallet" />
-      <van-cell class="my-field" :title="$t('myReservation')" is-link to="/my-reservation" />
+      <!-- <van-cell class="my-field" :title="$t('myReservation')" is-link to="/my-reservation" /> -->
       <van-cell class="my-field" :title="$t('outlets')" is-link to="/outlets" />
       <van-cell class="my-field" :title="$t('FAQ')" is-link to="/FAQ" />
       <van-cell class="my-field" :title="$t('aboutUs')" is-link to="/about-us" />
@@ -77,9 +77,8 @@ export default {
     onUser () {
       console.log('onUser')
       if (this.logged) {
-        // todo: show detail
+        this.$router.push('/user-info')
       } else {
-        // todo: login
         this.$router.push('/login')
       }
     },

@@ -1,19 +1,20 @@
 <template>
-  <div id="bind">
-    <h3>{{ $t('bindPhone') }}</h3>
-    <div class="bind-container">
+  <div id="new-phone">
+    <h3>{{ $t('newPhone') }}</h3>
+    <div class="new-phone-container">
       <phone-input
-        v-model="phone"
-        @handleError="phoneErr = $event"
-        :error="+phoneErr"
+        v-model="newPhone"
+        @handleError="newPhoneErr = $event"
+        :error="+newPhoneErr"
+        :placeholder="$t('inputNewPhone')"
       />
       <verify-code
         v-model="verifyCode"
         @handleError="verifyCodeErr = $event"
         :error="+verifyCodeErr"
         :baseInfo="{
-          phone: phone,
-          phoneInvalid: phoneErr,
+          phone: newPhone,
+          phoneInvalid: newPhoneErr,
         }"
       />
     </div>
@@ -23,7 +24,7 @@
       bottom-action
       @click="bind"
       :loading="bindLoading"
-    >{{ $t('bindPhoneBtn') }}</van-button>
+    >{{ $t('confirmUpdate') }}</van-button>
   </div>
 </template>
 
@@ -38,28 +39,25 @@ export default {
   },
   data () {
     return {
-      phone: '',
+      newPhone: '',
+      newPhoneErr: false,
       verifyCode: '',
-      phoneErr: false,
       verifyCodeErr: false,
       bindLoading: false,
     }
   },
-  created () {
-    this.redirectUrl = this.$route.query.redirect || '/index'
-  },
   methods: {
     bind () {
-      if (this.phoneErr || this.verifyCodeErr ||
-          !this.phone || !this.verifyCode) {
-        this.phoneErr = this.phoneErr || !this.phone
+      if (this.newPhoneErr || this.verifyCodeErr ||
+          !this.newPhone || !this.verifyCode) {
+        this.newPhoneErr = this.newPhoneErr || !this.newPhone
         this.verifyCodeErr = this.verifyCodeErr || !this.verifyCode
       } else {
         this.bindLoading = true
         const url = '/client/bindphone/'
         this.$fetch(url, {
           data: {
-            phone: this.phone,
+            phone: this.newPhone,
             verifycode: this.verifyCode,
           },
           method: 'post',
@@ -71,7 +69,7 @@ export default {
           this.$message({
             content: this.$t('bindPhoneSuccess'),
           })
-          this.$router.push(this.redirectUrl)
+          this.$router.push('/user-info')
         }).catch(err => {
           console.log(err)
           this.bindLoading = false
@@ -80,51 +78,23 @@ export default {
           })
         })
       }
-    }
+    },
   },
 }
 </script>
 
 <style lang="less">
-#bind {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  // padding: 142px 24px 0;
-  padding: 80px 24px 0;
+#new-phone {
   width: 100vw;
   height: 100vh;
   background: #fff;
+  padding: 38px 24px 0;
 
   h3 {
-    // line-height: 16px;
-    text-align: center;
     font-size: 18px;
+    text-align: center;
     margin: 0;
-    margin-bottom: 30px;
-  }
-
-  .bind-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-
-    p {
-      // width: 327px;
-      width: 100%;
-      font-size: 12px;
-      color: #AFAFAF;
-      text-align: left;
-      // line-height: 12px;
-      margin: 0;
-      margin-bottom: 24px;
-
-      a {
-        color: #AFAFAF;
-        text-decoration: underline;
-      }
-    }
+    margin-bottom: 28px;
   }
 }
 </style>

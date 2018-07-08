@@ -25,7 +25,7 @@
       @click="login"
       :loading="loginLoading"
     >{{ $t('loginBtn') }}</van-button>
-    <a href="#" class="wechat-login">
+    <a href="javascript:void(0)" class="wechat-login" @click="loginByWechat">
       <img src="../assets/img/wechat.png" />
       <span>{{ $t('wechatLogin') }}</span>
     </a>
@@ -33,8 +33,10 @@
 </template>
 
 <script>
+import axios from 'axios'
 import PhoneInput from './PhoneInput'
 import VerifyCode from './VerifyCode'
+import { REALURL } from '@/constant'
 
 export default {
   components: {
@@ -49,10 +51,14 @@ export default {
       verifyCodeErr: false,
       loginLoading: false,
       height: 0,
+      isAuth: false,
     }
   },
   created () {
-    this.redirectUrl = this.$route.query.redirect || '/index'
+    this.isAuth = this.$getCookie('isAuthenticated') === '0'
+    const redirect = this.$route.query.redirect || '/index'
+    this.redirectUrl = this.isAuth ? redirect
+      : ('/bindphone?redirect=' + redirect)
     const app = document.getElementById('app')
     this.height = app.clientHeight
   },
@@ -98,7 +104,20 @@ export default {
           })
         })
       }
-    }
+    },
+    loginByWechat () {
+      const APPID = 'wx3cf20ba95498ed2a'
+      const REDIRECT_URI = encodeURI(REALURL + this.redirectUrl)
+      const SCOPE = 'snsapi_base'
+      const url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${APPID}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=${SCOPE}#wechat_redirect`
+      axios.get(url)
+        .then(resp => {
+          console.log('resp', resp)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
   },
 }
 </script>

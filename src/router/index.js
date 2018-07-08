@@ -15,6 +15,16 @@ const MyService = () => import('@/components/MyService')
 const PaymentSuccess = () => import('@/components/PaymentSuccess')
 const ServiceDetail = () => import('@/components/ServiceDetail')
 const PackageList = () => import('@/components/PackageList')
+const MyWallet = () => import('@/components/MyWallet')
+const WithdrawAmount = () => import('@/components/WithdrawAmount')
+const BankInfo = () => import('@/components/BankInfo')
+const UserInfo = () => import('@/components/UserInfo')
+const ChangePhone = () => import('@/components/ChangePhone')
+const NewPhone = () => import('@/components/NewPhone')
+const Authentication = () => import('@/components/Authentication')
+const ChangeEmail = () => import('@/components/ChangeEmail')
+const ChangeAddress = () => import('@/components/ChangeAddress')
+const ChangeBirthday = () => import('@/components/ChangeBirthday')
 
 export default new Router({
   mode: 'history',
@@ -76,8 +86,29 @@ export default new Router({
       },
     },
     {
+      path: '/my-wallet',
+      component: MyWallet,
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/withdraw-amount',
+      component: WithdrawAmount,
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
       path: '/perfectinfo',
       component: PerfectInfo,
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/input-bankinfo',
+      component: BankInfo,
       meta: {
         requiresAuth: true,
       },
@@ -99,6 +130,55 @@ export default new Router({
     {
       path: '/package-list',
       component: PackageList,
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/user-info',
+      component: UserInfo,
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/change-phone',
+      component: ChangePhone,
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/new-phone',
+      component: NewPhone,
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/authentication',
+      component: Authentication,
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/change-email',
+      component: ChangeEmail,
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/change-address',
+      component: ChangeAddress,
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/change-birthday',
+      component: ChangeBirthday,
       meta: {
         requiresAuth: true,
       },

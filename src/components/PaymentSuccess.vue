@@ -37,12 +37,12 @@
 export default {
   data () {
     return {
-      isAuth: true,
+      isAuth: false,
       isPackage: false,
     }
   },
   created () {
-    this.isAuth = this.$getCookie('logged') === '0'
+    this.isAuth = this.$getCookie('isAuthenticated') === '0'
     this.isPackage = this.$route.query.type === '1'
   },
   mounted () {

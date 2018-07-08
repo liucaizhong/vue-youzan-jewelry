@@ -74,7 +74,8 @@ export default {
             resolve(rsp)
             // dispatch action to synchronus mine tab
             if (mergeConfig.method !== 'get' &&
-              ['/client/UserLogin/', '/common/payment/'].includes(url)) {
+              ['/client/UserLogin/', '/common/payment/', '/client/bindphone',
+                '/client/authentication', '/client/perfectinfo'].includes(url)) {
               this.$store.dispatch('getUserInfo')
             }
           } catch (err) {

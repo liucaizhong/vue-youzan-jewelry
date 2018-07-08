@@ -4,7 +4,7 @@
     :value="value"
     @input="handleInput($event)"
     type="tel"
-    :placeholder="$t('phoneNo')"
+    :placeholder="placeholder"
     :error="!!err"
     :error-message="errMsg"
     @blur="validation($event.target.value)"
@@ -16,6 +16,12 @@ export default {
   props: {
     value: String,
     error: Number,
+    placeholder: {
+      type: String,
+      default: function () {
+        return this.$t('phoneNo')
+      }
+    }
   },
   data () {
     return {

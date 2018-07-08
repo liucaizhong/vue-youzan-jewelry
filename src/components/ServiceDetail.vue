@@ -153,21 +153,87 @@
         </van-collapse-item>
       </van-collapse>
     </div>
+
+    <div
+      class="product-changelist"
+      v-if="serviceInfo.changelist && serviceInfo.changelist.length"
+    >
+      <header>
+        {{ $t('historyProduct') }}
+      </header>
+      <div
+        v-for="(log, i) in serviceInfo.changelist"
+        :key="i"
+      >
+        <div class="product-header">
+          <div class="product-period">
+            {{ historyProductRentPeriod(log) }}
+          </div>
+          <div class="product-leaseholdstatus">
+            {{ productLeaseholdStatus(log.leaseholdStatus) }}
+          </div>
+        </div>
+        <div
+          class="product-info"
+        >
+          <img
+            class="thumb"
+            v-lazy="log.product.mainimage"
+          >
+          <div class="desc">
+            <div class="row van-ellipsis">{{ productTitle(log.product) }}</div>
+            <div class="row van-ellipsis" v-if="log.serialNumber">
+              {{ productSerialNumber(log) }}
+            </div>
+            <!-- <div class="category">{{ productCategory(log.product) }}</div> -->
+            <div class="row van-ellipsis" v-if="log.compensation">
+              {{ $t('compensationAmount') + ': ' + $n(log.compensation, 'currency') }}
+            </div>
+          </div>
+        </div>
+        <van-collapse v-model="deliveryInfo" class="delivery-info">
+          <van-collapse-item>
+            <div class="header" slot="title">
+              <div class="title van-ellipsis">{{ $t('deliveryInfo') }}</div>
+            </div>
+            <div v-if="log.receiverName" class="content">
+              <div class="row">
+                {{ $t('deliveryMode') + ': ' + $t(`deliveryMode0`) }}
+              </div>
+              <div class="row">
+                {{ $t('receiverName') + ": " + log.receiverName }}
+              </div>
+              <div class="row">
+                {{ $t('receiverPhone') + ": " + log.receiverPhone }}
+              </div>
+              <div class="row">
+                {{ $t('receiverAddress') + ": " + log.receiverAddress }}
+              </div>
+            </div>
+            <div v-else class="content">
+              <div class="row">
+                {{ $t('deliveryMode') + ': ' + $t(`deliveryMode1`) }}
+              </div>
+              <div class="row">
+                {{ $t('deliveryStore') + ': ' + log.deliveryStore }}
+              </div>
+            </div>
+          </van-collapse-item>
+        </van-collapse>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import { CATEGORYOFPRODUCT } from '@/constant'
-// obj['startDate'] = timezone.now().strftime('%y-%m-%d')
-//         obj['endDate'] = None
-//         obj['product'] = getproductsnap(pd)
-//         obj['productid'] = productid
-//         obj['leaseholdStatus'] = LEASEHOLDGOOD
+import { CATEGORYOFPRODUCT, LEASEHOLDSTATUS } from '@/constant'
+
 export default {
   data () {
     return {
       type: '0',
       productCategorys: CATEGORYOFPRODUCT,
+      leaseholdStatuss: LEASEHOLDSTATUS,
       serviceInfo: {},
       deliveryInfo: [],
     }
@@ -189,6 +255,24 @@ export default {
       this.serviceInfo = {
         ...serviceInfo,
         serviceType: this.type,
+        // changelist: [{
+        //   startDate: '2018-07-06',
+        //   endDate: '2018-07-30',
+        //   receiverAddress: '月星火箭基地孵化蛋',
+        //   receiverName: '黄没卵',
+        //   receiverPhone: '123123123',
+        //   deliveryStore: '天山店',
+        //   compensation: '100',
+        //   leaseholdStatus: '0',
+        //   serialNumber: '123123',
+        //   product: {
+        //     category: '2',
+        //     title: '闪闪发光',
+        //     series: '奢华系列',
+        //     brand: 'THEIA',
+        //     mainimage: '',
+        //   },
+        // }]
       }
     }).catch(err => {
       console.log(err)
@@ -255,6 +339,18 @@ export default {
       const { rentStartDate, rentDueDate } = service
       return this.$t('rentPeriodTitle') + ': ' + rentStartDate +
         (rentDueDate ? ' ~ ' + rentDueDate : '')
+    },
+    historyProductRentPeriod (log) {
+      const { startDate, endDate } = log
+      return this.$t('rentPeriodTitle') + ': ' + startDate +
+        (endDate ? ' ~ ' + endDate : '')
+    },
+    productLeaseholdStatus (leaseholdStatus) {
+      const status = this.leaseholdStatuss.find(cur => {
+        return cur.key === leaseholdStatus
+      })
+
+      return (status && this.$t(status.name)) || ''
     },
   }
 }
@@ -427,6 +523,33 @@ export default {
           }
         }
       }
+    }
+  }
+
+  .product-changelist {
+    background: #fff;
+    margin-top: 12px;
+    padding: 0 18px;
+    padding-bottom: 15px;
+
+    header {
+      padding: 18px 0;
+      font-size: 14px;
+      border-bottom: .5px solid #e5e5e5;
+    }
+
+    .product-header {
+      display: flex;
+      justify-content: space-between;
+
+      .product-leaseholdstatus {
+        font-size: 14px;
+        padding-top: 12px;
+      }
+    }
+
+    .desc {
+      max-width: none;
     }
   }
 }

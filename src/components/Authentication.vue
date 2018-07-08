@@ -1,7 +1,7 @@
 <template>
-  <div id="perfect-info" class="scroll-fix">
-    <h3>{{ $t('perfectInfo') }}</h3>
-    <div class="perfect-info-container">
+  <div id="authentication" class="scroll-fix">
+    <h3>{{ $t('authentication') }}</h3>
+    <div class="authentication-container">
       <van-field
         class="my-field required"
         :value="realName"
@@ -32,37 +32,39 @@
         @input="onInputIdNo($event)"
         @blur="validateIdNo($event.target.value)"
       />
-      <van-field
-        class="my-field"
-        :value="email"
-        :placeholder="$t('email')"
-        :error="emailErr"
-        :error-message="$t('emailInvalid')"
-        @input="onInputEmail($event)"
-      />
-      <van-field
-        class="my-field"
-        :value="address"
-        :placeholder="$t('address')"
-      />
     </div>
+    <van-radio-group
+      v-model="selectPrivacy"
+    >
+      <my-radio
+        :radioType="selectPrivacy"
+        radioName="1"
+        radioClass="my-radio-square"
+      >
+        <template slot="title">
+          <div class="privacy" v-html="$t('privacyTerm', { path: '/privacy'})"></div>
+        </template>
+      </my-radio>
+    </van-radio-group>
     <van-button
       class="my-button"
       type="default"
       bottom-action
-      @click="onPerfect"
-      :loading="perfectLoading"
+      @click="onAuth"
+      :loading="authLoading"
     >{{ $t('commit') }}</van-button>
   </div>
 </template>
 
 <script>
 import MyPicker from './MyPicker'
+import MyRadio from './MyRadio'
 import { IDTYPE } from '@/constant'
 
 export default {
   components: {
     MyPicker,
+    MyRadio,
   },
   data () {
     return {
@@ -72,15 +74,15 @@ export default {
       idTypeErr: false,
       idNo: '',
       idNoErr: false,
-      email: '',
-      emailErr: false,
-      address: '',
-      perfectLoading: false,
+      authLoading: false,
       idTypes: IDTYPE,
+      selectPrivacy: '0',
     }
   },
-  created () {
-    this.redirectUrl = this.$route.query.redirect || '/index'
+  watch: {
+    idType: function (val, oldVal) {
+      this.idTypeErr = !val
+    },
   },
   mounted () {
     Array.prototype.forEach.call(
@@ -92,45 +94,42 @@ export default {
       document.getElementsByClassName('scroll-fix'), this.$scrollFixDestory
     )
   },
-  watch: {
-    idType: function (val, oldVal) {
-      this.idTypeErr = !val
-    },
-  },
   methods: {
-    onPerfect () {
+    onAuth () {
       if (this.realNameErr || this.idTypeErr || this.idNoErr ||
-          this.emailErr || !this.realName || !this.idType ||
-          !this.idNo) {
+         !this.realName || !this.idType || !this.idNo) {
         this.realNameErr = this.realNameErr || !this.realName
         this.idTypeErr = this.idTypeErr || !this.idType
         this.idNoErr = this.idNoErr || !this.idNo
       } else {
-        this.perfectLoading = true
-        const url = '/client/perfectinfo/'
+        if (this.selectPrivacy === '0') {
+          this.$message({
+            content: this.$t('privacyNotSelected'),
+          })
+          return
+        }
+        this.authLoading = true
+        const url = '/client/authentication/'
         this.$fetch(url, {
           data: {
             realName: this.realName,
             idType: this.idType,
             idNo: this.idNo,
-            email: this.email,
-            address: this.address,
           },
           method: 'post',
         }).then(resp => {
           console.log(resp)
           // const bindInfo = Object.assign({}, resp.data)
           // this.$store.commit('userbind', bindInfo)
-          this.perfectLoading = false
+          this.authLoading = false
           this.$message({
-            content: this.$t('perfectInfoSuccess'),
+            content: this.$t('authenticationSuccess'),
           })
-          this.$router.push(this.redirectUrl)
         }).catch(err => {
           console.log(err)
-          this.perfectLoading = false
+          this.authLoading = false
           this.$message({
-            content: this.$t('perfectInfoFail'),
+            content: this.$t('authenticationFail'),
           })
         })
       }
@@ -160,20 +159,12 @@ export default {
       }
       this.idNoErr = pattern && !pattern.test(val)
     },
-    onInputEmail (val) {
-      this.email = val
-      this.validateEmail(val)
-    },
-    validateEmail (val) {
-      const pattern = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/g
-      this.emailErr = val && !pattern.test(val)
-    },
   },
 }
 </script>
 
 <style lang="less">
-#perfect-info {
+#authentication {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -193,7 +184,7 @@ export default {
     margin-bottom: 30px;
   }
 
-  .perfect-info-container {
+  .authentication-container {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -219,6 +210,16 @@ export default {
         padding: 0 15px;
         border-color: #000000;
       }
+    }
+  }
+
+  .privacy {
+    font-size: 12px;
+    color: #777777;
+
+    a {
+      color: #777777;
+      text-decoration: underline;
     }
   }
 }

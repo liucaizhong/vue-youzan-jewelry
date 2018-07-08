@@ -1,4 +1,5 @@
 module.exports = {
+  REALURL: 'service.theiajewel.com/C/',
   INDEXTABS: [{
     name: 'tabBarText0',
     // icon: () => import('@/assets/1.svg'),
@@ -308,6 +309,13 @@ module.exports = {
   }, {
     key: '4',
     name: 'saleStatus4',
+  }],
+  LEASEHOLDSTATUS: [{
+    key: '0',
+    name: 'leaseholdStatus0',
+  }, {
+    key: '1',
+    name: 'leaseholdStatus1',
   }],
 }
 // isAuthenticated: 1 未完善， 0 已完善
