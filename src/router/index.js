@@ -25,10 +25,12 @@ const Authentication = () => import('@/components/Authentication')
 const ChangeEmail = () => import('@/components/ChangeEmail')
 const ChangeAddress = () => import('@/components/ChangeAddress')
 const ChangeBirthday = () => import('@/components/ChangeBirthday')
+const Booking = () => import('@/components/Booking')
+const Outlets = () => import('@/components/Outlets')
 
 export default new Router({
   mode: 'history',
-  base: '/C/',
+  // base: '/C/',
   routes: [
     {
       path: '*',
@@ -179,6 +181,20 @@ export default new Router({
     {
       path: '/change-birthday',
       component: ChangeBirthday,
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/book',
+      component: Booking,
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/outlets',
+      component: Outlets,
       meta: {
         requiresAuth: true,
       },

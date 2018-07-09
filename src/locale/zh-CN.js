@@ -306,4 +306,13 @@ export default {
   priceOffset: '补差价',
   returnDeposit: '应退款{0}',
   sellingPrice: '销售价',
+  booking: '预约说明',
+  bookingDesc0: '您若有意到店亲自选购或租赁珠宝，可直接电话预约，我们将安排专员全程一对一服务。',
+  bookingDesc1: 'THEIA诚挚欢迎您的光临~',
+  bookingDesc2: '预约受理时间：周一到周六 10:00 - 18:00',
+  bookingDesc3: '预约电话：021 - 39982635',
+  bookingDesc4: '展厅地址：上海市徐汇区龙华中路600号绿地大厦B座1108室',
+  outletName0: 'THEIA上海总部',
+  outletContact0: '电话：021-39982635',
+  outletAddress0: '地址：上海市徐汇区龙华中路600号绿地大厦B座1108室',
 }
