@@ -1,5 +1,5 @@
 <template>
-  <div id="bind">
+  <div id="bind" :style="{ height: height + 'px'}" class="scroll-fix">
     <h3>{{ $t('bindPhone') }}</h3>
     <div class="bind-container">
       <phone-input
@@ -43,10 +43,23 @@ export default {
       phoneErr: false,
       verifyCodeErr: false,
       bindLoading: false,
+      height: 0,
     }
   },
   created () {
     this.redirectUrl = this.$route.query.redirect || '/index'
+  },
+  mounted () {
+    const app = document.getElementById('app')
+    this.height = app.clientHeight
+    Array.prototype.forEach.call(
+      document.getElementsByClassName('scroll-fix'), this.$scrollFixInit
+    )
+  },
+  beforeDestroy () {
+    Array.prototype.forEach.call(
+      document.getElementsByClassName('scroll-fix'), this.$scrollFixDestory
+    )
   },
   methods: {
     bind () {

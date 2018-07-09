@@ -1,5 +1,5 @@
 <template>
-  <div id="perfect-info" class="scroll-fix">
+  <div id="perfect-info" class="scroll-fix" :style="{ height: height + 'px'}">
     <h3>{{ $t('perfectInfo') }}</h3>
     <div class="perfect-info-container">
       <van-field
@@ -77,12 +77,15 @@ export default {
       address: '',
       perfectLoading: false,
       idTypes: IDTYPE,
+      height: 0,
     }
   },
   created () {
     this.redirectUrl = this.$route.query.redirect || '/index'
   },
   mounted () {
+    const app = document.getElementById('app')
+    this.height = app.clientHeight
     Array.prototype.forEach.call(
       document.getElementsByClassName('scroll-fix'), this.$scrollFixInit
     )

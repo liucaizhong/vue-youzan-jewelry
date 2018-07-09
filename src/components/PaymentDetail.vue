@@ -29,11 +29,19 @@
     </section>
     <section v-else-if="orderType ==='7'" class="payment-detail__price">
       <div class="some-price" v-if="totalAmount >= 0">
-        <span class="label">{{ $t('priceOffset')}}</span>
-        <span class="value">{{ $n(totalAmount, 'currency') }}</span>
+        <span class="label">{{ $t('sellingPrice')}}</span>
+        <span class="value">{{ $n(reservedProduct.sellingPrice, 'currency') }}</span>
+      </div>
+      <div class="some-price" v-if="totalAmount >= 0">
+        <span class="label">{{ $t('rentPrice')}}</span>
+        <span class="value">{{ '-' + $n(rent, 'currency') }}</span>
+      </div>
+      <div class="some-price" v-if="totalAmount >= 0">
+        <span class="label">{{ $t('deposit', [''])}}</span>
+        <span class="value">{{ '-' + $n(deposit, 'currency') }}</span>
       </div>
       <div class="total" v-if="totalAmount >= 0">
-        <span class="label">{{ $t('totalAmount') }}</span>
+        <span class="label">{{ $t('priceOffset') }}</span>
         <span class="value">{{ $n(totalAmount, 'currency')}}</span>
       </div>
       <div class="some-price" v-if="totalAmount < 0">
@@ -46,7 +54,7 @@
       </div>
       <div class="some-price" v-if="totalAmount < 0">
         <span class="label">{{ $t('sellingPrice')}}</span>
-        <span class="value">{{ '-'+$n(reservedProduct.sellingPrice, 'currency') }}</span>
+        <span class="value">{{ '-' + $n(reservedProduct.sellingPrice, 'currency') }}</span>
       </div>
       <div class="total" v-if="totalAmount < 0">
         <span class="label">{{ $t('returnDeposit', ['']) }}</span>
@@ -432,36 +440,70 @@ export default {
           })
         })
       } else {
-        const url = '/common/order/'
-        this.$fetch(url, {
-          data: {
-            serviceNo: this.id,
-            serviceType: this.type,
-            orderType: this.totalAmount < 0 ? '5' : (this.orderType || this.type),
-            deliveryMode: this.deliveryMode,
-            useBalance: +this.useBalance,
-            ...this.formShipInfo(),
-          },
-          method: 'post',
-        }).then(resp => {
-          console.log(resp)
-          const { orderNo, payedamount, orderStatus } = resp.data
-          this.confirmPayLoading = false
-          if (orderStatus === '0' && this.totalAmount > 0) {
-            this.$router.replace(
-              `/confirm-pay?id=${[orderNo]}&total=${payedamount}&due=${Date.now()}`
-            )
-          } else {
-            // jump to pay success page
-            this.$router.replace('/payment-success')
-          }
-        }).catch(err => {
-          console.log(err)
-          this.confirmPayLoading = false
-          this.$message({
-            content: this.$t('paymentFail'),
+        if (this.orderType === '7') {
+          const url = '/client/RentalService/buy/'
+          this.$fetch(url, {
+            data: {
+              serviceNo: this.id,
+              serviceType: this.type,
+              orderType: this.orderType || this.type,
+              deliveryMode: this.deliveryMode,
+              useBalance: +this.useBalance,
+              // ...this.formShipInfo(),
+            },
+            method: 'post',
+          }).then(resp => {
+            console.log(resp)
+            const { result, order } = resp.data
+            this.confirmPayLoading = false
+            if (!result) {
+              const { orderNo, payedamount } = order
+              this.$router.replace(
+                `/confirm-pay?id=${[orderNo]}&total=${payedamount}&due=${Date.now()}`
+              )
+            } else {
+              // jump to pay success page
+              this.$router.replace('/payment-success')
+            }
+          }).catch(err => {
+            console.log(err)
+            this.confirmPayLoading = false
+            this.$message({
+              content: this.$t('paymentFail'),
+            })
           })
-        })
+        } else {
+          const url = '/common/order/'
+          this.$fetch(url, {
+            data: {
+              serviceNo: this.id,
+              serviceType: this.type,
+              orderType: this.orderType || this.type,
+              deliveryMode: this.deliveryMode,
+              useBalance: +this.useBalance,
+              ...this.formShipInfo(),
+            },
+            method: 'post',
+          }).then(resp => {
+            console.log(resp)
+            const { orderNo, payedamount, orderStatus } = resp.data
+            this.confirmPayLoading = false
+            if (orderStatus === '0') {
+              this.$router.replace(
+                `/confirm-pay?id=${[orderNo]}&total=${payedamount}&due=${Date.now()}`
+              )
+            } else {
+              // jump to pay success page
+              this.$router.replace('/payment-success')
+            }
+          }).catch(err => {
+            console.log(err)
+            this.confirmPayLoading = false
+            this.$message({
+              content: this.$t('paymentFail'),
+            })
+          })
+        }
       }
     },
     // onChangeUseBalance (checked) {

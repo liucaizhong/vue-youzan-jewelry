@@ -1,5 +1,5 @@
 <template>
-  <div id="authentication" class="scroll-fix">
+  <div id="authentication" class="scroll-fix" :style="{ height: height + 'px'}">
     <h3>{{ $t('authentication') }}</h3>
     <div class="authentication-container">
       <van-field
@@ -77,6 +77,7 @@ export default {
       authLoading: false,
       idTypes: IDTYPE,
       selectPrivacy: '0',
+      height: 0,
     }
   },
   watch: {
@@ -85,6 +86,8 @@ export default {
     },
   },
   mounted () {
+    const app = document.getElementById('app')
+    this.height = app.clientHeight
     Array.prototype.forEach.call(
       document.getElementsByClassName('scroll-fix'), this.$scrollFixInit
     )

@@ -80,6 +80,7 @@ export default {
             if (mergeConfig.method !== 'get' &&
               ['/client/UserLogin/', '/common/payment/', '/client/bindphone',
                 '/client/authentication', '/client/perfectinfo'].includes(url)) {
+              console.log('fetch', url)
               this.$store.dispatch('getUserInfo')
             }
           } catch (err) {
