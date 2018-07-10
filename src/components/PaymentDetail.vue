@@ -308,7 +308,7 @@ export default {
           const { MainImage0, sellingPrice, title, series, category } = resp.data.results[0]
 
           this.reservedProduct = {
-            mainimage: MainImage0.avatar,
+            mainimage: MainImage0 && MainImage0.avatar,
             sellingPrice,
             title,
             series,

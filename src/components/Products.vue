@@ -45,6 +45,7 @@
           @on-reset="resetSearchCond"
           @on-confirm="getProductList"
           :category="categoryFromRoute"
+          :sellingPriceDomain="[searchCond.minSellingPrice, searchCond.maxSellingPrice]"
         />
         <!-- </keep-alive> -->
       </van-collapse-item>
@@ -118,9 +119,12 @@ export default {
   // },
   activated () {
     console.log('activated', this.$route)
-    const { keyword = '', category } = this.$route.query
+    const { keyword = '', category,
+      minSellingPrice, maxSellingPrice } = this.$route.query
     this.searchCond.keyword = keyword
     this.searchCond.category = (category && category.split`,`) || []
+    this.searchCond.minSellingPrice = minSellingPrice
+    this.searchCond.maxSellingPrice = maxSellingPrice
     this.categoryFromRoute = category
     this.requestProductList(true)
   },
@@ -177,7 +181,15 @@ export default {
       return Object.keys(cond).reduce((cum, key) => {
         if (cond[key]) {
           if (Array.isArray(cond[key])) {
-            cond[key].length && (cum[key] = cond[key])
+            if (key.includes('sellingPrices')) {
+              cond[key][0] && (cum['minSellingPrice'] = cond[key][0])
+              cond[key][1] && (cum['maxSellingPrice'] = cond[key][1])
+            } else if (key.includes('rentPrices')) {
+              cond[key][0] && (cum['minRentPrice'] = cond[key][0])
+              cond[key][1] && (cum['maxRentPrice'] = cond[key][1])
+            } else {
+              cond[key].length && (cum[key] = cond[key])
+            }
           } else {
             cum[key] = cond[key]
           }

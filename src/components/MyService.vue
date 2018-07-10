@@ -1,6 +1,6 @@
 <template>
   <div id="my-service" class="scroll-fix">
-    <van-tabs v-model="activeTab" swipeable>
+    <van-tabs v-model="activeTab" swipeable @click="changeTab">
       <van-tab
         v-for="(tab, i) in myServiceTabs"
         :key="i"
@@ -25,6 +25,11 @@ export default {
   created () {
     console.log(this.$route)
     this.activeTab = this.$route.hash.slice(1)
+  },
+  methods: {
+    changeTab (index) {
+      this.$router.replace(`/my-service#${index}`)
+    },
   },
 }
 </script>

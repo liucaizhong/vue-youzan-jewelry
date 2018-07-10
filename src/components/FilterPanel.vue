@@ -1,5 +1,5 @@
 <template>
-  <div id="filter-panel">
+  <div id="filter-panel" :style="{ height: height + 'px'}" class="scroll-fix">
     <div class="content">
       <div class="content-item">
         <h3>{{ $t('category') }}</h3>
@@ -18,6 +18,42 @@
           :selected.sync="goldTypeSelected"
           @on-change="changeSelection"
         />
+      </div>
+      <div class="content-item">
+        <h3>{{ $t('sellingPrice') }}</h3>
+        <div class="price-group">
+          <van-field
+            class="price-input"
+            v-model="sellingPrices[0]"
+            :placeholder="$t('lowestPrice')"
+            type="number"
+          />
+          <div class="slash">—</div>
+          <van-field
+            class="price-input"
+            v-model="sellingPrices[1]"
+            :placeholder="$t('highestPrice')"
+            type="number"
+          />
+        </div>
+      </div>
+      <div class="content-item">
+        <h3>{{ $t('rentPricePerDay') }}</h3>
+        <div class="price-group">
+          <van-field
+            class="price-input"
+            v-model="rentPrices[0]"
+            :placeholder="$t('lowestPrice')"
+            type="number"
+          />
+          <div class="slash">—</div>
+          <van-field
+            class="price-input"
+            v-model="rentPrices[1]"
+            :placeholder="$t('highestPrice')"
+            type="number"
+          />
+        </div>
       </div>
     </div>
     <div class="van-hairline--top" />
@@ -48,6 +84,12 @@ export default {
     category: {
       type: String,
     },
+    sellingPriceDomain: {
+      type: Array,
+      default: function () {
+        return []
+      },
+    },
   },
   data () {
     return {
@@ -55,21 +97,37 @@ export default {
       goldType: GOLDTYPE,
       categorySelected: [],
       goldTypeSelected: [],
+      sellingPrices: [],
+      rentPrices: [],
+      height: 0,
     }
   },
-  created () {
-    this.categorySelected = []
-    const idx = this.productCategory.findIndex(cur => {
-      return cur.key.join`,` === this.category
-    })
-    console.log('idx', idx)
-    if (idx !== -1) {
-      this.categorySelected[idx] = true
-    }
-    this.$forceUpdate()
+  // created () {
+  //   this.categorySelected = []
+  //   const idx = this.productCategory.findIndex(cur => {
+  //     return cur.key.join`,` === this.category
+  //   })
+  //   console.log('idx', idx)
+  //   if (idx !== -1) {
+  //     this.categorySelected[idx] = true
+  //   }
+  //   this.$forceUpdate()
+  // },
+  mounted () {
+    const app = document.getElementById('filter-panel')
+    this.height = app.clientHeight
+    Array.prototype.forEach.call(
+      document.getElementsByClassName('scroll-fix'), this.$scrollFixInit
+    )
+  },
+  beforeDestroy () {
+    Array.prototype.forEach.call(
+      document.getElementsByClassName('scroll-fix'), this.$scrollFixDestory
+    )
   },
   watch: {
     category: {
+      immediate: true,
       deep: true,
       handler: function (val, oldVal) {
         this.categorySelected = []
@@ -81,15 +139,26 @@ export default {
         }
         this.$forceUpdate()
       },
-    }
+    },
+    sellingPriceDomain: {
+      immediate: true,
+      deep: true,
+      handler: function (val, oldVal) {
+        this.sellingPrices = [...val]
+      },
+    },
   },
   methods: {
     onReset () {
       this.categorySelected = []
       this.goldTypeSelected = []
+      this.sellingPrices = []
+      this.rentPrices = []
       this.$emit('on-reset', {
         category: [],
         goldType: [],
+        sellingPrices: [],
+        rentPrices: [],
       })
     },
     onConfirm (toggle) {
@@ -103,6 +172,8 @@ export default {
           b && (cum = cum.concat(this.goldType[i].key))
           return cum
         }, []),
+        sellingPrices: this.sellingPrices,
+        rentPrices: this.rentPrices,
       }, toggle)
     },
     changeSelection () {
@@ -118,7 +189,7 @@ export default {
 #filter-panel {
   width: 100%;
   max-height: 100vh;
-  overflow-y: auto;
+  overflow: auto;
   -webkit-overflow-scrolling: touch;
 
   .content {
@@ -134,6 +205,28 @@ export default {
         text-align: left;
         margin: 0;
         margin-bottom: 18px;
+      }
+
+      .price-group {
+        display: flex;
+        flex-wrap: nowrap;
+        font-size: 14px;
+
+        .slash {
+          line-height: 44px;
+          color: #CCCCCC;
+          padding: 0 8px;
+        }
+
+        .price-input {
+          width: 130px;
+          background: #F5F5F5;
+
+          input {
+            text-align: center;
+            background: #F5F5F5;
+          }
+        }
       }
     }
   }

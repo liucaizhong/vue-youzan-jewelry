@@ -1,7 +1,11 @@
 <template>
   <div class="rent-package-detail">
     <keep-alive>
+      <div v-if="hasNoPackage" class="no-package">
+        {{ $t('hasNoPackage') }}
+      </div>
       <van-radio-group
+        v-else
         v-model="packageType"
       >
         <my-radio
@@ -103,6 +107,7 @@
         bottom-action
         :loading="paymentLoading"
         @click="onPayment"
+        :disabled="hasNoPackage"
       >{{ rentPackagePayment }}</van-button>
     </footer>
     <van-dialog
@@ -154,6 +159,7 @@ export default {
       },
       showConfirmChangeProduct: false,
       paymentLoading: false,
+      hasNoPackage: false,
     }
   },
   watch: {
@@ -167,11 +173,14 @@ export default {
           .then(([data0, data1]) => {
             this.getNewPackagesSuccess(data0)
             this.getMyPackagesSuccess(data1)
-            if (data0.results && data0.results.length) {
-              this.packageType = '1'
-            }
             if (data1.results && data1.results.length) {
+              this.hasNoPackage = false
               this.packageType = '0'
+            } else if (data0.results && data0.results.length) {
+              this.hasNoPackage = false
+              this.packageType = '1'
+            } else {
+              this.hasNoPackage = true
             }
           }).catch(([err0, err1]) => {
             this.getNewPackagesError(err0)

@@ -67,6 +67,7 @@ export default {
   chooseRentType: '选择租赁方式',
   howToRent: '如何租赁？',
   rentPrice: '租金',
+  rentPricePerDay: '日租金',
   moneyPerDay: '{0}/天',
   rentAProduct: '单品租',
   rentByPackage: '套餐租',
@@ -265,7 +266,7 @@ export default {
   changeSuccess: '更换成功',
   historyProduct: '历史商品',
   compensationAmount: '赔偿金额',
-  // hasNoPackage: '暂未购买任何套餐',
+  hasNoPackage: '该商品暂不支持套餐租赁，请选择单品租赁',
   // hasNoNewPackage: '暂无可购买的套餐',
   leaseholdStatus0: '正常',
   leaseholdStatus1: '损坏',
@@ -315,4 +316,6 @@ export default {
   outletName0: 'THEIA上海总部',
   outletContact0: '电话：021-39982635',
   outletAddress0: '地址：上海市徐汇区龙华中路600号绿地大厦B座1108室',
+  lowestPrice: '最低价',
+  highestPrice: '最高价',
 }

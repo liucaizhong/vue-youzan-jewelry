@@ -106,8 +106,10 @@ export default {
   // padding: 142px 24px 0;
   padding: 80px 24px 0;
   width: 100vw;
-  height: 100vh;
+  max-height: 100vh;
   background: #fff;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
 
   h3 {
     // line-height: 16px;

@@ -85,6 +85,41 @@
           @click="changeProduct"
         >{{ $t('changeProduct') }}</van-button>
       </div>
+      <van-collapse v-model="deliveryInfo" class="delivery-info">
+        <van-collapse-item>
+          <div class="header" slot="title">
+            <div class="title van-ellipsis">{{ $t('deliveryInfo') }}</div>
+          </div>
+          <div v-if="serviceInfo.deliveryMode === '0'" class="content">
+            <div class="row">
+              {{ $t('deliveryMode') + ': ' + $t(`deliveryMode${serviceInfo.deliveryMode}`) }}
+            </div>
+            <div class="row">
+              {{ $t('receiverName') + ": " + serviceInfo.receiverName }}
+            </div>
+            <div class="row">
+              {{ $t('receiverPhone') + ": " + serviceInfo.receiverPhone }}
+            </div>
+            <div class="row">
+              {{ $t('receiverAddress') + ": " + serviceInfo.address }}
+            </div>
+            <div class="row">
+              {{ $t('logisticsCompany') + ": " + serviceInfo.logisticsCompany }}
+            </div>
+            <div class="row">
+              {{ $t('trackingNumber') + ": " + serviceInfo.trackingNumber }}
+            </div>
+          </div>
+          <div v-if="serviceInfo.deliveryMode === '1'" class="content">
+            <div class="row">
+              {{ $t('deliveryMode') + ': ' + $t(`deliveryMode${serviceInfo.deliveryMode}`) }}
+            </div>
+            <div class="row">
+              {{ $t('deliveryStore') + ': ' + serviceInfo.deliveryStore }}
+            </div>
+          </div>
+        </van-collapse-item>
+      </van-collapse>
     </div>
 
     <div
@@ -133,7 +168,7 @@
               {{ $t('receiverPhone') + ": " + serviceInfo.receiverPhone }}
             </div>
             <div class="row">
-              {{ $t('receiverAddress') + ": " + serviceInfo.receiverAddress }}
+              {{ $t('receiverAddress') + ": " + serviceInfo.address }}
             </div>
             <div class="row">
               {{ $t('logisticsCompany') + ": " + serviceInfo.logisticsCompany }}
@@ -207,7 +242,7 @@
                 {{ $t('receiverPhone') + ": " + log.receiverPhone }}
               </div>
               <div class="row">
-                {{ $t('receiverAddress') + ": " + log.receiverAddress }}
+                {{ $t('receiverAddress') + ": " + log.address }}
               </div>
             </div>
             <div v-else class="content">
@@ -258,7 +293,7 @@ export default {
         // changelist: [{
         //   startDate: '2018-07-06',
         //   endDate: '2018-07-30',
-        //   receiverAddress: '月星火箭基地孵化蛋',
+        //   address: '月星火箭基地孵化蛋',
         //   receiverName: '黄没卵',
         //   receiverPhone: '123123123',
         //   deliveryStore: '天山店',
@@ -330,7 +365,20 @@ export default {
       return this.$t('serialNumber') + ': ' + product.serialNumber
     },
     changeProduct () {
-      this.$router.push('/index#products')
+      const { lowerLimit, upperLimit } = this.serviceInfo.packageshot
+      let url = '/index'
+      if (lowerLimit || upperLimit) {
+        url += '?'
+        lowerLimit && (url += `minSellingPrice=${lowerLimit}&`)
+        upperLimit && (url += `maxSellingPrice=${upperLimit}`)
+        const len = url.length
+        if (url[len - 1] === '&') {
+          url = url.slice(0, len - 1)
+        }
+      }
+      url += '#products'
+      console.log('url', url)
+      this.$router.push(url)
     },
     buyProduct (productid) {
       this.$router.push(`/payment/${productid}?type=2`)
