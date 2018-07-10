@@ -92,6 +92,7 @@
 <script>
 import MyRadio from './MyRadio'
 import MyAreaPicker from './MyAreaPicker'
+import bus from '@/eventBus'
 
 export default {
   components: {
@@ -107,28 +108,34 @@ export default {
   data () {
     return {
       defaultAreaCode: '',
-      error: {},
+      error: {
+        lastName: false,
+        firstName: false,
+        phone: false,
+        area: false,
+        address: false,
+      },
+      formValid: false,
     }
   },
   created () {
-    this.$eventHub.$on('receiverValidation', () => {
-      const keys = Object.keys(this.error)
-      if (!keys.length) {
-        this.error = {
-          lastName: true,
-          firstName: true,
-          phone: true,
-          area: true,
-          address: true,
-        }
-        this.$eventHub.$emit('receiverValidationResult', false)
-      } else {
-        this.$eventHub.$emit('receiverValidationResult',
-          !keys.some(
-            key => this.error[key]
-          ))
+    const that = this
+    bus.$on('receiverValidation', function () {
+      that.validForm()
+      console.log('error', that.error)
+      const keys = Object.keys(that.error)
+      that.formValid = keys.every(
+        key => !that.error[key]
+      )
+      if (!that.formValid) {
+        that.$message({
+          content: that.$t('shippingInvalid'),
+        })
       }
     })
+  },
+  beforeDestroy () {
+    bus.$off('receiverValidation')
   },
   watch: {
     'form.area': function (val, old) {
@@ -137,10 +144,26 @@ export default {
         return val.code === '-1'
       })
     },
+    formValid: function (val, oldVal) {
+      console.log('formValid', val)
+      bus.$emit('receiverValidationResult', val)
+    },
   },
   methods: {
+    validForm () {
+      const form = this.form
+      for (let key in form) {
+        if (form.hasOwnProperty(key) && key !== 'remark') {
+          if (typeof form[key] === 'object') {
+            !form[key].length && (this.error[key] = true)
+          } else {
+            !form[key] && (this.error[key] = true)
+          }
+        }
+      }
+    },
     confirmArea (val) {
-      console.log('area', val)
+      // console.log('area', val)
       this.form.area = val
       for (let i = val.length - 1; i >= 0; --i) {
         if (val[i].code !== '-1') {

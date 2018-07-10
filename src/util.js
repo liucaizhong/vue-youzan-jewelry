@@ -2,8 +2,6 @@ import axios from 'axios'
 
 export default {
   install (Vue, options) {
-    Vue.prototype.$eventHub = new Vue()
-
     Vue.prototype.$getCookie = function (name) {
       if (document.cookie.length > 0) {
         let start = document

@@ -84,7 +84,7 @@ export default {
           this.$message({
             content: this.$t('bindPhoneSuccess'),
           })
-          this.$router.push(this.redirectUrl)
+          this.$router.replace(this.redirectUrl)
         }).catch(err => {
           console.log(err)
           this.bindLoading = false

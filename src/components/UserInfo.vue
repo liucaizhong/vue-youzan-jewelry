@@ -42,6 +42,12 @@
         :value="userInfo.birthday ? $t('hasPerfected') : $t('toPerfect')"
       />
     </van-cell-group>
+    <!-- <van-button
+      class="my-button"
+      type="default"
+      bottom-action
+      @click="logout"
+    >{{ $t('logout') }}</van-button> -->
   </div>
 </template>
 
@@ -79,6 +85,11 @@ export default {
       'userInfo',
     ])
   },
+  // methods: {
+  //   logout () {
+  //     this.$router.push('/index')
+  //   },
+  // },
 }
 </script>
 
@@ -105,6 +116,11 @@ export default {
 
   .user-info__meta {
     margin-bottom: 10px;
+  }
+
+  .my-button {
+    position: absolute;
+    bottom: 0;
   }
 }
 </style>

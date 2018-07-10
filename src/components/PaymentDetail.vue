@@ -157,6 +157,7 @@ import { mapState } from 'vuex'
 import MyRadio from './MyRadio'
 import EditReceiver from './EditReceiver'
 import { DELIVERYMODE, CATEGORYOFPRODUCT } from '@/constant'
+import bus from '@/eventBus'
 
 export default {
   components: {
@@ -322,14 +323,11 @@ export default {
       }
     }
 
-    this.$eventHub.$on('receiverValidationResult', valid => {
+    const that = this
+    bus.$on('receiverValidationResult', function (valid) {
       console.log('valid', valid)
-      if (!valid) {
-        this.$message({
-          content: this.$t('shippingInvalid'),
-        })
-      } else {
-        this.confirmPayRequest()
+      if (valid) {
+        that.confirmPayRequest()
       }
     })
   },
@@ -339,6 +337,7 @@ export default {
     )
   },
   beforeDestroy () {
+    bus.$off('receiverValidationResult')
     Array.prototype.forEach.call(
       document.getElementsByClassName('scroll-fix'), this.$scrollFixDestory
     )
@@ -393,7 +392,7 @@ export default {
     onConfirmPay () {
       console.log('onConfirmPay')
       if (this.deliveryMode === '0') {
-        this.$eventHub.$emit('receiverValidation')
+        bus.$emit('receiverValidation')
       } else {
         if (this.totalPayAmount) {
           this.confirmPayRequest()

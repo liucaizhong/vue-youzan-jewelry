@@ -96,7 +96,7 @@ export default {
           this.$message({
             content: this.$t('loginSuccess'),
           })
-          this.$router.push(this.redirectUrl)
+          this.$router.replace(this.redirectUrl)
         }).catch(err => {
           console.log(err)
           this.loginLoading = false

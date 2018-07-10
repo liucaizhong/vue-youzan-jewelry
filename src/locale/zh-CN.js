@@ -318,4 +318,5 @@ export default {
   outletAddress0: '地址：上海市徐汇区龙华中路600号绿地大厦B座1108室',
   lowestPrice: '最低价',
   highestPrice: '最高价',
+  logout: '退出当前账户',
 }
