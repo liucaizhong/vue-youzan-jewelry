@@ -1,5 +1,5 @@
 <template>
-  <div id="filter-panel" :style="{ height: height + 'px'}" class="scroll-fix">
+  <div id="filter-panel">
     <div class="content">
       <div class="content-item">
         <h3>{{ $t('category') }}</h3>
@@ -99,7 +99,6 @@ export default {
       goldTypeSelected: [],
       sellingPrices: [],
       rentPrices: [],
-      height: 0,
     }
   },
   // created () {
@@ -113,18 +112,6 @@ export default {
   //   }
   //   this.$forceUpdate()
   // },
-  mounted () {
-    const app = document.getElementById('filter-panel')
-    this.height = app.clientHeight
-    Array.prototype.forEach.call(
-      document.getElementsByClassName('scroll-fix'), this.$scrollFixInit
-    )
-  },
-  beforeDestroy () {
-    Array.prototype.forEach.call(
-      document.getElementsByClassName('scroll-fix'), this.$scrollFixDestory
-    )
-  },
   watch: {
     category: {
       immediate: true,
