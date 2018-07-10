@@ -66,7 +66,7 @@ export default {
       this.getPackages()
     },
     getPackages (loading = false) {
-      const url = '/client/package'
+      const url = '/client/package/'
       const { offset, limit } = this.$data
       this.$fetch(url, {
         params: {

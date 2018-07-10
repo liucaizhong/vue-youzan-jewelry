@@ -145,7 +145,7 @@ module.exports = () => {
     }, req, res)
   })
 
-  router.get('/client/package', (req, res) => {
+  router.get('/client/package/', (req, res) => {
     request({
       url: mapUrl(req.url),
     }, req, res)
@@ -163,7 +163,7 @@ module.exports = () => {
     }, req, res)
   })
 
-  router.post('/client/ComboService', (req, res) => {
+  router.post('/client/ComboService/', (req, res) => {
     request({
       url: mapUrl(req.url),
       method: 'post',
@@ -171,7 +171,7 @@ module.exports = () => {
     }, req, res)
   })
 
-  router.post('/client/ComboService/swap', (req, res) => {
+  router.post('/client/ComboService/swap/', (req, res) => {
     request({
       url: mapUrl(req.url),
       method: 'post',
@@ -179,7 +179,7 @@ module.exports = () => {
     }, req, res)
   })
 
-  router.post('/client/withdraw', (req, res) => {
+  router.post('/client/withdraw/', (req, res) => {
     request({
       url: mapUrl(req.url),
       method: 'post',
@@ -187,7 +187,7 @@ module.exports = () => {
     }, req, res)
   })
 
-  router.post('/client/perfectinfo', (req, res) => {
+  router.post('/client/perfectinfo/', (req, res) => {
     request({
       url: mapUrl(req.url),
       method: 'post',
@@ -195,7 +195,7 @@ module.exports = () => {
     }, req, res)
   })
 
-  router.post('/client/verifyphone', (req, res) => {
+  router.post('/client/verifyphone/', (req, res) => {
     request({
       url: mapUrl(req.url),
       method: 'post',
@@ -203,7 +203,7 @@ module.exports = () => {
     }, req, res)
   })
 
-  router.post('/client/bindphone', (req, res) => {
+  router.post('/client/bindphone/', (req, res) => {
     request({
       url: mapUrl(req.url),
       method: 'post',
@@ -211,7 +211,7 @@ module.exports = () => {
     }, req, res)
   })
 
-  router.post('/client/authentication', (req, res) => {
+  router.post('/client/authentication/', (req, res) => {
     request({
       url: mapUrl(req.url),
       method: 'post',

@@ -44,7 +44,7 @@ export default {
     onNext () {
       if (this.verifyCode) {
         this.verifyLoading = true
-        const url = '/client/verifyphone'
+        const url = '/client/verifyphone/'
         this.$fetch(url, {
           data: {
             verifyCode: this.verifyCode,

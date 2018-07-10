@@ -55,7 +55,7 @@ export default {
   },
   activated () {
     this.logged = this.$getCookie('logged') === '0'
-    console.log('loading', this.loading)
+    // console.log('loading', this.loading)
     this.loading || this.$store.commit('updateGlobalLoading', false)
   },
   computed: {
@@ -82,9 +82,9 @@ export default {
         this.$router.push('/login')
       }
     },
-    onServiceTab (key) {
-      console.log('serviceTab', key)
-    },
+    // onServiceTab (key) {
+    //   console.log('serviceTab', key)
+    // },
   },
 }
 </script>

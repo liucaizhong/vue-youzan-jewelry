@@ -77,7 +77,9 @@ export default {
             // dispatch action to synchronus mine tab
             if (mergeConfig.method !== 'get' &&
               ['/client/UserLogin/', '/common/payment/', '/client/bindphone',
-                '/client/authentication', '/client/perfectinfo'].includes(url)) {
+                '/client/RentalService/', '/client/SellService/', '/client/ComboService/',
+                '/client/verifyphone/', '/client/RentalService/buy/', '/common/order/',
+                '/client/authentication/', '/client/perfectinfo/'].includes(url)) {
               console.log('fetch', url)
               this.$store.dispatch('getUserInfo')
             }
