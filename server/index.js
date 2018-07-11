@@ -211,13 +211,13 @@ module.exports = () => {
     }, req, res)
   })
 
-  router.post('/client/authentication/', (req, res) => {
-    request({
-      url: mapUrl(req.url),
-      method: 'post',
-      data: req.body,
-    }, req, res)
-  })
+  // router.post('/client/authentication/', (req, res) => {
+  //   request({
+  //     url: mapUrl(req.url),
+  //     method: 'post',
+  //     data: req.body,
+  //   }, req, res)
+  // })
 
   router.post('/common/order/', (req, res) => {
     request({

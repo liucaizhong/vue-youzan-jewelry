@@ -47,6 +47,7 @@ export default {
         const url = '/client/verifyphone/'
         this.$fetch(url, {
           data: {
+            phone: this.userInfo.phone,
             verifyCode: this.verifyCode,
           },
           method: 'post',

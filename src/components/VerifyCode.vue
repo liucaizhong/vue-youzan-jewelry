@@ -40,6 +40,7 @@ export default {
   },
   watch: {
     baseInfo: {
+      immediate: true,
       deep: true,
       handler (val, oldVal) {
         const { phone, phoneInvalid } = val
@@ -48,9 +49,10 @@ export default {
       },
     },
     error: {
+      immediate: true,
       handler (val, oldVal) {
         this.err = val
-      }
+      },
     },
   },
   computed: {
