@@ -179,7 +179,7 @@ module.exports = () => {
     }, req, res)
   })
 
-  router.post('/client/withdraw/', (req, res) => {
+  router.post('/client/account/withdraw/', (req, res) => {
     request({
       url: mapUrl(req.url),
       method: 'post',

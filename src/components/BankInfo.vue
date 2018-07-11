@@ -52,8 +52,8 @@
       class="my-dialog"
       v-model="showConfirmWithdraw"
       show-cancel-button
-      :title="$t('confirmWithdraw')"
-      :message="$t('withdrawTips')"
+      :title="$t('confirmWithDrawTips')"
+      :message="$n(amount, 'currency')"
       :confirmButtonText="$t('confirm')"
       :cancelButtonText="$t('cancelPayBtnText')"
       @confirm="confirmWithdraw"
@@ -76,7 +76,11 @@ export default {
       openingBankName: '',
       openingBankNameErr: false,
       showConfirmWithdraw: false,
+      amount: '',
     }
+  },
+  created () {
+    this.amount = this.$route.query.amount
   },
   mounted () {
     Array.prototype.forEach.call(
@@ -103,14 +107,15 @@ export default {
     },
     confirmWithdraw () {
       this.commitWithdrawLoading = true
-      const { realName, bankName, bankCardNo, openingBankName } = this.$data
-      const url = '/client/withdraw/'
+      const { realName, bankName, bankCardNo, openingBankName, amount } = this.$data
+      const url = '/client/account/withdraw/'
       this.$fetch(url, {
         data: {
           realName,
           bankName,
           bankCardNo,
           openingBankName,
+          amount,
         },
         method: 'post',
       }).then(resp => {

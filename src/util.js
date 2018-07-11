@@ -79,7 +79,7 @@ export default {
               ['/client/UserLogin/', '/common/payment/', '/client/bindphone',
                 '/client/RentalService/', '/client/SellService/', '/client/ComboService/',
                 '/client/verifyphone/', '/client/RentalService/buy/', '/common/order/',
-                '/client/perfectinfo/'].includes(url)) {
+                '/client/account/withdraw/', '/client/perfectinfo/'].includes(url)) {
               console.log('fetch', url)
               this.$store.dispatch('getUserInfo')
             }

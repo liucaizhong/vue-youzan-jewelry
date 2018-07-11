@@ -277,6 +277,7 @@ export default {
   withdrawImmediately: '即刻提现',
   myWalletTips: '订单完成后押金自动转入到余额，余额可提现',
   withdrawTips: '您的提现将在三个工作日转回到您的银行卡账户',
+  confirmWithDrawTips: '您即将提现',
   withdrawAmount: '提现金额',
   withdrawAll: '全部提现',
   confirmWithdraw: '确认提现',

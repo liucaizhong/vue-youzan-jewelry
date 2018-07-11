@@ -55,6 +55,9 @@
       <div class="row" v-if="+serviceInfo.residualDeposit">
         {{ $t('residualDeposit') + ': ' + $n(serviceInfo.residualDeposit, 'currency') }}
       </div>
+      <div class="row" v-if="serviceInfo.serviceType === '1'">
+        {{ composePackageProductDomain(serviceInfo.packageshot) }}
+      </div>
       <div class="row" v-if="serviceInfo.serviceType !== '2'">
         {{ $t('creditStatus') + ': ' + $t(`creditStatus${serviceInfo.creditStatus}`) }}
       </div>
@@ -350,6 +353,11 @@ export default {
     },
   },
   methods: {
+    composePackageProductDomain (packageshot) {
+      const { lowerLimit, upperLimit } = packageshot
+      return this.$t('packageProductDomain') + ': ' + this.$n(lowerLimit, 'currency') +
+        (upperLimit ? '～' + this.$n(upperLimit, 'currency') : '')
+    },
     productTitle (product) {
       const { series, title } = product
       return (series ? series + '-' : '') + title

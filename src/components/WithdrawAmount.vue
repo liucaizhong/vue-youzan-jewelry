@@ -17,6 +17,7 @@
       type="default"
       bottom-action
       @click="confirmWithdraw"
+      :disabled="!+amount"
     >{{ $t('confirmWithdraw') }}</van-button>
   </div>
 </template>
@@ -50,13 +51,13 @@ export default {
       this.amount = this.userInfo.balance
     },
     confirmWithdraw () {
-      if (this.amount) {
-        if (this.amount > this.userInfo.balance) {
+      if (+this.amount) {
+        if (+this.amount > this.userInfo.balance) {
           this.$message({
             content: this.$t('withdrawInvalid'),
           })
         } else {
-          this.$router.push('/input-bankinfo')
+          this.$router.push(`/input-bankinfo/?amount=${this.amount}`)
         }
       }
     },

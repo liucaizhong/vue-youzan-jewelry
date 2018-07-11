@@ -83,9 +83,16 @@ export default {
         `/confirm-pay?id=${[id]}&total=${total}&due=${dueDateValue}`
       )
     },
+    getLocalTime (d) {
+      const seconds = d.getTime()
+      const offset = d.getTimezoneOffset() * 60000
+      return new Date(seconds + offset)
+    },
     calcPaymentDueDatetime (start) {
-      const dueDate = new Date(new Date(start.replace(' ', 'T')).valueOf() + this.orderTimeout)
-      console.log('dueDate', dueDate)
+      const [startDate, startTime] = start.split` `
+      const [startYear, startMonth, startDay] = startDate.split`-`
+      const startUTC = Date.UTC(startYear, startMonth - 1, startDay, ...startTime.split`:`)
+      const dueDate = new Date(this.getLocalTime(new Date(startUTC + this.orderTimeout)))
       const year = dueDate.getFullYear()
       let month = dueDate.getMonth() + 1
       month = month < 10 ? '0' + month : month
