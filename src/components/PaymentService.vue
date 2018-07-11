@@ -141,7 +141,7 @@ export default {
         console.log('resp', resp)
         ++this.offset
         const results = resp.data.results
-        this.serviceData = [...results]
+        this.serviceData = this.serviceData.concat(results)
         this.checked = this.checked.concat(new Array(results.length))
         this.loading = false
         if (results.length < this.limit) {

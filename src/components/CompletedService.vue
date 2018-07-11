@@ -72,7 +72,7 @@ export default {
         console.log('resp', resp)
         ++this.offset
         const results = resp.data.results
-        this.serviceData = [...results]
+        this.serviceData = this.serviceData.concat(results)
         this.loading = false
         if (results.length < this.limit) {
           this.finished = true
