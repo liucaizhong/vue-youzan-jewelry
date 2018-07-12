@@ -257,6 +257,7 @@ body {
         color: #979797;
         font-size: 14px;
         left: calc(50% - 32px);
+        padding-left: 1px;
         // top: 15px;
       }
 

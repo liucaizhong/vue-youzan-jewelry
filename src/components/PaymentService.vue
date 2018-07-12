@@ -22,6 +22,8 @@
       </my-service-card>
     </van-list>
 
+    <div class="dummy"></div>
+
     <footer class="payment-service__footer">
       <van-checkbox
         class="my-checkbox"
@@ -163,9 +165,13 @@ export default {
   width: 100%;
   // height: 100%;
   position: relative;
-  margin-bottom: 50px;
+  // margin-bottom: 50px;
   // overflow: auto;
   // -webkit-overflow-scrolling: touch;
+
+  .dummy {
+    height: 50px;
+  }
 
   .payment-service__footer {
     width: 100%;

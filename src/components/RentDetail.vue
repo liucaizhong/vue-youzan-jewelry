@@ -79,6 +79,8 @@ export default {
   created () {
     console.log('$route', this.$route)
     this.productDetail.productid = this.$route.params.id
+    this.serviceType = +this.$route.query.type || 0
+    console.log('this.serviceType', this.serviceType)
     // get product detail
     const url = '/client/ProductDetail/'
     this.$fetch(url, {
@@ -123,6 +125,7 @@ export default {
   methods: {
     changeServiceType (type) {
       this.serviceType = type
+      this.$router.replace(`/rent/${this.productDetail.productid}/?type=${type}`)
     },
   },
 }

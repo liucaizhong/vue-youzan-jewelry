@@ -62,6 +62,7 @@ export default {
       this.rentPeriodErr = !val
     },
     product: {
+      immediate: true,
       deep: true,
       handler: function (val, oldVal) {
         // console.log('product', val)

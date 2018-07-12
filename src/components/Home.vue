@@ -10,8 +10,10 @@
       <section class="show-section">
         <div class="show-section__swiper">
           <van-swipe :autoplay="3000">
-            <van-swipe-item v-for="(img, i) in swiperImgs" :key="i">
-              <img v-lazy="img" />
+            <van-swipe-item v-for="(img, i) in spImages" :key="i">
+              <router-link :to="img.link">
+                <img v-lazy="img.avatar || img.url" />
+              </router-link>
             </van-swipe-item>
           </van-swipe>
         </div>
@@ -52,16 +54,16 @@
         :title="$t('productNew')"
         url="/index#products"
       >
-        <home-img-scroller slot="content" />
+        <home-img-scroller slot="content" :imgList="newProducts" />
       </checkall-card>
       <div class="van-hairline--top" />
       <checkall-card
         :title="$t('productRecommend')"
         url="/index#products"
       >
-        <home-img-scroller slot="content" />
+        <home-img-scroller slot="content" :imgList="recommendProducts" />
       </checkall-card>
-      <home-news />
+      <home-news :imgList="advImages" />
       <footer class="home-footer">
         <load-complete />
       </footer>
@@ -90,20 +92,36 @@ export default {
   data () {
     return {
       searchValue: '',
-      swiperImgs: ['https://www.baidu.com/img/bd_logo1.png',
-        'https://www.baidu.com/img/bd_logo1.png1'],
+      spImages: [],
+      advImages: [],
+      newProducts: [],
+      recommendProducts: [],
       refreshing: false,
       searchFocused: false,
       productCategory: PRODUCTCATEGORY,
       focused: false,
     }
   },
+  created () {
+    this.getIndexConf(true)
+  },
   methods: {
+    getIndexConf (loading) {
+      const url = '/client/indexconf/'
+
+      this.$fetch(url, {}, loading).then(resp => {
+        console.log('resp', resp)
+        const { spImages, advImages, newProducts, recommendProducts } = resp.data
+        this.spImages = spImages
+        this.advImages = advImages
+        this.newProducts = newProducts
+        this.recommendProducts = recommendProducts
+      }).catch(err => {
+        console.log(err)
+      })
+    },
     onRefresh () {
-      setTimeout(() => {
-        this.$toast('刷新成功')
-        this.refreshing = false
-      }, 1000)
+      this.getIndexConf()
     },
     onFocus (f) {
       // console.log(args)

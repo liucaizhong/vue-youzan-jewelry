@@ -145,6 +145,12 @@ module.exports = () => {
     }, req, res)
   })
 
+  router.get('/client/indexconf/', (req, res) => {
+    request({
+      url: mapUrl(req.url),
+    }, req, res)
+  })
+
   router.get('/client/package/', (req, res) => {
     request({
       url: mapUrl(req.url),

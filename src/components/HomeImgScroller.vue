@@ -33,38 +33,38 @@ export default {
     imgList: {
       type: Array,
       default: function () {
-        // return []
-        return [{
-          mainimage: 'https://www.baidu.com/img/bd_logo1.png',
-          title: 'aadfdfsdfsdfsdfsdf',
-          sellingPrice: '777777',
-          rent: '123',
-          series: '经典系列',
-        }, {
-          mainimage: 'https://www.baidu.com/img/bd_logo1.png1',
-          title: 'dfsdfasdfsdf',
-          sellingPrice: '44444',
-          rent: '121',
-          series: '经典系列',
-        }, {
-          mainimage: 'https://www.baidu.com/img/bd_logo1.png',
-          title: 'dfsdfasdfsdf',
-          sellingPrice: '44444',
-          rent: '121',
-          series: '经典系列',
-        }, {
-          mainimage: 'https://www.baidu.com/img/bd_logo1.png1',
-          title: 'dfsdfasdfsdf',
-          sellingPrice: '44444',
-          rent: '121',
-          series: '经典系列',
-        }, {
-          mainimage: 'https://www.baidu.com/img/bd_logo1.png',
-          title: 'dfsdfasdfsdf',
-          sellingPrice: '44444',
-          rent: '121',
-          series: '经典系列',
-        }]
+        return []
+        // return [{
+        //   mainimage: 'https://www.baidu.com/img/bd_logo1.png',
+        //   title: 'aadfdfsdfsdfsdfsdf',
+        //   sellingPrice: '777777',
+        //   rent: '123',
+        //   series: '经典系列',
+        // }, {
+        //   mainimage: 'https://www.baidu.com/img/bd_logo1.png1',
+        //   title: 'dfsdfasdfsdf',
+        //   sellingPrice: '44444',
+        //   rent: '121',
+        //   series: '经典系列',
+        // }, {
+        //   mainimage: 'https://www.baidu.com/img/bd_logo1.png',
+        //   title: 'dfsdfasdfsdf',
+        //   sellingPrice: '44444',
+        //   rent: '121',
+        //   series: '经典系列',
+        // }, {
+        //   mainimage: 'https://www.baidu.com/img/bd_logo1.png1',
+        //   title: 'dfsdfasdfsdf',
+        //   sellingPrice: '44444',
+        //   rent: '121',
+        //   series: '经典系列',
+        // }, {
+        //   mainimage: 'https://www.baidu.com/img/bd_logo1.png',
+        //   title: 'dfsdfasdfsdf',
+        //   sellingPrice: '44444',
+        //   rent: '121',
+        //   series: '经典系列',
+        // }]
       },
     },
   },
