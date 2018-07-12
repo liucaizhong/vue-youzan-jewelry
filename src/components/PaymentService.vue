@@ -161,7 +161,7 @@ export default {
   width: 100%;
   // height: 100%;
   position: relative;
-  padding-bottom: 50px;
+  margin-bottom: 50px;
   // overflow: auto;
   // -webkit-overflow-scrolling: touch;
 
