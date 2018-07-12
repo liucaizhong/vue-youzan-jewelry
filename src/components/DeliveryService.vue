@@ -51,6 +51,7 @@ export default {
         if (val) {
           !this.api && (this.api = this.$attrs.api)
           this.offset = 0
+          this.serviceData = []
           this.getService(this.api, true)
         }
       }

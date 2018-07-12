@@ -88,6 +88,7 @@ export default {
         if (val) {
           !this.api && (this.api = this.$attrs.api)
           this.offset = 0
+          this.serviceData = []
           this.getService(this.api, true)
         }
       }
@@ -131,6 +132,7 @@ export default {
       this.getService(this.api)
     },
     getService (url, loading = false) {
+      console.log('service data', this.serviceData)
       const { offset, limit } = this.$data
       this.$fetch(url, {
         params: {
