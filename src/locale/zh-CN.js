@@ -320,4 +320,5 @@ export default {
   lowestPrice: '最低价',
   highestPrice: '最高价',
   logout: '退出当前账户',
+  changePhone: '更换手机',
 }

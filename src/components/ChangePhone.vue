@@ -1,5 +1,6 @@
 <template>
   <div id="change-phone">
+    <h3>{{ $t('changePhone') }}</h3>
     <div class="cur-phone">{{ $t('bindedPhone') + ' ' + userInfo.phone }}</div>
     <verify-code
       v-model="verifyCode"
@@ -47,7 +48,7 @@ export default {
         const url = '/client/verifyphone/'
         this.$fetch(url, {
           data: {
-            phone: this.userInfo.phone,
+            // phone: this.userInfo.phone,
             verifyCode: this.verifyCode,
           },
           method: 'post',
@@ -78,6 +79,13 @@ export default {
   height: 100vh;
   background: #fff;
   padding: 38px 18px 0;
+
+  h3 {
+    text-align: center;
+    font-size: 18px;
+    margin: 0;
+    margin-bottom: 30px;
+  }
 
   .cur-phone {
     font-size: 14px;

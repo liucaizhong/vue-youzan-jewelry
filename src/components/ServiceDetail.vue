@@ -34,19 +34,22 @@
       <div class="row" v-if="+serviceInfo.rentPeriod">
         {{ $t('rentPeriodTitle') + ': ' + serviceInfo.rentPeriod + $t('day')}}
       </div>
-      <div class="row" v-if="serviceInfo.packageTitle">
-        {{ $t('packageTitle') + ': ' + serviceInfo.packageTitle }}
+      <div class="row" v-if="serviceInfo.serviceType === '1'">
+        {{ $t('packageTitle') + ': ' + serviceInfo.packageshot.title }}
       </div>
-      <div class="row" v-if="+serviceInfo.packagePrice">
-        {{ $t('packagePrice') + ': ' + $n(serviceInfo.packagePrice, 'currency') }}
+      <div class="row" v-if="serviceInfo.serviceType === '1'">
+        {{ $t('packagePrice') + ': ' + $n(serviceInfo.packageshot.price, 'currency') }}
+      </div>
+      <div class="row" v-if="serviceInfo.serviceType === '1'">
+        {{ composePackageProductDomain(serviceInfo.packageshot) }}
       </div>
       <div
         class="row"
-        v-if="serviceInfo.serviceType === '2' && +serviceInfo.current_payamount"
+        v-if="serviceInfo.serviceType === '2' && +serviceInfo.sellingPrice"
       >
-        {{ $t('amount') + ': ' + $n(serviceInfo.current_payamount, 'currency') }}
+        {{ $t('amount') + ': ' + $n(serviceInfo.sellingPrice, 'currency') }}
       </div>
-      <div class="row" v-if="+serviceInfo.initialRent">
+      <div class="row" v-if="serviceInfo.serviceType === '0' && +serviceInfo.initialRent">
         {{ $t('rentPrice') + ': ' + $n(serviceInfo.initialRent, 'currency') }}
       </div>
       <div class="row" v-if="+serviceInfo.initialDeposit">
@@ -54,9 +57,6 @@
       </div>
       <div class="row" v-if="+serviceInfo.residualDeposit">
         {{ $t('residualDeposit') + ': ' + $n(serviceInfo.residualDeposit, 'currency') }}
-      </div>
-      <div class="row" v-if="serviceInfo.serviceType === '1'">
-        {{ composePackageProductDomain(serviceInfo.packageshot) }}
       </div>
       <div class="row" v-if="serviceInfo.serviceType !== '2'">
         {{ $t('creditStatus') + ': ' + $t(`creditStatus${serviceInfo.creditStatus}`) }}

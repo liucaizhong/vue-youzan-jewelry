@@ -57,7 +57,7 @@ export default {
         const url = '/client/bindphone/'
         this.$fetch(url, {
           data: {
-            phone: this.newPhone,
+            // phone: this.newPhone,
             verifycode: this.verifyCode,
           },
           method: 'post',
