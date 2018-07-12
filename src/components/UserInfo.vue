@@ -1,11 +1,16 @@
 <template>
   <div id="user-info" class="scroll-fix">
     <van-cell-group class="user-info__meta">
-      <van-cell
+      <!-- <van-cell
         class="my-field"
         :title="$t('phoneNo')"
         is-link
         to="/change-phone"
+        :value="userInfo.phone"
+      /> -->
+      <van-cell
+        class="my-field"
+        :title="$t('phoneNo')"
         :value="userInfo.phone"
       />
       <van-cell

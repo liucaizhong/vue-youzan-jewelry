@@ -295,7 +295,7 @@ export default {
   toPerfect: '待完善',
   hasPerfected: '已完善',
   bindedPhone: '已绑定手机号码',
-  nextStep: '下一步',
+  // nextStep: '下一步',
   newPhone: '新手机号',
   inputNewPhone: '请输入新手机号',
   confirmUpdate: '确认更改',

@@ -1,6 +1,5 @@
 <template>
   <div id="change-phone">
-    <h3>{{ $t('changePhone') }}</h3>
     <div class="cur-phone">{{ $t('bindedPhone') + ' ' + userInfo.phone }}</div>
     <verify-code
       v-model="verifyCode"
@@ -17,7 +16,7 @@
       bottom-action
       @click="onNext"
       :loading="verifyLoading"
-    >{{ $t('nextStep') }}</van-button>
+    >{{ $t('changePhone') }}</van-button>
   </div>
 </template>
 
@@ -79,13 +78,6 @@ export default {
   height: 100vh;
   background: #fff;
   padding: 38px 18px 0;
-
-  h3 {
-    text-align: center;
-    font-size: 18px;
-    margin: 0;
-    margin-bottom: 30px;
-  }
 
   .cur-phone {
     font-size: 14px;
