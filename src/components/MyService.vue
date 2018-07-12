@@ -26,6 +26,16 @@ export default {
     console.log(this.$route)
     this.activeTab = this.$route.hash.slice(1)
   },
+  mounted () {
+    Array.prototype.forEach.call(
+      document.getElementsByClassName('scroll-fix'), this.$scrollFixInit
+    )
+  },
+  beforeDestroy () {
+    Array.prototype.forEach.call(
+      document.getElementsByClassName('scroll-fix'), this.$scrollFixDestory
+    )
+  },
   methods: {
     changeTab (index) {
       this.$router.replace(`/my-service#${index}`)

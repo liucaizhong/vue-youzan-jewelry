@@ -45,7 +45,7 @@
           @on-reset="resetSearchCond"
           @on-confirm="getProductList"
           :category="categoryFromRoute"
-          :sellingPriceDomain="[searchCond.minSellingPrice, searchCond.maxSellingPrice]"
+          :sellingPriceDomain="searchCond.sellingPrices"
         />
         <!-- </keep-alive> -->
       </van-collapse-item>
@@ -107,6 +107,8 @@ export default {
         goldType: [],
         limit: 50,
         offset: 0,
+        sellingPrices: [],
+        rentPrices: [],
       },
     }
   },
@@ -123,8 +125,7 @@ export default {
       minSellingPrice, maxSellingPrice } = this.$route.query
     this.searchCond.keyword = keyword
     this.searchCond.category = (category && category.split`,`) || []
-    this.searchCond.minSellingPrice = minSellingPrice
-    this.searchCond.maxSellingPrice = maxSellingPrice
+    this.searchCond.sellingPrices = [minSellingPrice, maxSellingPrice]
     this.categoryFromRoute = category
     this.requestProductList(true)
   },

@@ -193,7 +193,7 @@ export default {
   productAndAmount: '{0}件商品 共{1}',
   batchPayment: '合并支付',
   hasNoService: '您还没有相关的订单',
-  selectProduct: '挑选产品',
+  selectProduct: '挑选商品',
   certificate0: '无',
   certificate1: 'IGI证书',
   certificate2: 'GIA证书',

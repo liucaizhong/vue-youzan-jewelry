@@ -23,10 +23,12 @@
       <div class="router-group">
         <router-link
           to="/index"
+          replace
         >{{ $t('backToIndex') }}</router-link>
         |
         <router-link
           to="/my-service#1"
+          replace
         >{{ $t('checkService') }}</router-link>
       </div>
     </section>

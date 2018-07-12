@@ -45,7 +45,12 @@
             v-if="!tab && serviceInfo.serviceType === '2' && serviceInfo.product"
             class="product-price"
           >{{ productPrice }}</div>
-          <div v-if="!serviceInfo.product" class="has-no-product">{{ $t('hasNoProduct') }}</div>
+          <div v-if="!serviceInfo.product" class="has-no-product">
+            {{ $t('hasNoProduct') }}
+            <!-- <a href="javascript:void(0)" @click="selectProduct">
+              {{ $t('selectProduct') }}
+            </a> -->
+          </div>
           <van-button
             class="my-button"
             v-if="tab === 2 && serviceInfo.serviceType !== '2' && serviceInfo.product"
@@ -219,7 +224,23 @@ export default {
       const type = this.serviceInfo.serviceType
       const orderType = type === '0' ? '7' : '6'
       this.$router.push(`/payment/${this.serviceInfo.serviceNo}/?type=${type}&orderType=${orderType}`)
-    }
+    },
+    // selectProduct () {
+    //   const { lowerLimit, upperLimit } = this.serviceInfo.packageshot
+    //   let url = '/index'
+    //   if (lowerLimit || upperLimit) {
+    //     url += '?'
+    //     lowerLimit && (url += `minSellingPrice=${lowerLimit}&`)
+    //     upperLimit && (url += `maxSellingPrice=${upperLimit}`)
+    //     const len = url.length
+    //     if (url[len - 1] === '&') {
+    //       url = url.slice(0, len - 1)
+    //     }
+    //   }
+    //   url += '#products'
+    //   console.log('url', url)
+    //   this.$router.push(url)
+    // },
   },
 }
 </script>
@@ -298,6 +319,12 @@ export default {
           font-size: 14px;
           color: #6C6C6C;
           padding: 15px 18px;
+
+          // a {
+          //   margin-left: 20px;
+          //   color: #CCB8A3;
+          //   text-decoration: underline;
+          // }
         }
 
         .my-button {

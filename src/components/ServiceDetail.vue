@@ -61,6 +61,13 @@
       <div class="row" v-if="serviceInfo.serviceType !== '2'">
         {{ $t('creditStatus') + ': ' + $t(`creditStatus${serviceInfo.creditStatus}`) }}
       </div>
+      <van-button
+        v-if="serviceInfo.serviceType === '1' && !serviceInfo.reservedProduct"
+        class="my-button"
+        bottom-action
+        type="default"
+        @click="changeProduct"
+      >{{ $t('selectProduct') }}</van-button>
       <div class="tip" v-if="serviceInfo.creditStatus === '1'">
         {{ $t('overtimeTip' )}}
       </div>

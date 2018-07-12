@@ -288,7 +288,7 @@ export default {
           this.rent = initialRent
           this.rentPeriod = rentPeriod
           this.reservedProduct = {
-            ...serviceInfo.product,
+            ...serviceInfo.reservedProduct,
           }
           this.packageInfo = {
             ...serviceInfo.packageshot,

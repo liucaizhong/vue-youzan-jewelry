@@ -40,7 +40,7 @@ export default {
       loading: false,
       finished: false,
       offset: 0,
-      limit: 15,
+      limit: 20,
       serviceData: [],
     }
   },
