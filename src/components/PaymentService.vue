@@ -170,7 +170,7 @@ export default {
   // -webkit-overflow-scrolling: touch;
 
   .dummy {
-    height: 50px;
+    height: 60px;
   }
 
   .payment-service__footer {

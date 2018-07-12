@@ -116,8 +116,10 @@ export default {
         this.advImages = advImages
         this.newProducts = newProducts
         this.recommendProducts = recommendProducts
+        this.refreshing = false
       }).catch(err => {
         console.log(err)
+        this.refreshing = false
       })
     },
     onRefresh () {
