@@ -84,7 +84,7 @@ export default {
         const url = '/client/UserLogin/'
         this.$fetch(url, {
           data: {
-            username: this.userName,
+            // username: this.userName,
             verifycode: this.verifyCode,
           },
           method: 'post',
