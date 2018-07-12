@@ -51,7 +51,7 @@ export default {
         this.addressErr = this.addressErr || !this.address
       } else {
         this.udpateLoading = true
-        const url = '/client/perfectinfo/'
+        const url = '/client/user/perfectinfo/'
         this.$fetch(url, {
           data: {
             address: this.address,

@@ -187,7 +187,7 @@ module.exports = () => {
     }, req, res)
   })
 
-  router.post('/client/perfectinfo/', (req, res) => {
+  router.post('/client/user/perfectinfo/', (req, res) => {
     request({
       url: mapUrl(req.url),
       method: 'post',

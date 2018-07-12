@@ -52,7 +52,7 @@ export default {
         this.emailErr = this.emailErr || !this.email
       } else {
         this.udpateLoading = true
-        const url = '/client/perfectinfo/'
+        const url = '/client/user/perfectinfo/'
         this.$fetch(url, {
           data: {
             email: this.email,

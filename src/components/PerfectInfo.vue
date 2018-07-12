@@ -110,7 +110,7 @@ export default {
         this.idNoErr = this.idNoErr || !this.idNo
       } else {
         this.perfectLoading = true
-        const url = '/client/perfectinfo/'
+        const url = '/client/user/perfectinfo/'
         this.$fetch(url, {
           data: {
             realName: this.realName,

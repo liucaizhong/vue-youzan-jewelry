@@ -54,7 +54,7 @@ export default {
         this.birthdayErr = this.birthdayErr || !this.birthday
       } else {
         this.udpateLoading = true
-        const url = '/client/perfectinfo/'
+        const url = '/client/user/perfectinfo/'
         this.$fetch(url, {
           data: {
             birthday: this.birthday,

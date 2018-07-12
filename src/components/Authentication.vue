@@ -112,7 +112,7 @@ export default {
           return
         }
         this.authLoading = true
-        const url = '/client/perfectinfo/'
+        const url = '/client/user/perfectinfo/'
         this.$fetch(url, {
           data: {
             realName: this.realName,
