@@ -20,9 +20,9 @@
           :orders="info.order"
         />
       </my-service-card>
-    </van-list>
 
-    <div class="dummy"></div>
+      <div class="dummy"></div>
+    </van-list>
 
     <footer class="payment-service__footer">
       <van-checkbox
@@ -170,7 +170,7 @@ export default {
   // -webkit-overflow-scrolling: touch;
 
   .dummy {
-    height: 60px;
+    height: 50px;
   }
 
   .payment-service__footer {
