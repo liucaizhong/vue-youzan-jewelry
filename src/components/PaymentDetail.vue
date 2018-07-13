@@ -287,8 +287,10 @@ export default {
           this.deposit = initialDeposit
           this.rent = initialRent
           this.rentPeriod = rentPeriod
-          this.reservedProduct = {
+          this.reservedProduct = serviceInfo.reservedProduct ? {
             ...serviceInfo.reservedProduct,
+          } : {
+            ...serviceInfo.product,
           }
           this.packageInfo = {
             ...serviceInfo.packageshot,
