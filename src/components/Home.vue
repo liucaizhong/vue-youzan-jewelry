@@ -81,6 +81,7 @@ import HomeImgScroller from './HomeImgScroller'
 import { PRODUCTCATEGORY } from '@/constant'
 
 export default {
+  name: 'Home',
   components: {
     MySearch,
     CheckallCard,
@@ -117,6 +118,7 @@ export default {
         this.newProducts = newProducts
         this.recommendProducts = recommendProducts
         this.refreshing = false
+        this.$forceUpdate()
       }).catch(err => {
         console.log(err)
         this.refreshing = false
@@ -201,14 +203,26 @@ export default {
           left: 0;
           // width: 100%;
           height: 100%;
-        }
 
-        img {
-          // position: absolute;
-          // top: 0;
-          // left: 0;
-          width: 100%;
-          height: 100%;
+          .van-swipe-item {
+            width: 100%;
+            // width: calc(100vw - 84px) !important;
+            height: 100%;
+
+            a {
+              display: block;
+              width: 100%;
+              height: 100%;
+
+              img {
+                // position: absolute;
+                // top: 0;
+                // left: 0;
+                width: 100%;
+                height: 100%;
+              }
+            }
+          }
         }
       }
     }

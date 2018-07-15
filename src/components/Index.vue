@@ -1,10 +1,16 @@
 <template>
   <div id="index" class="scroll-fix">
-    <keep-alive>
-      <component
-        :is="curTabComponent"
-      />
-    </keep-alive>
+    <!-- <keep-alive exclude="Home"> -->
+    <component
+      :is="curTabComponent"
+    />
+    <!-- </keep-alive> -->
+    <!-- <component
+      v-show="i === active"
+      v-for="(tab, i) in indexTabs"
+      :key="i"
+      :is="tab.component"
+    /> -->
     <van-tabbar
       v-model="active"
       @change="changeTab"

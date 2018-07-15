@@ -31,7 +31,7 @@
 
 <script>
 import MySvg from './MySvg'
-import { PAYMENTWAY, ORDERTIMEOUT } from '@/constant'
+import { PAYMENTWAY, ORDERTIMEOUT, APPID } from '@/constant'
 
 export default {
   components: {
@@ -68,6 +68,15 @@ export default {
       paymentWay: PAYMENTWAY,
       confirmPayLoading: false,
       orderTimeout: ORDERTIMEOUT,
+      payOption: {
+        appId: APPID,
+        timeStamp: '',
+        nonceStr: '',
+        packageStr: '',
+        signType: '',
+        paySign: '',
+        cb: null,
+      },
     }
   },
   created () {
@@ -87,6 +96,7 @@ export default {
           if (this.paymentCountDown <= 0) {
             this.paymentCountDownText = this.$t('paymentOvertime')
             clearInterval(this.countDownTimer)
+            this.$router.replace('/index')
           } else {
             let curCountDown = new Date(this.paymentCountDown)
             this.paymentCountDownText = curCountDown.getMinutes() + ':' +
@@ -126,6 +136,38 @@ export default {
     },
   },
   methods: {
+    jsSdk () {
+    // 判断微信的WeixinJSBridge
+      if (typeof WeixinJSBridge === 'undefined') {
+        if (document.addEventListener) {
+          document.addEventListener('WeixinJSBridgeReady', this.onBridgeReady, false)
+        } else if (document.attachEvent) {
+          document.attachEvent('WeixinJSBridgeReady', this.onBridgeReady)
+          document.attachEvent('onWeixinJSBridgeReady', this.onBridgeReady)
+        }
+      } else {
+        this.onBridgeReady()
+      }
+    },
+    onBridgeReady () {
+      const { appId, timeStamp, nonceStr, packageStr, signType, paySign, cb } = this.payOption
+      // eslint-disable-next-line
+      WeixinJSBridge.invoke(
+        'getBrandWCPayRequest', {
+          'appId': appId, // 公众号名称，由商户传入
+          'timeStamp': timeStamp, // 时间戳，自1970年以来的秒数
+          'nonceStr': nonceStr, // 随机串
+          'package': packageStr,
+          'signType': signType, // 微信签名方式：
+          'paySign': paySign, // 微信签名
+        },
+        function (res) {
+          if (res.err_msg === 'get_brand_wcpay_request:ok') {
+            cb()
+          }
+        },
+      )
+    },
     confirmPay () {
       console.log('confirmPay')
       this.confirmPayLoading = true
@@ -139,7 +181,13 @@ export default {
       }).then(resp => {
         console.log(resp)
         this.confirmPayLoading = false
-        this.$router.replace('/payment-success')
+        const cb = () => {
+          this.$router.replace('/payment-success')
+        }
+        this.payOption = {
+          cb,
+        }
+        this.jsSdk()
       }).catch(err => {
         console.log(err)
         this.confirmPayLoading = false

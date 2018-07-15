@@ -53,7 +53,7 @@ export default {
       myServiceTabs: MYSERVICETABS,
     }
   },
-  activated () {
+  created () {
     this.logged = this.$getCookie('logged') === '0'
     this.$store.dispatch('getUserInfo')
     // console.log('loading', this.loading)

@@ -85,7 +85,8 @@
 </template>
 
 <script>
-import { GOLDPURITY, GOLDTYPE, CERTIFICATES } from '@/constant'
+import { GOLDPURITY, GOLDTYPE, CERTIFICATES,
+  JEWELRYCAREIMAGES, FAQIMAGES, STRATEGYIMAGES } from '@/constant'
 
 export default {
   data () {
@@ -96,9 +97,9 @@ export default {
       goldType: GOLDTYPE,
       certificates: CERTIFICATES,
       activeTab: 0,
-      rentStrategy: '',
-      faq: '',
-      noticeImg: '',
+      rentStrategy: STRATEGYIMAGES.avatar || STRATEGYIMAGES.url,
+      faq: FAQIMAGES.avatar || FAQIMAGES.url,
+      noticeImg: JEWELRYCAREIMAGES.avatar || JEWELRYCAREIMAGES.url,
     }
   },
   created () {

@@ -6,7 +6,7 @@ const axios = require('axios')
 
 // const multipartMiddleware = multipart()
 const router = express.Router()
-// const baseUrl = 'http://gdfgy2.natappfree.cc/api-auth'
+// const baseUrl = 'http://5rtkfg.natappfree.cc/api-auth'
 const baseUrl = 'http://120.55.55.106/api-auth'
 
 function mapUrl (rawUrl) {
@@ -58,11 +58,16 @@ function request ({ url, method = 'get', headers = {}, ...args }, req, res) {
     method,
     url,
     // withCredentials: true,
+    // maxRedirects: 0,
+    // validateStatus: function (status) {
+    //   return status >= 200 && status <= 302 // default
+    // },
     headers,
     ...args,
     responseType: 'stream',
   }).then(resp => {
     console.log('resp.headers', resp.headers)
+    console.log('resp.statusCode', resp.data.statusCode)
     resp.data.pipe(res)
     if (resp.headers['set-cookie']) {
       res.setHeader('set-cookie', resp.headers['set-cookie'])
@@ -74,7 +79,7 @@ function request ({ url, method = 'get', headers = {}, ...args }, req, res) {
     console.error('error message is', err.response.data.statusMessage)
     const { statusCode, statusMessage } = err.response.data
     // res.status(500).send('500 | Internal Server Error')
-    res.status(500).send(statusCode + ' | ' + statusMessage)
+    res.status(statusCode).send(statusCode + ' | ' + statusMessage)
   })
 }
 

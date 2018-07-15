@@ -1,5 +1,8 @@
+const CDN = 'https://m.theiajewel.com'
+
 module.exports = {
-  REALURL: 'service.theiajewel.com/C',
+  APPID: 'wx3cf20ba95498ed2a',
+  REALURL: 'https://m.theiajewel.com',
   INDEXTABS: [{
     name: 'tabBarText0',
     // icon: () => import('@/assets/1.svg'),
@@ -18,7 +21,7 @@ module.exports = {
     icon: () => import('@/assets/svg/tab3_b.svg'),
   }],
   LAZYLOADOPTIONS: {
-    // loading: './assets/img/load_err.png',
+    loading: '/static/Spin.gif',
     error: '/static/load_err.png',
     attempt: 1,
     lazyComponent: true,
@@ -317,5 +320,25 @@ module.exports = {
     key: '1',
     name: 'leaseholdStatus1',
   }],
+  STRATEGYIMAGES: {
+    url: `${CDN}/media/img/config/strategy.jpg`,
+    avatar: `${CDN}/media/img/config/strategy.jpg.1200x1200_q85_crop.jpg`,
+    name: 'strategy.jpg',
+  },
+  FAQIMAGES: {
+    url: `${CDN}/media/img/config/FAQ.jpg`,
+    avatar: `${CDN}/media/img/config/FAQ.jpg.1200x1200_q85_crop.jpg`,
+    name: 'FAQ.jpg',
+  },
+  ABOUTUSIMAGES: {
+    url: `${CDN}/media/img/config/aboutUs.jpg`,
+    avatar: `${CDN}/media/img/config/aboutUs.jpg.1200x1200_q85_crop.jpg`,
+    name: 'aboutUs.jpg',
+  },
+  JEWELRYCAREIMAGES: {
+    url: `${CDN}/media/img/config/jewelryCare.jpg`,
+    avatar: `${CDN}/media/img/config/jewelryCare.jpg.1200x1200_q85_crop.jpg`,
+    name: 'jewelryCare.jpg',
+  },
 }
 // isAuthenticated: 1 未完善， 0 已完善

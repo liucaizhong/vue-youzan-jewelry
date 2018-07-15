@@ -62,7 +62,9 @@
         {{ $t('creditStatus') + ': ' + $t(`creditStatus${serviceInfo.creditStatus}`) }}
       </div>
       <van-button
-        v-if="serviceInfo.serviceType === '1' && serviceInfo.serviceStatus === '2' && !serviceInfo.reservedProduct"
+        v-if="serviceInfo.serviceType === '1' &&
+          (serviceInfo.serviceStatus === '2' || serviceInfo.serviceStatus === '3') &&
+          !serviceInfo.reservedProduct"
         class="my-button"
         bottom-action
         type="default"

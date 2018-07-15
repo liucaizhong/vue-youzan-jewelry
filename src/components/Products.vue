@@ -119,7 +119,7 @@ export default {
   //   this.categoryFromRoute = category
   //   this.requestProductList(true)
   // },
-  activated () {
+  created () {
     console.log('activated', this.$route)
     const { keyword = '', category,
       minSellingPrice, maxSellingPrice } = this.$route.query

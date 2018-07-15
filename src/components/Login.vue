@@ -29,6 +29,10 @@
       <img src="../assets/img/wechat.png" />
       <span>{{ $t('wechatLogin') }}</span>
     </a> -->
+    <!-- <a
+      ref="wxLogin"
+      href="https://m.theiajewel.com/account/oauth/login"
+    >wx-login-jump</a> -->
   </div>
 </template>
 
@@ -87,22 +91,26 @@ export default {
             // username: this.userName,
             verifycode: this.verifyCode,
           },
+          // validateStatus: function (status) {
+          //   return status >= 200 && status <= 302 // default
+          // },
           method: 'post',
         }).then(resp => {
-          console.log(resp)
-          // const loginInfo = Object.assign({}, resp.data)
-          // this.$store.commit('userLogin', loginInfo)
+          console.log('wxloginresp is', resp)
+          // alert(JSON.stringify(resp.data))
           this.loginLoading = false
+          // this.$refs.wxLogin.click()
           this.$message({
             content: this.$t('loginSuccess'),
           })
           this.$router.replace(this.redirectUrl)
         }).catch(err => {
-          console.log(err)
+          console.log('wxloginerr is', err)
           this.loginLoading = false
           this.$message({
             content: this.$t('loginFail'),
           })
+          // }
         })
       }
     },

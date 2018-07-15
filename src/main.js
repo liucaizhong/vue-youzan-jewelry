@@ -91,6 +91,12 @@ axios.interceptors.response.use(
               redirect: router.currentRoute.fullPath
             }
           })
+          break
+        // case 302:
+        //   console.log('error.response.status', error.response)
+        //   const url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx3cf20ba95498ed2a&redirect_uri=http://5rtkfg.natappfree.cc/account/oauth/authorize/?next=/&response_type=code&scope=snsapi_base&connect_redirect=1#wechat_redirect'
+        //   window.location.href = url
+        //   break
       }
     }
     return Promise.reject(error.response.data)

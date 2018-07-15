@@ -46,7 +46,7 @@ export default {
   overflow: hidden;
 
   .dummy {
-    margin-top: 64vw;
+    margin-top: 100vw;
   }
 
   .content {

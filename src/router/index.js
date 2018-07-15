@@ -27,6 +27,9 @@ const ChangeAddress = () => import('@/components/ChangeAddress')
 const ChangeBirthday = () => import('@/components/ChangeBirthday')
 const Booking = () => import('@/components/Booking')
 const Outlets = () => import('@/components/Outlets')
+const FAQ = () => import('@/components/FAQ')
+const AboutUs = () => import('@/components/AboutUs')
+const RentStrategy = () => import('@/components/RentStrategy')
 
 export default new Router({
   mode: 'history',
@@ -195,6 +198,27 @@ export default new Router({
     {
       path: '/outlets',
       component: Outlets,
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/FAQ',
+      component: FAQ,
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/about-us',
+      component: AboutUs,
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/rent-strategy',
+      component: RentStrategy,
       meta: {
         requiresAuth: true,
       },
