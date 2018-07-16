@@ -1,7 +1,7 @@
 const CDN = 'https://m.theiajewel.com'
 
 module.exports = {
-  APPID: 'wx3cf20ba95498ed2a',
+  // APPID: 'wx3cf20ba95498ed2a',
   REALURL: 'https://m.theiajewel.com',
   INDEXTABS: [{
     name: 'tabBarText0',

@@ -31,7 +31,7 @@
 
 <script>
 import MySvg from './MySvg'
-import { PAYMENTWAY, ORDERTIMEOUT, APPID } from '@/constant'
+import { PAYMENTWAY, ORDERTIMEOUT } from '@/constant'
 
 export default {
   components: {
@@ -69,13 +69,12 @@ export default {
       confirmPayLoading: false,
       orderTimeout: ORDERTIMEOUT,
       payOption: {
-        appId: APPID,
+        appId: '',
         timeStamp: '',
         nonceStr: '',
         packageStr: '',
         signType: '',
         paySign: '',
-        cb: null,
       },
     }
   },
@@ -150,7 +149,10 @@ export default {
       }
     },
     onBridgeReady () {
-      const { appId, timeStamp, nonceStr, packageStr, signType, paySign, cb } = this.payOption
+      const { appId, timeStamp, nonceStr, signType, sign } = this.payOption
+      const packageStr = this.payOption.package
+      const successCb = this.successCb
+      const cancelCb = this.cancelCb
       // eslint-disable-next-line
       WeixinJSBridge.invoke(
         'getBrandWCPayRequest', {
@@ -159,14 +161,39 @@ export default {
           'nonceStr': nonceStr, // 随机串
           'package': packageStr,
           'signType': signType, // 微信签名方式：
-          'paySign': paySign, // 微信签名
+          'paySign': sign, // 微信签名
         },
         function (res) {
+          // alert(JSON.stringify(res))
           if (res.err_msg === 'get_brand_wcpay_request:ok') {
-            cb()
+            successCb()
+          }
+          if (res.err_msg === 'get_brand_wcpay_request:cancel') {
+            cancelCb()
           }
         },
       )
+    },
+    successCb () {
+      this.$router.replace('/payment-success')
+    },
+    cancelCb () {
+      const url = '/common/payment/cancel/'
+      this.$fetch(url, {
+        data: {
+          orderno: this.orderNo,
+        },
+        method: 'post',
+      }).then(resp => {
+        console.log(resp)
+        this.confirmPayLoading = false
+      }).catch(err => {
+        console.log(err)
+        this.confirmPayLoading = false
+        this.$message({
+          content: this.$t('confirmPayFail'),
+        })
+      })
     },
     confirmPay () {
       console.log('confirmPay')
@@ -180,14 +207,11 @@ export default {
         method: 'post',
       }).then(resp => {
         console.log(resp)
-        this.confirmPayLoading = false
-        const cb = () => {
-          this.$router.replace('/payment-success')
-        }
+        // this.confirmPayLoading = false
         this.payOption = {
-          cb,
+          ...resp.data,
         }
-        this.jsSdk()
+        this.$nextTick(this.jsSdk())
       }).catch(err => {
         console.log(err)
         this.confirmPayLoading = false

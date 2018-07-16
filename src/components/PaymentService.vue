@@ -107,11 +107,12 @@ export default {
   methods: {
     onSelectAll (b) {
       console.log('onSelectAll', b)
+      // this.checked = [...this.checked.fill(b)]
       if (b) {
         this.checked = [...this.checked.fill(b)]
       } else {
-        const hasTrue = this.checked.some(cur => cur)
-        if (!hasTrue) {
+        const hasTrue = this.checked.every(cur => cur)
+        if (hasTrue) {
           this.checked = [...this.checked.fill(b)]
         }
       }
