@@ -66,6 +66,7 @@ export default {
   },
   watch: {
     columns: {
+      // immediate: true,
       deep: true,
       handler: function (val, oldVal) {
         // console.log('columns', val)

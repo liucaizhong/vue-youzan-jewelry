@@ -16,7 +16,7 @@
         <span class="rent-selection__title">
           {{ $t('chooseRentType') }}
         </span>
-        <router-link to="/how-to-rent">
+        <router-link to="/rent-strategy">
           <span class="rent-selection__how-to-rent">
             {{ $t('howToRent') }}
           </span>

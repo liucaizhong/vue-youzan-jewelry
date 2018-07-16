@@ -62,7 +62,7 @@ export default {
       this.rentPeriodErr = !val
     },
     product: {
-      immediate: true,
+      // immediate: true,
       deep: true,
       handler: function (val, oldVal) {
         // console.log('product', val)
@@ -123,6 +123,7 @@ export default {
         ]))
         ++i
       }
+      // console.log('resArr', resArr)
       return resArr
     },
     getPeriodRentFromPicker (val) {
