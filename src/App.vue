@@ -273,6 +273,8 @@ body {
           text-align: center;
           padding: 0 20px;
           height: 20px;
+          line-height: 20px;
+          -webkit-appearance: none;
         }
       }
     }

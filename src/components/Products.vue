@@ -219,14 +219,20 @@ export default {
         this.imgList = [...results]
         this.keywordCount = resp.data.count
         this.loading = false
-        this.refreshing = false
+        // this.refreshing = false
         if (results.length < this.searchCond.limit) {
           this.finished = true
         }
+        this.$nextTick(() => {
+          this.refreshing = false
+        })
       }).catch(err => {
         console.log(err)
         this.loading = false
-        this.refreshing = false
+        // this.refreshing = false
+        this.$nextTick(() => {
+          this.refreshing = false
+        })
       })
     },
     onRefresh () {

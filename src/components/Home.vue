@@ -108,20 +108,27 @@ export default {
   },
   methods: {
     getIndexConf (loading) {
+      this.refreshing = true
       const url = '/client/indexconf/'
 
       this.$fetch(url, {}, loading).then(resp => {
         console.log('resp', resp)
+        // alert(JSON.stringify(resp))
         const { spImages, advImages, newProducts, recommendProducts } = resp.data
-        this.spImages = spImages
-        this.advImages = advImages
-        this.newProducts = newProducts
-        this.recommendProducts = recommendProducts
-        this.refreshing = false
-        this.$forceUpdate()
+        this.spImages = [...spImages]
+        this.advImages = [...advImages]
+        this.newProducts = [...newProducts]
+        this.recommendProducts = [...recommendProducts]
+        this.$nextTick(() => {
+          this.refreshing = false
+        })
+        // this.$forceUpdate()
       }).catch(err => {
         console.log(err)
-        this.refreshing = false
+        // alert(JSON.stringify(err))
+        this.$nextTick(() => {
+          this.refreshing = false
+        })
       })
     },
     onRefresh () {
