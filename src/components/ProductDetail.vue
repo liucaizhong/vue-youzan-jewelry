@@ -67,6 +67,7 @@
     <section class="product-detail__notice">
       <img class="product-detail__notice-img" v-lazy="noticeImg">
     </section>
+    <div class="dummy"></div>
     <footer class="product-detail__footer">
       <van-button
         class="my-button rent-btn"
@@ -173,10 +174,14 @@ export default {
 #product-detail {
   width: 100vw;
   height: 100vh;
-  margin-bottom: 50px;
+  // margin-bottom: 50px;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
   background: #fff;
+
+  .dummy {
+    height: 50px;
+  }
 
   .banner {
     width: 100%;

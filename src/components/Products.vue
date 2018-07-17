@@ -198,7 +198,7 @@ export default {
         return cum
       }, {})
     },
-    requestProductList (loading) {
+    requestProductList (loading, loadmore) {
       // todo: axios
       const url = '/client/product/'
       const condParams = this.formSearchParams(this.searchCond)
@@ -216,7 +216,11 @@ export default {
         // alert(JSON.stringify(resp.data.results))
         console.log('resp', resp)
         const results = resp.data.results
-        this.imgList = [...results]
+        if (loadmore) {
+          this.imgList = this.imgList.concat([...results])
+        } else {
+          this.imgList = [...results]
+        }
         this.keywordCount = resp.data.count
         this.loading = false
         // this.refreshing = false
@@ -243,7 +247,7 @@ export default {
     onLoadmore () {
       this.searchCond.offset++
       this.loading = true
-      this.requestProductList()
+      this.requestProductList(false, true)
     },
     onCheckAll () {
       this.$router.push('/index#products')
