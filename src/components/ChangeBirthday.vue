@@ -37,8 +37,10 @@ export default {
     }
   },
   created () {
-    this.birthday = this.userInfo.birthday || '2018-06-01'
-    this.initialDate = new Date(...this.birthday.split`-`) || new Date()
+    this.birthday = this.userInfo.birthday
+    const [y, m, d] = this.birthday.split`-`
+    this.initialDate = (this.birthday && new Date(y, m - 1, d)) || null
+    // this.initialDate = null
   },
   computed: {
     ...mapState([

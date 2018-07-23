@@ -38,7 +38,7 @@ export default {
     initialValue: {
       type: Date,
       default: function () {
-        return new Date()
+        return null
       },
     },
     placeholder: String,
@@ -92,10 +92,15 @@ export default {
       this.$emit('cancel')
     },
     composeDate (date) {
+      if (!date) {
+        return ''
+      }
+
       const year = date.getFullYear()
       let month = date.getMonth() + 1
       month = month < 10 ? '0' + month : month
       let day = date.getDate()
+      day = day < 10 ? '0' + day : day
       return `${year}-${month}-${day}`
     },
   }

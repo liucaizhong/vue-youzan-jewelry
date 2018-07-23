@@ -321,6 +321,7 @@ export default {
         //   },
         // }]
       }
+      this.$forceUpdate()
     }).catch(err => {
       console.log(err)
     })
