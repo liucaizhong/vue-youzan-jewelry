@@ -331,8 +331,8 @@ module.exports = {
     name: 'FAQ.jpg',
   },
   ABOUTUSIMAGES: {
-    url: `${CDN}/media/img/config/aboutUs.jpg`,
-    avatar: `${CDN}/media/img/config/aboutUs.jpg.1200x1200_q85_crop.jpg`,
+    url: `${CDN}/media/img/config/aboutUS.jpg`,
+    avatar: `${CDN}/media/img/config/aboutUS.jpg.1200x1200_q85_crop.jpg`,
     name: 'aboutUs.jpg',
   },
   JEWELRYCAREIMAGES: {

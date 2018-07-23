@@ -70,7 +70,7 @@
         type="default"
         @click="changeProduct"
       >{{ $t('selectProduct') }}</van-button>
-      <div class="tip" v-if="serviceInfo.creditStatus === '1'">
+      <div class="tip" v-if="showOvertimeTip">
         {{ $t('overtimeTip' )}}
       </div>
     </div>
@@ -157,7 +157,7 @@
           <div class="category">{{ productCategory(serviceInfo.product) }}</div>
         </div>
         <van-button
-          v-if="serviceInfo.serviceType !== '2'"
+          v-if="serviceInfo.serviceType === '0' && serviceInfo.serviceStatus === '3'"
           class="my-button"
           bottom-action
           type="default"
@@ -337,6 +337,19 @@ export default {
     )
   },
   computed: {
+    showOvertimeTip: function () {
+      const { creditStatus, serviceStatus, serviceType } = this.serviceInfo
+      let show = creditStatus === '1'
+      switch (serviceType) {
+        case '0':
+          return show && (serviceStatus === '5' || serviceStatus === '6')
+        case '1':
+          return show && (serviceStatus === '4' || serviceStatus === '5')
+        case '2':
+          return show && serviceStatus === '3'
+      }
+      return show
+    },
     servicePeriod: function () {
       const { rentDueDate } = this.serviceInfo
       if (rentDueDate) {
@@ -399,7 +412,8 @@ export default {
       this.$router.push(url)
     },
     buyProduct (productid) {
-      this.$router.push(`/payment/${productid}?type=2`)
+      // this.$router.push(`/payment/${productid}?type=2`)
+      this.$router.push(`/payment/${this.serviceInfo.serviceNo}/?type=0&orderType=7`)
     },
     productRentPeriod (service) {
       const { rentStartDate, rentDueDate } = service

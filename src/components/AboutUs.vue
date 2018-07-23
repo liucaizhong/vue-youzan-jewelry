@@ -10,7 +10,7 @@ import { ABOUTUSIMAGES } from '@/constant'
 export default {
   data () {
     return {
-      url: ABOUTUSIMAGES.avatar || ABOUTUSIMAGES.url,
+      url: ABOUTUSIMAGES.url,
     }
   },
   mounted () {
@@ -35,7 +35,7 @@ export default {
 
   img {
     width: 100%;
-    height: 100%;
+    height: auto;
   }
 }
 </style>

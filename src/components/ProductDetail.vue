@@ -100,7 +100,7 @@ export default {
       activeTab: 0,
       rentStrategy: STRATEGYIMAGES.avatar || STRATEGYIMAGES.url,
       faq: FAQIMAGES.avatar || FAQIMAGES.url,
-      noticeImg: JEWELRYCAREIMAGES.avatar || JEWELRYCAREIMAGES.url,
+      noticeImg: JEWELRYCAREIMAGES.url,
     }
   },
   created () {
@@ -320,9 +320,11 @@ export default {
 
   .product-detail__notice {
     width: 100%;
+    height: auto;
 
     .product-detail__notice-img {
       width: 100%;
+      height: auto;
     }
   }
 
