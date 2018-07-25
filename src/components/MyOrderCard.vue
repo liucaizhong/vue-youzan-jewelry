@@ -45,7 +45,7 @@
             class="my-button"
             type="default"
             bottom-action
-            @click="confirmPay(order.orderNo, order.amount, order.createDate)"
+            @click="confirmPay(order.orderNo, toPayAmount(order), order.createDate)"
           >{{ $t('confirmPay') }}</van-button>
         </div>
       </van-collapse-item>
@@ -71,6 +71,10 @@ export default {
     }
   },
   methods: {
+    toPayAmount (order) {
+      const { amount, balanceDeduction } = order
+      return Math.max(0, parseFloat(amount) - parseFloat(balanceDeduction))
+    },
     paymentAmount (order) {
       const { orderStatus, amount, balanceDeduction } = order
       return (orderStatus === '0' ? this.$t('toPayAmount') : this.$t('paymentAmount')) +
