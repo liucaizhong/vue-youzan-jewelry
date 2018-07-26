@@ -91,6 +91,7 @@ export default {
           !this.api && (this.api = this.$attrs.api)
           this.offset = 0
           this.serviceData = []
+          this.checked = []
           this.getService(this.api, true)
         }
       }
