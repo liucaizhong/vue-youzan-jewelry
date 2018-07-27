@@ -167,25 +167,31 @@ export default {
       deep: true,
       immediate: true,
       handler: function (val, oldVal) {
-        this.productDetail = { ...val }
-        // get relevant package
-        Promise.all([this.fetchNewPackages(true), this.fetchMyPackages(true)])
-          .then(([data0, data1]) => {
-            this.getNewPackagesSuccess(data0)
-            this.getMyPackagesSuccess(data1)
-            if (data1.results && data1.results.length) {
-              this.hasNoPackage = false
-              this.packageType = '0'
-            } else if (data0.results && data0.results.length) {
-              this.hasNoPackage = false
-              this.packageType = '1'
-            } else {
-              this.hasNoPackage = true
-            }
-          }).catch(([err0, err1]) => {
-            this.getNewPackagesError(err0)
-            this.getMyPackagesError(err1)
-          })
+        console.log('watch', val)
+        this.productDetail = {}
+        if (val.rent) {
+          this.productDetail = { ...val }
+          // get relevant package
+          Promise.all([this.fetchNewPackages(true), this.fetchMyPackages(true)])
+            .then(([data0, data1]) => {
+              this.newPackages = []
+              this.myPackages = []
+              this.getNewPackagesSuccess(data0)
+              this.getMyPackagesSuccess(data1)
+              if (data1.results && data1.results.length) {
+                this.hasNoPackage = false
+                this.packageType = '0'
+              } else if (data0.results && data0.results.length) {
+                this.hasNoPackage = false
+                this.packageType = '1'
+              } else {
+                this.hasNoPackage = true
+              }
+            }).catch(([err0, err1]) => {
+              this.getNewPackagesError(err0)
+              this.getMyPackagesError(err1)
+            })
+        }
       },
     },
     packageType: function (val, oldVal) {
@@ -304,7 +310,7 @@ export default {
       const results = data.results
       if (results && results.length) {
         ++this.newPackageCond.offset
-        this.newPackages = [...results]
+        this.newPackages = this.newPackages.concat([...results])
         this.newPackageCond.loading = false
         if (results.length < this.newPackageCond.limit) {
           this.newPackageCond.finished = true
@@ -347,7 +353,7 @@ export default {
       const results = data.results
       if (results && results.length) {
         ++this.myPackageCond.offset
-        this.myPackages = [...results]
+        this.myPackages = this.myPackages.concat([...results])
         this.myPackageCond.loading = false
         if (results.length < this.myPackageCond.limit) {
           this.myPackageCond.finished = true

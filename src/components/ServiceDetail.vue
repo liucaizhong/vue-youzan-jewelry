@@ -19,50 +19,50 @@
       <div class="row">
         {{ $t('serviceNo') + ': ' + serviceInfo.serviceNo }}
       </div>
-      <div class="row" v-if="serviceInfo.createDate">
+      <div class="row" v-show="serviceInfo.createDate">
         {{ $t('createDatetime') + ': ' + serviceInfo.createDate }}
       </div>
-      <div class="row" v-if="serviceInfo.finishDate">
+      <div class="row" v-show="serviceInfo.finishDate">
         {{ $t('endDatetime') + ': ' + serviceInfo.finishDate }}
       </div>
-      <div class="row"  v-if="serviceInfo.rentStartDate">
+      <div class="row" v-show="serviceInfo.rentStartDate">
         {{ $t('rentStartDate') + ': ' + serviceInfo.rentStartDate }}
       </div>
-      <div class="row" v-if="serviceInfo.rentDueDate">
+      <div class="row" v-show="serviceInfo.rentDueDate">
         {{ $t('rentDueDate') + ': ' + serviceInfo.rentDueDate }}
       </div>
-      <div class="row" v-if="+serviceInfo.rentPeriod">
+      <div class="row" v-show="+serviceInfo.rentPeriod">
         {{ $t('rentPeriodTitle') + ': ' + serviceInfo.rentPeriod + $t('day')}}
       </div>
-      <div class="row" v-if="serviceInfo.serviceType === '1'">
-        {{ $t('packageTitle') + ': ' + serviceInfo.packageshot.title }}
+      <div class="row" v-show="serviceInfo.serviceType === '1'">
+        {{ $t('packageTitle') + ': ' + (serviceInfo.packageshot && serviceInfo.packageshot.title) }}
       </div>
-      <div class="row" v-if="serviceInfo.serviceType === '1'">
-        {{ $t('packagePrice') + ': ' + $n(serviceInfo.packageshot.price, 'currency') }}
+      <div class="row" v-show="serviceInfo.serviceType === '1'">
+        {{ $t('packagePrice') + ': ' + $n(serviceInfo.packageshot && serviceInfo.packageshot.price || '0', 'currency') }}
       </div>
-      <div class="row" v-if="serviceInfo.serviceType === '1'">
+      <div class="row" v-show="serviceInfo.serviceType === '1'">
         {{ composePackageProductDomain(serviceInfo.packageshot) }}
       </div>
       <div
         class="row"
-        v-if="serviceInfo.serviceType === '2' && +serviceInfo.sellingPrice"
+        v-show="serviceInfo.serviceType === '2' && +serviceInfo.sellingPrice"
       >
         {{ $t('amount') + ': ' + $n(serviceInfo.sellingPrice, 'currency') }}
       </div>
-      <div class="row" v-if="serviceInfo.serviceType === '0' && +serviceInfo.initialRent">
+      <div class="row" v-show="serviceInfo.serviceType === '0' && +serviceInfo.initialRent">
         {{ $t('rentPrice') + ': ' + $n(serviceInfo.initialRent, 'currency') }}
       </div>
-      <div class="row" v-if="+serviceInfo.initialDeposit">
+      <div class="row" v-show="+serviceInfo.initialDeposit">
         {{ $t('initialDeposit') + ': ' + $n(serviceInfo.initialDeposit, 'currency') }}
       </div>
-      <div class="row" v-if="+serviceInfo.residualDeposit">
+      <div class="row" v-show="+serviceInfo.residualDeposit">
         {{ $t('residualDeposit') + ': ' + $n(serviceInfo.residualDeposit, 'currency') }}
       </div>
-      <div class="row" v-if="serviceInfo.serviceType !== '2'">
+      <div class="row" v-show="serviceInfo.serviceType !== '2'">
         {{ $t('creditStatus') + ': ' + $t(`creditStatus${serviceInfo.creditStatus}`) }}
       </div>
       <van-button
-        v-if="serviceInfo.serviceType === '1' &&
+        v-show="serviceInfo.serviceType === '1' &&
           (serviceInfo.serviceStatus === '2' || serviceInfo.serviceStatus === '3') &&
           !serviceInfo.reservedProduct"
         class="my-button"
@@ -70,7 +70,7 @@
         type="default"
         @click="changeProduct"
       >{{ $t('selectProduct') }}</van-button>
-      <div class="tip" v-if="showOvertimeTip">
+      <div class="tip" v-show="showOvertimeTip">
         {{ $t('overtimeTip' )}}
       </div>
     </div>
@@ -90,7 +90,7 @@
           <div class="category">{{ productCategory(serviceInfo.reservedProduct) }}</div>
         </div>
         <van-button
-          v-if="serviceInfo.serviceType === '1'"
+          v-show="serviceInfo.serviceType === '1'"
           class="my-button"
           bottom-action
           type="default"
@@ -122,7 +122,7 @@
               {{ $t('trackingNumber') + ": " + serviceInfo.trackingNumber }}
             </div>
           </div>
-          <div v-if="serviceInfo.deliveryMode === '1'" class="content">
+          <div v-else-if="serviceInfo.deliveryMode === '1'" class="content">
             <div class="row">
               {{ $t('deliveryMode') + ': ' + $t(`deliveryMode${serviceInfo.deliveryMode}`) }}
             </div>
@@ -141,7 +141,7 @@
       <header>
         {{ $t(serviceInfo.serviceType === '2' ? 'saleProduct' : 'rentingProduct') }}
       </header>
-      <div class="product-period" v-if="serviceInfo.serviceType !== '2'">
+      <div class="product-period" v-show="serviceInfo.serviceType !== '2'">
         {{ productRentPeriod(serviceInfo) }}
       </div>
       <div class="product-info">
@@ -151,13 +151,13 @@
         >
         <div class="desc">
           <div class="row van-ellipsis">{{ productTitle(serviceInfo.product) }}</div>
-          <div class="row van-ellipsis" v-if="serviceInfo.product.serialNumber">
+          <div class="row van-ellipsis" v-show="serviceInfo.product.serialNumber">
             {{ productSerialNumber(serviceInfo.product) }}
           </div>
           <div class="category">{{ productCategory(serviceInfo.product) }}</div>
         </div>
         <van-button
-          v-if="serviceInfo.serviceType === '0' && serviceInfo.serviceStatus === '3'"
+          v-show="serviceInfo.serviceType === '0' && serviceInfo.serviceStatus === '3'"
           class="my-button"
           bottom-action
           type="default"
@@ -189,7 +189,7 @@
               {{ $t('trackingNumber') + ": " + serviceInfo.trackingNumber }}
             </div>
           </div>
-          <div v-if="serviceInfo.deliveryMode === '1'" class="content">
+          <div v-else-if="serviceInfo.deliveryMode === '1'" class="content">
             <div class="row">
               {{ $t('deliveryMode') + ': ' + $t(`deliveryMode${serviceInfo.deliveryMode}`) }}
             </div>
@@ -229,11 +229,11 @@
           >
           <div class="desc">
             <div class="row van-ellipsis">{{ productTitle(log.product) }}</div>
-            <div class="row van-ellipsis" v-if="log.serialNumber">
+            <div class="row van-ellipsis" v-show="log.serialNumber">
               {{ productSerialNumber(log) }}
             </div>
             <!-- <div class="category">{{ productCategory(log.product) }}</div> -->
-            <div class="row van-ellipsis" v-if="log.compensation">
+            <div class="row van-ellipsis" v-show="log.compensation">
               {{ $t('compensationAmount') + ': ' + $n(log.compensation, 'currency') }}
             </div>
           </div>
@@ -377,9 +377,12 @@ export default {
   },
   methods: {
     composePackageProductDomain (packageshot) {
-      const { lowerLimit, upperLimit } = packageshot
-      return this.$t('packageProductDomain') + ': ' + this.$n(lowerLimit, 'currency') +
-        (upperLimit ? '～' + this.$n(upperLimit, 'currency') : '')
+      if (packageshot) {
+        const { lowerLimit, upperLimit } = packageshot
+        return this.$t('packageProductDomain') + ': ' + this.$n(lowerLimit, 'currency') +
+          (upperLimit ? '～' + this.$n(upperLimit, 'currency') : '')
+      }
+      return ''
     },
     productTitle (product) {
       const { series, title } = product

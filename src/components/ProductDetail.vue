@@ -98,8 +98,8 @@ export default {
       goldType: GOLDTYPE,
       certificates: CERTIFICATES,
       activeTab: 0,
-      rentStrategy: STRATEGYIMAGES.avatar || STRATEGYIMAGES.url,
-      faq: FAQIMAGES.avatar || FAQIMAGES.url,
+      rentStrategy: STRATEGYIMAGES.url,
+      faq: FAQIMAGES.url,
       noticeImg: JEWELRYCAREIMAGES.url,
     }
   },

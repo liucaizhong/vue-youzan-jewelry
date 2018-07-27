@@ -62,12 +62,16 @@ export default {
       this.rentPeriodErr = !val
     },
     product: {
-      // immediate: true,
+      immediate: true,
       deep: true,
       handler: function (val, oldVal) {
-        // console.log('product', val)
-        this.productDetail = { ...val }
-        this.rentAmountColumns = this.rentAmountColumns.concat(this.mockrentAmountColumns())
+        console.log('product', val)
+        this.productDetail = {}
+        this.rentAmountColumns = []
+        if (val.rent) {
+          this.productDetail = { ...val }
+          this.rentAmountColumns = this.rentAmountColumns.concat(this.mockrentAmountColumns())
+        }
       },
     }
   },
@@ -110,6 +114,7 @@ export default {
     },
     mockrentAmountColumns () {
       const count = this.rentAmountColumns.length
+      console.log('mockrentAMount', count)
       const firstValue = (count &&
         +this.getPeriodRentFromPicker(this.rentAmountColumns[count - 1])[0]) ||
         +this.productDetail.rentcycle
@@ -127,7 +132,7 @@ export default {
       return resArr
     },
     getPeriodRentFromPicker (val) {
-      // console.log('raw match', val)
+      console.log('raw match', val)
       // const match = val.match(/（(.+)(?=）)/g)
       const period = val.match(/(\d+)(?=天)/g)[0]
       // console.log('period', period)
