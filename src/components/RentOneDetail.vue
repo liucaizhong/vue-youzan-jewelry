@@ -127,13 +127,18 @@ export default {
       return resArr
     },
     getPeriodRentFromPicker (val) {
-      const match = val.match(/(\d+)/g)
+      // console.log('raw match', val)
+      // const match = val.match(/（(.+)(?=）)/g)
+      const period = val.match(/(\d+)(?=天)/g)[0]
+      // console.log('period', period)
+      const amount = val.substring(val.indexOf('（') + 2, val.indexOf('）'))
       // console.log('match', match)
-      return match
+      return [period, amount]
     },
     confirmRentPeriod (val, idx) {
       // console.log('confirmRentPeriod', val, idx)
       const match = this.getPeriodRentFromPicker(val)
+      // console.log('rent price', match)
       this.rentDetail.rentPeriod = match[0]
       this.rentDetail.totalAmount = `${+this.productDetail.deposit + +match[1]}`
       this.defaultIndex = idx

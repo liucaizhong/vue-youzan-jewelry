@@ -101,8 +101,8 @@ export default {
             },
           }).then(resp => {
             console.log('resp', resp)
-            const code = resp.data.verifycode
-            this.handleInput(code)
+            // const code = resp.data.verifycode
+            // this.handleInput(code)
             this.$message({
               content: this.$t('verifyCodeSuccess'),
             })
