@@ -291,7 +291,11 @@ export default {
       deliveryInfo: [],
     }
   },
-  created () {
+  mounted () {
+    Array.prototype.forEach.call(
+      document.getElementsByClassName('scroll-fix'), this.$scrollFixInit
+    )
+
     this.serviceInfo.serviceNo = this.$route.params.id
     this.type = this.$route.query.type || '0'
 
@@ -308,35 +312,17 @@ export default {
       this.serviceInfo = {
         ...serviceInfo,
         serviceType: this.type,
-        // changelist: [{
-        //   startDate: '2018-07-06',
-        //   endDate: '2018-07-30',
-        //   address: '月星火箭基地孵化蛋',
-        //   receiverName: '黄没卵',
-        //   receiverPhone: '123123123',
-        //   deliveryStore: '天山店',
-        //   compensation: '100',
-        //   leaseholdStatus: '0',
-        //   serialNumber: '123123',
-        //   product: {
-        //     category: '2',
-        //     title: '闪闪发光',
-        //     series: '奢华系列',
-        //     brand: 'THEIA',
-        //     mainimage: '',
-        //   },
-        // }]
       }
       this.$forceUpdate()
     }).catch(err => {
       console.log(err)
     })
   },
-  mounted () {
-    Array.prototype.forEach.call(
-      document.getElementsByClassName('scroll-fix'), this.$scrollFixInit
-    )
-  },
+  // mounted () {
+  //   Array.prototype.forEach.call(
+  //     document.getElementsByClassName('scroll-fix'), this.$scrollFixInit
+  //   )
+  // },
   beforeDestroy () {
     Array.prototype.forEach.call(
       document.getElementsByClassName('scroll-fix'), this.$scrollFixDestory
