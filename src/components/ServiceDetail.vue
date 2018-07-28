@@ -106,13 +106,13 @@
             <div class="row">
               {{ $t('deliveryMode') + ': ' + $t(`deliveryMode${serviceInfo.deliveryMode}`) }}
             </div>
-            <div class="row">
+            <div class="row" v-show="serviceInfo.receiverName">
               {{ $t('receiverName') + ": " + serviceInfo.receiverName }}
             </div>
-            <div class="row">
+            <div class="row" v-show="serviceInfo.receiverPhone">
               {{ $t('receiverPhone') + ": " + serviceInfo.receiverPhone }}
             </div>
-            <div class="row">
+            <div class="row" v-show="serviceInfo.address">
               {{ $t('receiverAddress') + ": " + serviceInfo.address }}
             </div>
             <div class="row">
@@ -173,13 +173,13 @@
             <div class="row">
               {{ $t('deliveryMode') + ': ' + $t(`deliveryMode${serviceInfo.deliveryMode}`) }}
             </div>
-            <div class="row">
+            <div class="row" v-show="serviceInfo.receiverName">
               {{ $t('receiverName') + ": " + serviceInfo.receiverName }}
             </div>
-            <div class="row">
+            <div class="row" v-show="serviceInfo.receiverPhone">
               {{ $t('receiverPhone') + ": " + serviceInfo.receiverPhone }}
             </div>
-            <div class="row">
+            <div class="row" v-show="serviceInfo.address">
               {{ $t('receiverAddress') + ": " + serviceInfo.address }}
             </div>
             <div class="row">
@@ -247,14 +247,20 @@
               <div class="row">
                 {{ $t('deliveryMode') + ': ' + $t(`deliveryMode0`) }}
               </div>
-              <div class="row">
+              <div class="row" v-show="log.receiverName">
                 {{ $t('receiverName') + ": " + log.receiverName }}
               </div>
-              <div class="row">
+              <div class="row" v-show="log.receiverPhone">
                 {{ $t('receiverPhone') + ": " + log.receiverPhone }}
               </div>
-              <div class="row">
+              <div class="row" v-show="log.address">
                 {{ $t('receiverAddress') + ": " + log.address }}
+              </div>
+              <div class="row">
+                {{ $t('logisticsCompany') + ": " + log.logisticsCompany }}
+              </div>
+              <div class="row">
+                {{ $t('trackingNumber') + ": " + log.trackingNumber }}
               </div>
             </div>
             <div v-else class="content">

@@ -205,23 +205,23 @@ export default new Router({
     {
       path: '/FAQ',
       component: FAQ,
-      meta: {
-        requiresAuth: true,
-      },
+      // meta: {
+      //   requiresAuth: true,
+      // },
     },
     {
       path: '/about-us',
       component: AboutUs,
-      meta: {
-        requiresAuth: true,
-      },
+      // meta: {
+      //   requiresAuth: true,
+      // },
     },
     {
       path: '/rent-strategy',
       component: RentStrategy,
-      meta: {
-        requiresAuth: true,
-      },
+      // meta: {
+      //   requiresAuth: true,
+      // },
     },
   ]
 })

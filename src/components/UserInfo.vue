@@ -84,7 +84,8 @@ export default {
     myIdInfo: function () {
       const { idType, idNo } = this.userInfo
       const idTypeText = this.idTypes.find(cur => cur.key === idType)
-      return (idTypeText ? this.$t(idTypeText.name) : '') + ' ' + idNo
+      const hidePartIdNo = idNo.substr(0, 6) + '********' + idNo.substr(14)
+      return (idTypeText ? this.$t(idTypeText.name) : '') + ' ' + hidePartIdNo
     },
     ...mapState([
       'userInfo',

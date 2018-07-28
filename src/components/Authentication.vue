@@ -128,6 +128,7 @@ export default {
           this.$message({
             content: this.$t('authenticationSuccess'),
           })
+          this.$router.replace('/user-info')
         }).catch(err => {
           console.log(err)
           this.authLoading = false
