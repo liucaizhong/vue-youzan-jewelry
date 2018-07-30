@@ -131,7 +131,7 @@ export default {
       return this.$t('payToCompleteTime') + ' ' + this.paymentCountDownText
     },
     confirmPayBtnText: function () {
-      return this.$t('confirmPay') + ' ' + this.$n(this.paymentAmount, 'currency')
+      return this.$t('confirmPayBtnText') + ' ' + this.$n(this.paymentAmount, 'currency')
     },
   },
   methods: {

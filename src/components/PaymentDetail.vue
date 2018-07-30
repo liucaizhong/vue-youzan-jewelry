@@ -136,7 +136,7 @@
         bottom-action
         @click="onConfirmPay"
         :loading="confirmPayLoading"
-      >{{ $t('payment') }}</van-button>
+      >{{ $t('confirmPay') }}</van-button>
     </footer>
     <van-dialog
       class="my-dialog"
@@ -147,6 +147,17 @@
       :confirmButtonText="$t('confirmPayBtnText')"
       :cancelButtonText="$t('cancelPayBtnText')"
       @confirm="confirmBalanceDeduction"
+    >
+    </van-dialog>
+    <van-dialog
+      class="my-dialog"
+      v-model="showConfirmWithoutPay"
+      show-cancel-button
+      :title="$t('confirmBuy')"
+      :message="$t('confirmWithoutPayDesc')"
+      :confirmButtonText="$t('confirm')"
+      :cancelButtonText="$t('cancelPayBtnText')"
+      @confirm="confirmWithoutPay"
     >
     </van-dialog>
   </div>
@@ -170,6 +181,7 @@ export default {
       type: '0', // 0: one, 1: package, 2: buy
       orderType: '',
       nopr: false,
+      showConfirmWithoutPay: false,
       showConfirmBalanceDeduction: false,
       deliveryModes: DELIVERYMODE,
       deliveryMode: DELIVERYMODE[1].key,
@@ -329,7 +341,16 @@ export default {
     bus.$on('receiverValidationResult', function (valid) {
       console.log('valid', valid)
       if (valid) {
-        that.confirmPayRequest()
+        // that.confirmPayRequest()
+        if (that.totalPayAmount) {
+          that.confirmPayRequest()
+        } else {
+          if (that.orderType === '7' && !that.useBalance) {
+            that.showConfirmWithoutPay = true
+          } else {
+            that.showConfirmBalanceDeduction = true
+          }
+        }
       }
     })
   },
@@ -399,11 +420,18 @@ export default {
         if (this.totalPayAmount) {
           this.confirmPayRequest()
         } else {
-          this.showConfirmBalanceDeduction = true
+          if (this.orderType === '7' && !this.useBalance) {
+            this.showConfirmWithoutPay = true
+          } else {
+            this.showConfirmBalanceDeduction = true
+          }
         }
       }
     },
     confirmBalanceDeduction () {
+      this.confirmPayRequest()
+    },
+    confirmWithoutPay () {
       this.confirmPayRequest()
     },
     confirmPayRequest () {
@@ -459,12 +487,15 @@ export default {
             this.confirmPayLoading = false
             if (!result) {
               const { orderNo, payedamount } = order
-              this.$router.replace(
-                `/confirm-pay?id=${[orderNo]}&total=${payedamount}&due=${Date.now()}`
-              )
-            } else {
-              // jump to pay success page
-              this.$router.replace('/payment-success')
+              console.log('confirmwithoutpay', payedamount)
+              if (parseFloat(payedamount) > 0.01) {
+                this.$router.replace(
+                  `/confirm-pay?id=${[orderNo]}&total=${payedamount}&due=${Date.now()}`
+                )
+              } else {
+                // jump to pay success page
+                this.$router.replace('/payment-success')
+              }
             }
           }).catch(err => {
             console.log(err)

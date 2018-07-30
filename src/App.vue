@@ -453,15 +453,15 @@ body {
     border-radius: 0;
 
     .van-dialog__header {
-      padding-top: 42px;
+      padding-top: 30px;
       font-size: 16px;
     }
 
     .van-dialog__message--withtitle {
-      font-size: 24px;
+      font-size: 22px;
       text-align: center;
       color: #000;
-      padding: 10px 0 28px;
+      padding: 16px 0 28px;
     }
 
     .van-button__text {

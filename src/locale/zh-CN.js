@@ -56,6 +56,8 @@ export default {
   buyImmediately: '即刻购买',
   justBuyHere: '一键购买',
   confirmPay: '去支付',
+  confirmBuy: '确认购买',
+  confirmWithoutPayDesc: '无需再支付任何额外费用',
   totalPayAmount: '待支付金额{0}',
   payment: '结算',
   totalRent: '{0}天 共{1}（含押金）',
