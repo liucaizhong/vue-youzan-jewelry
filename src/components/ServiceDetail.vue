@@ -412,7 +412,7 @@ export default {
     },
     productRentPeriod (service) {
       const { rentStartDate, rentDueDate } = service
-      return this.$t('rentPeriodTitle') + ': ' + rentStartDate +
+      return this.$t('rentPeriodTitle') + ': ' + (rentStartDate || this.$t('notBillingYet')) +
         (rentDueDate ? ' ~ ' + rentDueDate : '')
     },
     historyProductRentPeriod (log) {
