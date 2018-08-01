@@ -319,6 +319,9 @@ module.exports = {
   }, {
     key: '1',
     name: 'leaseholdStatus1',
+  }, {
+    key: '2',
+    name: 'leaseholdStatus2',
   }],
   STRATEGYIMAGES: {
     url: `${CDN}/media/img/config/strategy.jpg`,

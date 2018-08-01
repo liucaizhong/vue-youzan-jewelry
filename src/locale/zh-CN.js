@@ -272,6 +272,7 @@ export default {
   // hasNoNewPackage: '暂无可购买的套餐',
   leaseholdStatus0: '正常',
   leaseholdStatus1: '损坏',
+  leaseholdStatus2: '未知',
   rmbUnit: '元',
   myTotalAssets: '我的总资产',
   myBalance: '我的余额',
