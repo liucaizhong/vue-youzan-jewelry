@@ -53,7 +53,8 @@
           </div>
           <van-button
             class="my-button"
-            v-if="tab === 2 && serviceInfo.serviceType !== '2' && serviceInfo.product"
+            v-if="tab === 2 && serviceInfo.serviceType !== '2'
+              && serviceInfo.product && !serviceInfo.product.isReserved"
             bottom-action
             type="default"
             @click="buyProduct"

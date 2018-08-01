@@ -136,14 +136,16 @@
         bottom-action
         @click="onConfirmPay"
         :loading="confirmPayLoading"
-      >{{ $t('confirmPay') }}</van-button>
+      >
+        {{ paymentBtnText }}
+      </van-button>
     </footer>
     <van-dialog
       class="my-dialog"
       v-model="showConfirmBalanceDeduction"
       show-cancel-button
       :title="$t('balanceDeductionTip')"
-      :message="$n(this.totalAmount, 'currency')"
+      :message="$n(totalAmount, 'currency')"
       :confirmButtonText="$t('confirmPayBtnText')"
       :cancelButtonText="$t('cancelPayBtnText')"
       @confirm="confirmBalanceDeduction"
@@ -366,6 +368,9 @@ export default {
     )
   },
   computed: {
+    paymentBtnText: function () {
+      return this.totalAmount < 0 ? this.$t('confirm') : this.$t('confirmPay')
+    },
     totalPayAmountText: function () {
       if (this.totalAmount < 0) {
         return this.$t('returnDeposit', [this.$n(Math.abs(this.totalPayAmount), 'currency')])

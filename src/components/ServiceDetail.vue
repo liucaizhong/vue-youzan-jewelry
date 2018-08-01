@@ -83,7 +83,7 @@
       <div class="product-info">
         <img
           class="thumb"
-          v-lazy="serviceInfo.reservedProduct.mainimage"
+          v-lazy="serviceInfo.reservedProduct && serviceInfo.reservedProduct.mainimage"
         >
         <div class="desc">
           <div class="row van-ellipsis">{{ productTitle(serviceInfo.reservedProduct) }}</div>
@@ -147,7 +147,7 @@
       <div class="product-info">
         <img
           class="thumb"
-          v-lazy="serviceInfo.product.mainimage"
+          v-lazy="serviceInfo.product && serviceInfo.product.mainimage"
         >
         <div class="desc">
           <div class="row van-ellipsis">{{ productTitle(serviceInfo.product) }}</div>
@@ -217,7 +217,7 @@
             {{ historyProductRentPeriod(log) }}
           </div>
           <div class="product-leaseholdstatus">
-            {{ productLeaseholdStatus(log.leaseholdStatus) }}
+            {{ productLeaseholdStatus(log.leaseholdStatus, log.sold) }}
           </div>
         </div>
         <div
@@ -225,7 +225,7 @@
         >
           <img
             class="thumb"
-            v-lazy="log.product.mainimage"
+            v-lazy="log.product && log.product.mainimage"
           >
           <div class="desc">
             <div class="row van-ellipsis">{{ productTitle(log.product) }}</div>
@@ -233,7 +233,7 @@
               {{ productSerialNumber(log) }}
             </div>
             <!-- <div class="category">{{ productCategory(log.product) }}</div> -->
-            <div class="row van-ellipsis" v-show="log.compensation">
+            <div class="row van-ellipsis" v-show="+log.compensation">
               {{ $t('compensationAmount') + ': ' + $n(log.compensation, 'currency') }}
             </div>
           </div>
@@ -291,11 +291,7 @@ export default {
       deliveryInfo: [],
     }
   },
-  mounted () {
-    Array.prototype.forEach.call(
-      document.getElementsByClassName('scroll-fix'), this.$scrollFixInit
-    )
-
+  created () {
     this.serviceInfo.serviceNo = this.$route.params.id
     this.type = this.$route.query.type || '0'
 
@@ -318,11 +314,11 @@ export default {
       console.log(err)
     })
   },
-  // mounted () {
-  //   Array.prototype.forEach.call(
-  //     document.getElementsByClassName('scroll-fix'), this.$scrollFixInit
-  //   )
-  // },
+  mounted () {
+    Array.prototype.forEach.call(
+      document.getElementsByClassName('scroll-fix'), this.$scrollFixInit
+    )
+  },
   beforeDestroy () {
     Array.prototype.forEach.call(
       document.getElementsByClassName('scroll-fix'), this.$scrollFixDestory
@@ -377,8 +373,11 @@ export default {
       return ''
     },
     productTitle (product) {
-      const { series, title } = product
-      return (series ? series + '-' : '') + title
+      if (product) {
+        const { series, title } = product
+        return (series ? series + '-' : '') + title
+      }
+      return ''
     },
     productCategory (product) {
       const category = this.productCategorys.find(cur => {
@@ -420,12 +419,16 @@ export default {
       return this.$t('rentPeriodTitle') + ': ' + startDate +
         (endDate ? ' ~ ' + endDate : '')
     },
-    productLeaseholdStatus (leaseholdStatus) {
-      const status = this.leaseholdStatuss.find(cur => {
-        return cur.key === leaseholdStatus
-      })
+    productLeaseholdStatus (leaseholdStatus, isSold = false) {
+      if (isSold) {
+        return this.$t('beSold')
+      } else {
+        const status = this.leaseholdStatuss.find(cur => {
+          return cur.key === leaseholdStatus
+        })
 
-      return (status && this.$t(status.name)) || ''
+        return (status && this.$t(status.name)) || ''
+      }
     },
   }
 }

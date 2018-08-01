@@ -135,9 +135,9 @@ export default new Router({
     {
       path: '/package-list',
       component: PackageList,
-      meta: {
-        requiresAuth: true,
-      },
+      // meta: {
+      //   requiresAuth: true,
+      // },
     },
     {
       path: '/user-info',
@@ -191,16 +191,16 @@ export default new Router({
     {
       path: '/book',
       component: Booking,
-      meta: {
-        requiresAuth: true,
-      },
+      // meta: {
+      //   requiresAuth: true,
+      // },
     },
     {
       path: '/outlets',
       component: Outlets,
-      meta: {
-        requiresAuth: true,
-      },
+      // meta: {
+      //   requiresAuth: true,
+      // },
     },
     {
       path: '/FAQ',

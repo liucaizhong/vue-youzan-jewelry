@@ -324,4 +324,5 @@ export default {
   logout: '退出当前账户',
   changePhone: '更换手机',
   notBillingYet: '尚未开始计费',
+  beSold: '已购买',
 }

@@ -36,6 +36,7 @@
 export default {
   data () {
     return {
+      logged: false,
       loading: false,
       finished: false,
       offset: 0,
@@ -44,6 +45,7 @@ export default {
     }
   },
   created () {
+    this.logged = this.$getCookie('logged') === '0'
     this.getPackages(true)
   },
   mounted () {
@@ -88,21 +90,30 @@ export default {
       })
     },
     buyPackage (packageNo) {
-      const url = '/client/ComboService/'
-      this.$fetch(url, {
-        data: {
-          packageNo,
-        },
-        method: 'post',
-      }, true).then(resp => {
-        console.log(resp)
-        this.$router.push(`/payment/${resp.data.serviceNo}?type=1&nopr=true`)
-      }).catch(err => {
-        console.log(err)
-        this.$message({
-          content: this.$t('paymentFail'),
+      if (this.logged) {
+        const url = '/client/ComboService/'
+        this.$fetch(url, {
+          data: {
+            packageNo,
+          },
+          method: 'post',
+        }, true).then(resp => {
+          console.log(resp)
+          this.$router.push(`/payment/${resp.data.serviceNo}?type=1&nopr=true`)
+        }).catch(err => {
+          console.log(err)
+          this.$message({
+            content: this.$t('paymentFail'),
+          })
         })
-      })
+      } else {
+        this.$router.replace({
+          path: '/login',
+          query: {
+            redirect: '/package-list',
+          },
+        })
+      }
     },
   }
 }
