@@ -107,14 +107,14 @@
       </van-radio-group>
     </section>
     <section class="payment-detail__others">
-      <van-cell-group>
-        <van-cell
+      <van-cell-group v-if="totalAmount > 0">
+        <!-- <van-cell
           class="my-cell"
           :title="$t('sendInvoice')"
           is-link
           center
-        />
-        <van-cell class="my-cell" center v-if="totalAmount > 0">
+        /> -->
+        <van-cell class="my-cell" center>
           <div slot="title">
             <span>{{ $t('useBalance') }}</span>
             <span class="subtitle">{{ $t('curBalance', [$n(userBalance, 'currency')])}}</span>
@@ -344,7 +344,7 @@ export default {
       console.log('valid', valid)
       if (valid) {
         // that.confirmPayRequest()
-        if (that.totalPayAmount) {
+        if (that.totalPayAmount > 0) {
           that.confirmPayRequest()
         } else {
           if (that.orderType === '7' && !that.useBalance) {
@@ -422,7 +422,7 @@ export default {
       if (this.deliveryMode === '0') {
         bus.$emit('receiverValidation')
       } else {
-        if (this.totalPayAmount) {
+        if (this.totalPayAmount > 0) {
           this.confirmPayRequest()
         } else {
           if (this.orderType === '7' && !this.useBalance) {
