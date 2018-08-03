@@ -497,10 +497,10 @@ export default {
                 this.$router.replace(
                   `/confirm-pay?id=${[orderNo]}&total=${payedamount}&due=${Date.now()}`
                 )
-              } else {
-                // jump to pay success page
-                this.$router.replace('/payment-success')
               }
+            } else {
+              // jump to pay success page
+              this.$router.replace('/payment-success')
             }
           }).catch(err => {
             console.log(err)
