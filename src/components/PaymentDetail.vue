@@ -501,7 +501,7 @@ export default {
               }
             } else {
               // jump to pay success page
-              this.$router.replace(`/payment-success?serviceTab=3}`)
+              this.$router.replace(`/payment-success?serviceTab=3`)
             }
           }).catch(err => {
             console.log(err)
@@ -511,7 +511,7 @@ export default {
             })
           })
         } else {
-          console.log('taocan')
+          // console.log('taocan')
           const url = '/common/order/'
           const orderType = this.orderType || this.type
           this.$fetch(url, {
