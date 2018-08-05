@@ -83,9 +83,13 @@ export default {
     confirmPay (id, total, start, orderType) {
       const dueDateValue = this.calcPaymentDueDatetime(start).value
       console.log('dueDate', dueDateValue)
-      this.$router.push(
-        `/confirm-pay?id=${[id]}&total=${total}&due=${dueDateValue}&serviceTab=3`
-      )
+      let url = `/confirm-pay?id=${[id]}&total=${total}&due=${dueDateValue}`
+      if (orderType === '3' || orderType === '7') {
+        url += '&serviceTab=3'
+      } else if (orderType === '6') {
+        url += '&serviceTab=2'
+      }
+      this.$router.push(url)
     },
     getLocalTime (d) {
       const seconds = d.getTime()

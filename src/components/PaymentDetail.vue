@@ -511,6 +511,7 @@ export default {
             })
           })
         } else {
+          console.log('taocan')
           const url = '/common/order/'
           const orderType = this.orderType || this.type
           this.$fetch(url, {
@@ -528,12 +529,18 @@ export default {
             const { orderNo, payedamount, orderStatus } = resp.data
             this.confirmPayLoading = false
             if (orderStatus === '0') {
-              this.$router.replace(
-                `/confirm-pay?id=${[orderNo]}&total=${payedamount}&due=${Date.now()}`
-              )
+              let url = `/confirm-pay?id=${[orderNo]}&total=${payedamount}&due=${Date.now()}`
+              if (orderType === '6') {
+                url += '&serviceTab=2'
+              }
+              this.$router.replace(url)
             } else {
+              let url = '/payment-success'
+              if (orderType === '6') {
+                url += '&serviceTab=2'
+              }
               // jump to pay success page
-              this.$router.replace('/payment-success')
+              this.$router.replace(url)
             }
           }).catch(err => {
             console.log(err)
