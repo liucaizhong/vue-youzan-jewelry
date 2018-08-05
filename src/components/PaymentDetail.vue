@@ -476,11 +476,12 @@ export default {
       } else {
         if (this.orderType === '7') {
           const url = '/client/RentalService/buy/'
+          const orderType = this.orderType || this.type
           this.$fetch(url, {
             data: {
               serviceNo: this.id,
               serviceType: this.type,
-              orderType: this.orderType || this.type,
+              orderType,
               deliveryMode: this.deliveryMode,
               useBalance: +this.useBalance,
               // ...this.formShipInfo(),
@@ -495,12 +496,12 @@ export default {
               console.log('confirmwithoutpay', payedamount)
               if (parseFloat(payedamount) > 0.01) {
                 this.$router.replace(
-                  `/confirm-pay?id=${[orderNo]}&total=${payedamount}&due=${Date.now()}`
+                  `/confirm-pay?id=${[orderNo]}&total=${payedamount}&due=${Date.now()}&serviceTab=3`
                 )
               }
             } else {
               // jump to pay success page
-              this.$router.replace('/payment-success')
+              this.$router.replace(`/payment-success?serviceTab=3}`)
             }
           }).catch(err => {
             console.log(err)
@@ -511,11 +512,12 @@ export default {
           })
         } else {
           const url = '/common/order/'
+          const orderType = this.orderType || this.type
           this.$fetch(url, {
             data: {
               serviceNo: this.id,
               serviceType: this.type,
-              orderType: this.orderType || this.type,
+              orderType,
               deliveryMode: this.deliveryMode,
               useBalance: +this.useBalance,
               ...this.formShipInfo(),

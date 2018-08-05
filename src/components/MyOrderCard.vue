@@ -45,7 +45,7 @@
             class="my-button"
             type="default"
             bottom-action
-            @click="confirmPay(order.orderNo, toPayAmount(order), order.createDate)"
+            @click="confirmPay(order.orderNo, toPayAmount(order), order.createDate, order.orderType)"
           >{{ $t('confirmPay') }}</van-button>
         </div>
       </van-collapse-item>
@@ -80,11 +80,11 @@ export default {
       return (orderStatus === '0' ? this.$t('toPayAmount') : this.$t('paymentAmount')) +
               ': ' + this.$n(Math.max(0, parseFloat(amount) - parseFloat(balanceDeduction)), 'currency')
     },
-    confirmPay (id, total, start) {
+    confirmPay (id, total, start, orderType) {
       const dueDateValue = this.calcPaymentDueDatetime(start).value
       console.log('dueDate', dueDateValue)
       this.$router.push(
-        `/confirm-pay?id=${[id]}&total=${total}&due=${dueDateValue}`
+        `/confirm-pay?id=${[id]}&total=${total}&due=${dueDateValue}&serviceTab=3`
       )
     },
     getLocalTime (d) {

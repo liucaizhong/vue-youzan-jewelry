@@ -27,7 +27,7 @@
         >{{ $t('backToIndex') }}</router-link>
         |
         <router-link
-          to="/my-service#1"
+          :to="`/my-service#${myServiceTab}`"
           replace
         >{{ $t('checkService') }}</router-link>
       </div>
@@ -46,6 +46,7 @@ export default {
   created () {
     this.isAuth = this.$getCookie('isAuthenticated') === '0'
     this.isPackage = this.$route.query.type === '1'
+    this.myServiceTab = this.$route.query.serviceTab
   },
   mounted () {
     Array.prototype.forEach.call(

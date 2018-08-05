@@ -68,6 +68,7 @@ export default {
       paymentWay: PAYMENTWAY,
       confirmPayLoading: false,
       orderTimeout: ORDERTIMEOUT,
+      myServiceTab: '',
       payOption: {
         appId: '',
         timeStamp: '',
@@ -79,7 +80,8 @@ export default {
     }
   },
   created () {
-    const { id, total, due } = this.$route.query
+    const { id, total, due, serviceTab } = this.$route.query
+    this.myServiceTab = serviceTab || '1'
     console.log('payConfirm', id)
     this.orderNo = id.split`,`
     this.paymentAmount = total
@@ -175,7 +177,7 @@ export default {
       )
     },
     successCb () {
-      this.$router.replace('/payment-success')
+      this.$router.replace(`/payment-success?serviceTab=${this.myServiceTab}`)
     },
     cancelCb () {
       const url = '/common/payment/cancel/'
