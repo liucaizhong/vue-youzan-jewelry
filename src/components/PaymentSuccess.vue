@@ -46,7 +46,7 @@ export default {
   created () {
     this.isAuth = this.$getCookie('isAuthenticated') === '0'
     this.isPackage = this.$route.query.type === '1'
-    this.myServiceTab = this.$route.query.serviceTab
+    this.myServiceTab = this.$route.query.serviceTab || '1'
   },
   mounted () {
     Array.prototype.forEach.call(

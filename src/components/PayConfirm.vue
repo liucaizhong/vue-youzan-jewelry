@@ -31,7 +31,7 @@
 
 <script>
 import MySvg from './MySvg'
-import { PAYMENTWAY } from '@/constant'
+import { PAYMENTWAY, ORDERTIMEOUT } from '@/constant'
 
 export default {
   components: {
@@ -67,7 +67,7 @@ export default {
       paymentMethod: PAYMENTWAY[0].key,
       paymentWay: PAYMENTWAY,
       confirmPayLoading: false,
-      // orderTimeout: ORDERTIMEOUT,
+      orderTimeout: ORDERTIMEOUT,
       myServiceTab: '',
       payOption: {
         appId: '',
@@ -86,7 +86,7 @@ export default {
     this.orderNo = id.split`,`
     this.paymentAmount = total
     // this.paymentDueDate = new Date(due + 15 * 60 * 1000)
-    let gap = +due - Date.now()
+    let gap = +due + this.orderTimeout - Date.now()
     if (gap <= 0) {
       this.paymentCountDownText = this.$t('paymentOvertime')
     } else {

@@ -110,7 +110,7 @@ export default {
       const second = dueDate.getSeconds() < 10 ? '0' + dueDate.getSeconds() : dueDate.getSeconds()
 
       return {
-        value: dueDate.valueOf(),
+        value: startUTC.valueOf(),
         show: `${year}-${month}-${day} ${hour}:${min}:${second}`,
       }
     }
