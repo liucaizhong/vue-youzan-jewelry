@@ -110,7 +110,7 @@
         :disabled="hasNoPackage"
       >{{ rentPackagePayment }}</van-button>
     </footer>
-    <van-dialog
+    <!-- <van-dialog
       class="my-dialog"
       v-model="showConfirmChangeProduct"
       show-cancel-button
@@ -120,7 +120,7 @@
       :cancelButtonText="$t('cancelPayBtnText')"
       @confirm="confirmChangeProduct"
     >
-    </van-dialog>
+    </van-dialog> -->
   </div>
 </template>
 
@@ -157,7 +157,7 @@ export default {
         loading: false,
         finished: false,
       },
-      showConfirmChangeProduct: false,
+      // showConfirmChangeProduct: false,
       paymentLoading: false,
       hasNoPackage: false,
     }
@@ -253,31 +253,32 @@ export default {
           })
         })
       } else {
-        this.showConfirmChangeProduct = true
+        // this.showConfirmChangeProduct = true
+        this.$router.replace(`/payment/${this.myPackages[this.myPackageSelect].serviceNo}?type=1&swap=true&swapProduct=${JSON.stringify(this.productDetail)}`)
       }
     },
-    confirmChangeProduct () {
-      // change renting product
-      this.paymentLoading = true
-      const url = '/client/ComboService/swap/'
-      this.$fetch(url, {
-        data: {
-          productid: this.productDetail.productid,
-          serviceNo: this.myPackages[this.myPackageSelect].serviceNo,
-        },
-        method: 'post',
-      }).then(resp => {
-        console.log(resp)
-        this.paymentLoading = false
-        this.$router.replace('/payment-success/?type=1')
-      }).catch(err => {
-        console.log(err)
-        this.paymentLoading = false
-        this.$message({
-          content: this.$t('paymentFail'),
-        })
-      })
-    },
+    // confirmChangeProduct () {
+    //   // change renting product
+    //   this.paymentLoading = true
+    //   const url = '/client/ComboService/swap/'
+    //   this.$fetch(url, {
+    //     data: {
+    //       productid: this.productDetail.productid,
+    //       serviceNo: this.myPackages[this.myPackageSelect].serviceNo,
+    //     },
+    //     method: 'post',
+    //   }).then(resp => {
+    //     console.log(resp)
+    //     this.paymentLoading = false
+    //     this.$router.replace('/payment-success/?type=1')
+    //   }).catch(err => {
+    //     console.log(err)
+    //     this.paymentLoading = false
+    //     this.$message({
+    //       content: this.$t('paymentFail'),
+    //     })
+    //   })
+    // },
     onLoadNewPackageCond () {
       this.newPackageCond.loading = true
       this.getNewPackages()

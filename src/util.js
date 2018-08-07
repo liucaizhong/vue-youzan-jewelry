@@ -86,6 +86,12 @@ export default {
           } catch (err) {
             // todo: error handle
             console.error(err)
+            // if (process.env.NODE_ENV === 'production') {
+            //   this.$Message.error({
+            //     content: err,
+            //   })
+            // }
+
             reject(err)
           }
           loading && this.$store.commit('updateGlobalLoading', false)

@@ -131,6 +131,8 @@ export default {
         that.$message({
           content: that.$t('shippingInvalid'),
         })
+      } else {
+        bus.$emit('receiverValidationResult', true)
       }
     })
   },

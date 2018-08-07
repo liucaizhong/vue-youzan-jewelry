@@ -107,7 +107,7 @@
       </van-radio-group>
     </section>
     <section class="payment-detail__others">
-      <van-cell-group v-if="totalAmount > 0">
+      <van-cell-group v-if="!swap && totalAmount > 0">
         <!-- <van-cell
           class="my-cell"
           :title="$t('sendInvoice')"
@@ -162,6 +162,17 @@
       @confirm="confirmWithoutPay"
     >
     </van-dialog>
+    <van-dialog
+      class="my-dialog"
+      v-model="showConfirmChangeProduct"
+      show-cancel-button
+      :title="$t('changeProductTip')"
+      :message="productTitle"
+      :confirmButtonText="$t('confirmChange')"
+      :cancelButtonText="$t('cancelPayBtnText')"
+      @confirm="confirmChangeProduct"
+    >
+    </van-dialog>
   </div>
 </template>
 
@@ -183,8 +194,10 @@ export default {
       type: '0', // 0: one, 1: package, 2: buy
       orderType: '',
       nopr: false,
+      swap: false,
       showConfirmWithoutPay: false,
       showConfirmBalanceDeduction: false,
+      showConfirmChangeProduct: false,
       deliveryModes: DELIVERYMODE,
       deliveryMode: DELIVERYMODE[1].key,
       productCategory: CATEGORYOFPRODUCT,
@@ -206,6 +219,7 @@ export default {
         remark: '',
       },
       reservedProduct: {
+        productid: '',
         mainimage: '',
         brand: '',
         category: '',
@@ -226,9 +240,25 @@ export default {
   created () {
     console.log('$route', this.$route)
     this.id = this.$route.params.id
-    this.type = this.$route.query.type || '0'
-    this.nopr = !!this.$route.query.nopr
-    this.orderType = this.$route.query.orderType
+    const { type, nopr, orderType, swap, swapProduct } = this.$route.query
+    this.type = type || '0'
+    this.nopr = !!nopr
+    this.orderType = orderType
+    this.swap = !!swap
+    if (swapProduct) {
+      const { MainImage0, brand, category, model,
+        sellingPrice, series, title, productid } = JSON.parse(swapProduct)
+      this.reservedProduct = {
+        mainimage: MainImage0.avatar || MainImage0.url,
+        brand,
+        category,
+        model,
+        sellingPrice,
+        series,
+        title,
+        productid,
+      }
+    }
 
     switch (this.type) {
       case '0': {
@@ -301,10 +331,12 @@ export default {
           this.deposit = initialDeposit
           this.rent = initialRent
           this.rentPeriod = rentPeriod
-          this.reservedProduct = serviceInfo.reservedProduct ? {
-            ...serviceInfo.reservedProduct,
-          } : {
-            ...serviceInfo.product,
+          if (!this.swap) {
+            this.reservedProduct = serviceInfo.reservedProduct ? {
+              ...serviceInfo.reservedProduct,
+            } : {
+              ...serviceInfo.product,
+            }
           }
           this.packageInfo = {
             ...serviceInfo.packageshot,
@@ -344,7 +376,9 @@ export default {
       console.log('valid', valid)
       if (valid) {
         // that.confirmPayRequest()
-        if (that.totalPayAmount > 0) {
+        if (that.swap) {
+          that.showConfirmChangeProduct = true
+        } else if (that.totalPayAmount > 0) {
           that.confirmPayRequest()
         } else {
           if (that.orderType === '7' && !that.useBalance) {
@@ -369,10 +403,13 @@ export default {
   },
   computed: {
     paymentBtnText: function () {
-      return this.totalAmount < 0 ? this.$t('confirm') : this.$t('confirmPay')
+      return this.swap ? this.$t('confirmChange')
+        : this.totalAmount < 0 ? this.$t('confirm') : this.$t('confirmPay')
     },
     totalPayAmountText: function () {
-      if (this.totalAmount < 0) {
+      if (this.swap) {
+        return this.$t('confirmWithoutPayDesc')
+      } else if (this.totalAmount < 0) {
         return this.$t('returnDeposit', [this.$n(Math.abs(this.totalPayAmount), 'currency')])
       } else {
         return this.$t('totalPayAmount', [this.$n(this.totalPayAmount, 'currency')])
@@ -401,6 +438,37 @@ export default {
     }),
   },
   methods: {
+    confirmChangeProduct () {
+      // change renting product
+      this.confirmPayLoading = true
+      // console.log('delivery', this.formShipInfo())
+      const { name: receiverName, gender: receiverGender, address: receiverAddress,
+        phone: receiverPhone, remark: receiverRemark } = this.formShipInfo()
+
+      const url = '/client/ComboService/swap/'
+      this.$fetch(url, {
+        data: {
+          productid: this.reservedProduct.productid,
+          serviceNo: this.id,
+          receiverName,
+          receiverGender,
+          receiverAddress,
+          receiverPhone,
+          receiverRemark,
+        },
+        method: 'post',
+      }).then(resp => {
+        console.log(resp)
+        this.confirmPayLoading = false
+        this.$router.replace('/payment-success/?type=1&serviceTab=2')
+      }).catch(err => {
+        console.log(err)
+        this.confirmPayLoading = false
+        this.$message({
+          content: this.$t('paymentFail'),
+        })
+      })
+    },
     formShipInfo () {
       const postData = {}
       if (this.deliveryMode === '0') {
@@ -422,7 +490,9 @@ export default {
       if (this.deliveryMode === '0') {
         bus.$emit('receiverValidation')
       } else {
-        if (this.totalPayAmount > 0) {
+        if (this.swap) {
+          this.showConfirmChangeProduct = true
+        } else if (this.totalPayAmount > 0) {
           this.confirmPayRequest()
         } else {
           if (this.orderType === '7' && !this.useBalance) {
