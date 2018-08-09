@@ -197,7 +197,7 @@ export default {
   hasNoService: '您还没有相关的订单',
   selectProduct: '挑选商品',
   certificate0: '无',
-  certificate1: 'IGI证书',
+  certificate1: '国检证书',
   certificate2: 'GIA证书',
   certificate3: 'HRD证书',
   certificate4: 'AGS证书',
