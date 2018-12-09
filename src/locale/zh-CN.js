@@ -35,7 +35,7 @@ export default {
   productCategory2: '手镯',
   productCategory3: '耳饰',
   productCategory4: '手链',
-  productCategory5: '其他',
+  productCategory5: '婚礼',
   productCategory5_0: '脚饰',
   productCategory5_1: '胸针&领针',
   productCategory5_2: '摆件',
