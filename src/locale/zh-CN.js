@@ -20,7 +20,7 @@ export default {
   book: '预约',
   bookDesc: '即刻预约到店',
   package: '套餐',
-  packageDesc: '畅想随心租',
+  packageDesc: '畅想随心租(敬请期待)',
   checkAll: '查看全部',
   checkService: '查看服务',
   category: '分类',

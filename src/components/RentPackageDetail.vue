@@ -404,6 +404,11 @@ export default {
 
     .pay-btn {
       max-width: 120px;
+
+      &.van-button--disabled {
+        border: none;
+        color: inherit;
+      }
     }
   }
 
